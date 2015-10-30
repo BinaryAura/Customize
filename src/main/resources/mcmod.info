@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "customize",
+  "name": "Customize",
+  "description": "Introduces HUD customization into the game. The HUD items can now be moved and oriented the player wants.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["BinaryAura"],
+  "credits": "TurboSlow and Maxpowa for making the original form of this mod: AdvancedHUD",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
