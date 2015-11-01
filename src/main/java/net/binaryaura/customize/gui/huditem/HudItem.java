@@ -1,15 +1,15 @@
-package net.binaryaura.customize.gui.hud;
+package net.binaryaura.customize.gui.huditem;
 
-public abstract class HUDItem {
+public abstract class HudItem {
 
 	protected String name;
-	protected HUDItemType type;
+	protected HudItemType type;
 	
 	public String getName() {
 		return name;
 	}
 	
-	public HUDItemType getType() {
+	public HudItemType getType() {
 		return type;
 	}
 	

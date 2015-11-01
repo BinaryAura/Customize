@@ -1,8 +1,8 @@
-package net.binaryaura.customize.gui.hud;
+package net.binaryaura.customize.gui.huditem;
 
-public class HUDItemIconSet extends HUDItem {
+public abstract class HudItemIconSet extends HudItem {
 
-	public HUDItemIconSet() {
+	public HudItemIconSet() {
 		// TODO Auto-generated constructor stub
 	}
 
