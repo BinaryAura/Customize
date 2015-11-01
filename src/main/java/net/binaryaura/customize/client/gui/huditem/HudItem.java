@@ -1,4 +1,6 @@
-package net.binaryaura.customize.gui.huditem;
+package net.binaryaura.customize.client.gui.huditem;
+
+import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 
 public abstract class HudItem {
 
@@ -17,7 +19,7 @@ public abstract class HudItem {
 
 	@Override
 	public String toString() {
-		return "HUDItem " + name;
+		return "HUDItem " + getName();
 	}
 	
 	

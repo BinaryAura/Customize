@@ -1,4 +1,4 @@
-package net.binaryaura.customize.gui.huditem;
+package net.binaryaura.customize.client.gui.huditem;
 
 public class HudItemAir extends HudItemIconGauge {
 

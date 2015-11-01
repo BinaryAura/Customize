@@ -1,9 +1,7 @@
-package net.binaryaura.customize;
+package net.binaryaura.customize.common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import net.binaryaura.customize.common.CommonProxy;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -30,8 +28,7 @@ public class Customize {
     public static CommonProxy proxy;
     
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-    	
+    public void preInit(FMLPreInitializationEvent event) {    	
     	log.info("Loading " + NAME);
     }
     

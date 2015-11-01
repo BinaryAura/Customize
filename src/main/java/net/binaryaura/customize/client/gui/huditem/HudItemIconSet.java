@@ -1,9 +1,11 @@
-package net.binaryaura.customize.gui.huditem;
+package net.binaryaura.customize.client.gui.huditem;
+
+import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 
 public abstract class HudItemIconSet extends HudItem {
 
 	public HudItemIconSet() {
-		// TODO Auto-generated constructor stub
+		type = HudItemType.ICON_SET;
 	}
 
 	@Override

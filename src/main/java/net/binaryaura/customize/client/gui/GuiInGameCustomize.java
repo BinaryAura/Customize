@@ -1,4 +1,4 @@
-package net.binaryaura.customize.gui;
+package net.binaryaura.customize.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
