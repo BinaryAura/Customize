@@ -6,5 +6,4 @@ public class HudItemMountHealth extends HudItemIconGauge {
 		super(name);
 		// TODO Auto-generated constructor stub
 	}
-
 }

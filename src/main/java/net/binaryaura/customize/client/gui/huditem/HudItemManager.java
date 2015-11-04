@@ -1,7 +1,6 @@
 package net.binaryaura.customize.client.gui.huditem;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import net.binaryaura.customize.common.Customize;
 

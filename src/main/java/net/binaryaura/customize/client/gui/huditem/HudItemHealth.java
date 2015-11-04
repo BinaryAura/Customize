@@ -1,5 +1,8 @@
 package net.binaryaura.customize.client.gui.huditem;
 
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+
 public class HudItemHealth extends HudItemIconGauge {
 
 	public HudItemHealth(String name) {
@@ -7,9 +10,9 @@ public class HudItemHealth extends HudItemIconGauge {
 	}
 
 	@Override
-	public void renderHUDItem() {
+	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
 		// TODO Auto-generated method stub
-		super.renderHUDItem();
+		super.renderHUDItem(res, eventParent);
 	}
 
 }

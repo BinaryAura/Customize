@@ -2,6 +2,8 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItemText extends HudItem {
 
@@ -12,7 +14,7 @@ public abstract class HudItemText extends HudItem {
 	}
 
 	@Override
-	public void renderHUDItem() {
+	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
 		// TODO Auto-generated method stub
 
 	}

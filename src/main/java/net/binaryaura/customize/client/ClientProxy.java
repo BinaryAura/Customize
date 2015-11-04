@@ -2,10 +2,8 @@ package net.binaryaura.customize.client;
 
 import net.binaryaura.customize.client.gui.GuiInGameCustomize;
 import net.binaryaura.customize.client.gui.huditem.HudItemHealth;
-import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.common.CommonProxy;
 import net.binaryaura.customize.common.Customize;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
