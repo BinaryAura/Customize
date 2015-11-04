@@ -7,6 +7,10 @@ public abstract class HudItem {
 	protected String name;
 	protected HudItemType type;
 	
+	public HudItem(String name){
+		this.name = name;
+	}
+	
 	public String getName() {
 		return name;
 	}

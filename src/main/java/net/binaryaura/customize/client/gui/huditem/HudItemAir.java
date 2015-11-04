@@ -2,8 +2,8 @@ package net.binaryaura.customize.client.gui.huditem;
 
 public class HudItemAir extends HudItemIconGauge {
 
-	public HudItemAir() {
-		// TODO Auto-generated constructor stub
+	public HudItemAir(String name) {
+		super(name);
 	}
 
 }

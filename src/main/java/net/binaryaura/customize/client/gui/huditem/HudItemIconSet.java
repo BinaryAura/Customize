@@ -4,7 +4,8 @@ import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 
 public abstract class HudItemIconSet extends HudItem {
 
-	public HudItemIconSet() {
+	public HudItemIconSet(String name) {
+		super(name);
 		type = HudItemType.ICON_SET;
 	}
 

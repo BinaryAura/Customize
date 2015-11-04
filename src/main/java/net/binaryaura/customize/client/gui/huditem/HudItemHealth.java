@@ -2,8 +2,8 @@ package net.binaryaura.customize.client.gui.huditem;
 
 public class HudItemHealth extends HudItemIconGauge {
 
-	public HudItemHealth() {
-		// TODO Auto-generated constructor stub
+	public HudItemHealth(String name) {
+		super(name);
 	}
 
 	@Override

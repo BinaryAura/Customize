@@ -13,8 +13,7 @@ public class HudItemManager {
 		ICON_SET(),
 		TEXT();
 		
-		HudItemType() {
-		}
+		HudItemType() {}
 	}
 
 	public HudItemManager() {
@@ -39,5 +38,5 @@ public class HudItemManager {
 		}
 	}
 	
-	HashSet<HudItem> hudItems;
+	public HashSet<HudItem> hudItems;
 }
