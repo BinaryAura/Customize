@@ -1,5 +1,6 @@
 package net.binaryaura.customize.client.gui.huditem;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import net.binaryaura.customize.common.Customize;
@@ -17,26 +18,26 @@ public class HudItemManager {
 	}
 
 	public HudItemManager() {
-		hudItems = new HashSet<HudItem>();
+		hudItems = new HashMap<String, HudItem>();
 	}
 	
 	public void registerHudItem(HudItem hudItem) {
-		if(hudItem != null) {
-			hudItems.add(hudItem);
+		if(hudItem != null) {			
+			hudItems.put(hudItem.getName(), hudItem);
 			Customize.log.info("Registered " + hudItem);
 		} else {
 			Customize.log.warn("Null HudItem. Skipping");
 		}
 	}
 	
-	public void unregisterHudItem(HudItem hudItem) {
-		if(hudItems.contains(hudItem)) {
-			hudItems.remove(hudItem);
-			Customize.log.info("Unregisterd " + hudItem);
+	public void unregisterHudItem(String name) {
+		if(hudItems.containsKey(name)) {
+			hudItems.remove(name);
+			Customize.log.info("Unregisterd HudItem " + name);
 		} else {
-			Customize.log.warn(hudItem + " isn't registered. Skipping.");
+			Customize.log.warn("HudItem " + name + " isn't registered. Skipping.");
 		}
 	}
 	
-	public HashSet<HudItem> hudItems;
+	public HashMap<String, HudItem> hudItems;
 }
