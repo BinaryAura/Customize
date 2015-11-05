@@ -11,7 +11,6 @@ public class HudItemHealth extends HudItemIconGauge {
 
 	@Override
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-		// TODO Auto-generated method stub
 		super.renderHUDItem(res, eventParent);
 	}
 
