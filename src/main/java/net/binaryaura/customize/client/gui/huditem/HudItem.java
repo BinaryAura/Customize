@@ -4,6 +4,8 @@ import java.util.Random;
 
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
@@ -50,6 +52,7 @@ public abstract class HudItem {
 	public HudItem(String name){
 		this.name = name;
 		mc = Minecraft.getMinecraft();
+		guiRenderer = mc.ingameGUI;
 	}
 	
 	public String getName() {
@@ -58,6 +61,10 @@ public abstract class HudItem {
 	
 	public HudItemType getType() {
 		return type;
+	}
+	
+	public void flip() {
+		flip = !flip;
 	}
 	
 	public void rotateLeft() {
@@ -77,6 +84,10 @@ public abstract class HudItem {
 		return "HUDItem " + getName();
 	}
 	
+	protected boolean flip = false;
+	protected int x;
+	protected int y;
 	protected Minecraft mc;
 	protected Orientation orientation;
+	protected GuiIngame guiRenderer;
 }

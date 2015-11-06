@@ -3,6 +3,7 @@ package net.binaryaura.customize.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.binaryaura.customize.client.gui.GuiRenderer;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +25,7 @@ public class Customize {
     public static final Minecraft mc = Minecraft.getMinecraft();
     public static final Logger log = LogManager.getLogger("CUSTOMIZE");
     public static final HudItemManager hudManager = new HudItemManager();
+    public static final GuiRenderer guiRenderer = new GuiRenderer();
     
     @Instance
     public static Customize instance;
