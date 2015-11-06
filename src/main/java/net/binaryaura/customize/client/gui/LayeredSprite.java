@@ -14,10 +14,9 @@ public class LayeredSprite {
 	}
 
 	public int getNext() {
-		return coords.
+		return sprites.
 	}
 	
 	private LinkedHashMap<String, SpriteSet> sprites;
-	private ResourceLocation location;
 	
 }
