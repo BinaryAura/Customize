@@ -15,8 +15,8 @@ public class SpriteSet {
 		if(amount == 0) {
 			height = sprite.getHeight();
 			width = sprite.getWidth();
-		} else if(height != sprite.getHeight() && width != sprite.getWidth()) {
-			Customize.log.warn("Sprite didn't match dimentions");
+		} else if(height != sprite.getHeight() || width != sprite.getWidth()) {
+			Customize.log.error("Sprite didn't match dimentions. Skipping Sprite");
 		}
 		this.sprites.add(sprite);
 		amount++;

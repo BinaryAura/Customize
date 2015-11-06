@@ -1,13 +1,9 @@
 package net.binaryaura.customize.client.gui;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 
-import net.binaryaura.customize.client.gui.Sprite.Coordinate;
 import net.binaryaura.customize.common.Customize;
-import net.minecraft.util.ResourceLocation;
 
 public class LayeredSprite {
 
@@ -19,7 +15,10 @@ public class LayeredSprite {
 		if(amount == 0) {
 			amount = layer.getAmount();
 			height = layer.getHeight();
-			width = layer.getWidth()
+			width = layer.getWidth();
+		} else if(amount != layer.getAmount() || height != layer.getHeight() || width != getWidth()) {
+			Customize.log.error("Layer didn't match dimentions. Skipping Layer");
+			
 		}
 		sprites.put(layer.getName(), layer);
 		it = sprites.values().iterator();
@@ -43,8 +42,8 @@ public class LayeredSprite {
 		return width;
 	}
 	
-	public SpriteSet getNext() {
-		return it.hasNext() ? (SpriteSet) it.next() : null;
+	public Iterator getIterator() {
+		return it;
 		
 	}
 	

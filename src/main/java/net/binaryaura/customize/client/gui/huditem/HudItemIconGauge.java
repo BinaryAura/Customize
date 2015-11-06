@@ -21,37 +21,54 @@ public abstract class HudItemIconGauge extends HudItem {
 
 	@Override
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+		SpriteSet spriteSet;
 		Sprite sprite;
-		for(int i = MathHelper.ceiling_float_int(getAmount()/layers.getAmount()); i >= 0; --i) {
-			// Which row
-			SpriteSet spriteSet = getIconSprite(i);
-			// Choose Sprite (i % Amount in set)
-			switch(orientation) {
-				case RIGHT:
+		switch(orientation) {
+			case RIGHT:
+				for(int i = MathHelper.ceiling_float_int(getAmount()/layers.getAmount()); i >= 0; --i) {
+					// Which row
+					spriteSet = getIconSprite(i);
+					// Choose Sprite (i % Amount in set)
 					sprite = spriteSet.getSprite(i);
-					for(int j = 0; j < spriteSet.amount; j++) {						
-						guiRenderer.drawTexturedModalRect(x + space*i + getIconDeltaPerp(i), y + getIconDeltaPara(i), sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
+					for(int j = 0; j < spriteSet.getAmount(); j++) {						
+						guiRenderer.drawTexturedModalRect(x + space*i + getIconDeltaPerp(i), y + getIconDeltaPara(i), sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
 					}
-					break;
-				case DOWN:
+				}
+				break;
+			case DOWN:
+				for(int i = MathHelper.ceiling_float_int(getAmount()/layers.getAmount()); -i >= 0; --i) {
+					// Which row
+					spriteSet = getIconSprite(i);
+					// Choose Sprite (i % Amount in set)
 					sprite = spriteSet.getSprite(i);
-					for(int j = 0; j < spriteSet.amount; j++) {						
-						guiRenderer.drawTexturedModalRect(x + getIconDeltaPerp(i), y + space*i + getIconDeltaPara(i), sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
+					for(int j = 0; j < spriteSet.getAmount(); j++) {						
+						guiRenderer.drawTexturedModalRect(x + getIconDeltaPerp(i), y + space*i + getIconDeltaPara(i), sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
 					}
-					break;
-				case LEFT:
+				}
+				break;
+			case LEFT:
+				for(int i = MathHelper.ceiling_float_int(getAmount()/layers.getAmount()); i >= 0; --i) {
+					// Which row
+					spriteSet = getIconSprite(i);
+					// Choose Sprite (i % Amount in set)
 					sprite = spriteSet.getSprite(i);
-					for(int j = 0; j < spriteSet.amount; j++) {						
-						guiRenderer.drawTexturedModalRect(x - space*i + getIconDeltaPerp(i), y + getIconDeltaPara(i), sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
+					for(int j = 0; j < spriteSet.getAmount(); j++) {						
+						guiRenderer.drawTexturedModalRect(x - space*i + getIconDeltaPerp(i), y + getIconDeltaPara(i), sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
 					}
-					break;
-				case UP:
+				}
+				break;
+			case UP:
+				for(int i = MathHelper.ceiling_float_int(getAmount()/layers.getAmount()); i >= 0; --i) {
+					// Which row
+					int row = 
+					spriteSet = getIconSprite(i);
+					// Choose Sprite (i % Amount in set)
 					sprite = spriteSet.getSprite(i);
-					for(int j = 0; j < spriteSet.amount; j++) {						
-						guiRenderer.drawTexturedModalRect(x + getIconDeltaPerp(i), y - space*i + getIconDeltaPara(i), sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
+					for(int j = 0; j < spriteSet.getAmount(); j++) {						
+						guiRenderer.drawTexturedModalRect(x + getIconDeltaPerp(i), y - space*i + getIconDeltaPara(i), sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
 					}
-					break;
-			}
+				}
+				break;
 		}
 	}
 	
