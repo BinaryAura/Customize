@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItem {
@@ -44,10 +45,8 @@ public abstract class HudItem {
 			}
 		}
 	}
-
-	protected String name;
-	protected HudItemType type;
-	protected Random rand;
+	
+	protected static final Random rand = new Random();
 	
 	public HudItem(String name){
 		this.name = name;
@@ -63,6 +62,8 @@ public abstract class HudItem {
 		return type;
 	}
 	
+	protected abstract void init();
+	
 	public void flip() {
 		flip = !flip;
 	}
@@ -77,16 +78,28 @@ public abstract class HudItem {
 	
 	public abstract void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent);
 	
-	public abstract void renderLayer(int layer);
+	public void updateTick() {
+		++updateCounter;
+		rand.setSeed((long)(updateCounter * 312871));
+	}
 
 	@Override
 	public String toString() {
 		return "HUDItem " + getName();
 	}
 	
+	protected void bind(ResourceLocation res) {
+		mc.getTextureManager().bindTexture(res);
+	}
+	
+
 	protected boolean flip = false;
 	protected int x;
 	protected int y;
+	protected int updateCounter = 0;
+	protected long lastSystemTime;
+	protected String name;
+	protected HudItemType type;
 	protected Minecraft mc;
 	protected Orientation orientation;
 	protected GuiIngame guiRenderer;

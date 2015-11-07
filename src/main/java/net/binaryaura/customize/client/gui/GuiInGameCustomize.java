@@ -29,6 +29,14 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	}
 
 	@Override
+	public void updateTick() {
+		super.updateTick();
+		for (HudItem hudItem : hudManager.hudItems.values()) {
+			if(hudItem != null) hudItem.updateTick();
+		}
+	}
+
+	@Override
 	public void renderGameOverlay(float partialTicks) {
 		res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 		eventParent = new RenderGameOverlayEvent(partialTicks, res);
@@ -50,12 +58,12 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		if (renderPortal && !mc.thePlayer.isPotionActive(Potion.confusion)) {
 			renderPortal(res, partialTicks);
 		}
-
+		
+		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
+		
 		for (HudItem hudItem : hudManager.hudItems.values()) {
 			if(hudItem != null) hudItem.renderHUDItem(res, eventParent);
 		}
-		
-		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
 		post(ALL);
 	}
