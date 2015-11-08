@@ -1,6 +1,7 @@
 package net.binaryaura.customize.client.gui;
 
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.ALL;
+import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.CHAT;
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.HELMET;
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.PORTAL;
 
@@ -64,6 +65,8 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		for (HudItem hudItem : hudManager.hudItems.values()) {
 			if(hudItem != null) hudItem.renderHUDItem(res, eventParent);
 		}
+
+        renderChat(res.getScaledWidth(), res.getScaledHeight());
 		
 		post(ALL);
 	}
@@ -103,6 +106,23 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 		post(HELMET);
 	}
+	
+	protected void renderChat(int width, int height)
+    {
+        mc.mcProfiler.startSection("chat");
+
+        RenderGameOverlayEvent.Chat event = new RenderGameOverlayEvent.Chat(eventParent, 0, height - 48);
+        if (MinecraftForge.EVENT_BUS.post(event)) return;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float)event.posX, (float)event.posY, 0.0F);
+        persistantChatGUI.drawChat(updateCounter);
+        GlStateManager.popMatrix();
+
+        post(CHAT);
+
+        mc.mcProfiler.endSection();
+    }
 
 	private boolean pre(ElementType type) {
 		return MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Pre(eventParent, type));
