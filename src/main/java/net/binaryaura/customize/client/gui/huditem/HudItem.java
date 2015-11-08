@@ -2,8 +2,12 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import java.util.Random;
 
+import org.apache.logging.log4j.Logger;
+
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
+import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
@@ -50,7 +54,7 @@ public abstract class HudItem {
 	public HudItem(String name){
 		this.name = name;
 		mc = Minecraft.getMinecraft();
-		guiRenderer = mc.ingameGUI;
+		guiRenderer = new Gui();
 	}
 	
 	public String getName() {
@@ -75,7 +79,9 @@ public abstract class HudItem {
 		orientation = orientation.right();
 	}
 	
-	public abstract void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent);
+	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+		if(render) return;
+	}
 	
 	public void updateTick() {
 		++updateCounter;
@@ -93,6 +99,7 @@ public abstract class HudItem {
 	
 
 	protected boolean flip = false;
+	protected boolean render = true;
 	protected int x;
 	protected int y;
 	protected int updateCounter = 0;
@@ -101,5 +108,6 @@ public abstract class HudItem {
 	protected HudItemType type;
 	protected Minecraft mc;
 	protected Orientation orientation;
-	protected GuiIngame guiRenderer;
+	protected Gui guiRenderer;
+	protected Logger log = Customize.log;
 }

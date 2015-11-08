@@ -2,6 +2,7 @@ package net.binaryaura.customize.client.gui;
 
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.ALL;
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.HELMET;
+import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.PORTAL;
 
 import org.lwjgl.opengl.GL11;
 
@@ -66,6 +67,20 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		
 		post(ALL);
 	}
+	
+	protected void renderPortal(ScaledResolution res, float partialTicks)
+    {
+        if (pre(PORTAL)) return;
+
+        float f1 = mc.thePlayer.prevTimeInPortal + (mc.thePlayer.timeInPortal - mc.thePlayer.prevTimeInPortal) * partialTicks;
+
+        if (f1 > 0.0F)
+        {
+            func_180474_b(f1, res);
+        }
+
+        post(PORTAL);
+    }
 
 	@Override
 	public ScaledResolution getResolution() {

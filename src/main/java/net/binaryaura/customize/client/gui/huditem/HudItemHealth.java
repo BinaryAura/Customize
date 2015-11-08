@@ -3,17 +3,20 @@ package net.binaryaura.customize.client.gui.huditem;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
+import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class HudItemHealth extends HudItemIconGauge {
 	
 	public HudItemHealth(String name) {
 		super(name);
-		player = (EntityPlayer)this.mc.getRenderViewEntity();
+		orientation = Orientation.RIGHT;
 		init();
 	}
 	
@@ -48,19 +51,26 @@ public class HudItemHealth extends HudItemIconGauge {
 		
 		int index = 0;
 		
+//		log.info(icon);
+//		log.info(health);
+//		log.info(layers.getAmount() - 1);
+//		log.info(healthMax);
+//		log.info(health / (layers.getAmount() - 1));
+//		log.info(health % (layers.getAmount() - 1));
+		
 		if((healthMax / 2) > icon) {
 		// Is icon normal
-			if(health / layers.getAmount() > icon) {
+			if(health / (layers.getAmount() - 1) > icon) {
 			// Is icon less than health
-				index = layers.getAmount();
-			} else if(health / layers.getAmount() == icon) {
-				index = health % layers.getAmount() - 1;
+				index = layers.getAmount() - 1;
+			} else if(health / (layers.getAmount() - 1) == icon) {
+				index = health % (layers.getAmount() - 1);
 			}
 		} else {
 			if(MathHelper.ceiling_float_int(healthMax + absorb) / layers.getAmount() > icon) {
 				index = layers.getAmount();
 			} else if(MathHelper.ceiling_float_int(healthMax + absorb) / layers.getAmount() == icon) {
-				index = MathHelper.ceiling_float_int(healthMax + absorb) % layers.getAmount() - 1;
+				index = MathHelper.ceiling_float_int(healthMax + absorb) % (layers.getAmount() - 1);
 			}
 		}
 		
@@ -76,6 +86,13 @@ public class HudItemHealth extends HudItemIconGauge {
 		}
 		
 		return iconLayers;
+	}
+	
+	@Override
+	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+		player = (EntityPlayer)this.mc.getRenderViewEntity();
+		render = this.mc.playerController.shouldDrawHUD() && player != null;
+		super.renderHUDItem(res, eventParent);
 	}
 	
 	@Override
@@ -109,7 +126,7 @@ public class HudItemHealth extends HudItemIconGauge {
 
 	@Override
 	protected void init() {
-		maxStackSpace = 10;
+		maxStackSpace = 11;
 		minStackSpace = 3;
 		x = -91;
 		y = -39;
