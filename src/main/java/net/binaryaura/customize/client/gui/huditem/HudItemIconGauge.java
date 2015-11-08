@@ -32,7 +32,6 @@ public abstract class HudItemIconGauge extends HudItem {
 						// Fix
 						int x = (res.getScaledWidth() / 2 - this.x) + space*i + getIconDeltaPara(i);
 						int y = (res.getScaledHeight() / 2 - this.y) - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						log.info(i + ": " + stackSpace + ", " + stack);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
 						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
@@ -104,7 +103,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	protected abstract float getAmount();
 	
 	protected int shake(int icon) {
-		return rand.nextInt(2);
+		return 2*rand.nextInt(2);
 	}
 	
 	protected int wave(int icon) {

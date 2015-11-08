@@ -3,7 +3,6 @@ package net.binaryaura.customize.client.gui.huditem;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
-import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -50,13 +49,6 @@ public class HudItemHealth extends HudItemIconGauge {
 		healthLastTick = health;
 		
 		int index = 0;
-		
-//		log.info(icon);
-//		log.info(health);
-//		log.info(layers.getAmount() - 1);
-//		log.info(healthMax);
-//		log.info(health / (layers.getAmount() - 1));
-//		log.info(health % (layers.getAmount() - 1));
 		
 		if((healthMax / 2) > icon) {
 		// Is icon normal
@@ -106,7 +98,7 @@ public class HudItemHealth extends HudItemIconGauge {
 		// Perpendicular Movement rules
 		int perp = 0;
 		if(player.isPotionActive(Potion.regeneration))
-			perp += wave(icon);		
+			perp += -wave(icon);		
 		else if(player.getHealth() <= 4)
 			perp += shake(icon);
 		return perp;

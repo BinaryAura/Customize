@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 
-version = "1G0-6"
+version = "1I0-6"
 group= "net.binaryaura.customize" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "customize"
 
