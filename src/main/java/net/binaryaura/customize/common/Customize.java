@@ -3,7 +3,6 @@ package net.binaryaura.customize.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.binaryaura.customize.client.gui.GuiRenderer;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
@@ -13,6 +12,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Customize.MODID, name = Customize.NAME, version = Customize.VERSION)
 public class Customize {
@@ -25,7 +25,6 @@ public class Customize {
     public static final Minecraft mc = Minecraft.getMinecraft();
     public static final Logger log = LogManager.getLogger("CUSTOMIZE");
     public static final HudItemManager hudManager = new HudItemManager();
-    public static final GuiRenderer guiRenderer = new GuiRenderer();
     
     @Instance
     public static Customize instance;
@@ -47,5 +46,10 @@ public class Customize {
     public void postInit(FMLPostInitializationEvent event) {
     	proxy.postInit(event);
     	log.info("Successfully loaded " + NAME);
+    }
+    
+    @EventHandler
+    public void serverStart(FMLServerStartingEvent event) {
+    	
     }
 }

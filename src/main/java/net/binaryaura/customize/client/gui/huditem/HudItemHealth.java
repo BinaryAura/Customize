@@ -5,11 +5,9 @@ import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class HudItemHealth extends HudItemIconGauge {
 	
@@ -44,7 +42,6 @@ public class HudItemHealth extends HudItemIconGauge {
 			hlTime = (long)updateCounter + 10;
 		}
 		if(Minecraft.getSystemTime() - lastSystemTime > 1000L) {
-			healthLast = health;
 			lastSystemTime = Minecraft.getSystemTime();
 		}
 		healthLastTick = health;
@@ -90,10 +87,12 @@ public class HudItemHealth extends HudItemIconGauge {
 	@Override
 	protected int getIconDeltaPerp(int icon) {
 		// Perpendicular Movement rules
-		
-		
-		
-		return 0;
+		int perp = 0;
+		if(player.isPotionActive(Potion.regeneration))
+			perp += wave(icon);		
+		else if(player.getHealth() <= 4)
+			perp += shake(icon);
+		return perp;
 	}
 
 	@Override
@@ -115,23 +114,22 @@ public class HudItemHealth extends HudItemIconGauge {
 		x = -91;
 		y = -39;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 9, 9, 16, 0), new Sprite(Gui.icons, 9, 9, 25, 0)));
-		layers.addLayer(new SpriteSet("default", null, new Sprite(Gui.icons, 9, 9, 61, 0), new Sprite(Gui.icons, 9, 9, 52, 0)));
-		layers.addLayer(new SpriteSet("defaultHL", null, new Sprite(Gui.icons, 9, 9, 79, 0), new Sprite(Gui.icons, 9, 9, 70, 0)));
-		layers.addLayer(new SpriteSet("absorb", null, new Sprite(Gui.icons, 9, 9, 169, 0), new Sprite(Gui.icons, 9, 9, 160, 0)));
-		layers.addLayer(new SpriteSet("poison", null, new Sprite(Gui.icons, 9, 9, 97, 0), new Sprite(Gui.icons, 9, 9, 88, 0)));
-		layers.addLayer(new SpriteSet("poisonHL", null, new Sprite(Gui.icons, 9, 9, 115, 0), new Sprite(Gui.icons, 9, 9, 106, 0)));
-		layers.addLayer(new SpriteSet("wither", null, new Sprite(Gui.icons, 9, 9, 133, 0), new Sprite(Gui.icons, 9, 9, 124, 0)));
-		layers.addLayer(new SpriteSet("witherHL", null, new Sprite(Gui.icons, 9, 9, 151, 0), new Sprite(Gui.icons, 9, 9, 142, 0)));
-		layers.addLayer(new SpriteSet("defaultHC", null, new Sprite(Gui.icons, 9, 9, 61, 45), new Sprite(Gui.icons, 9, 9, 52, 45)));
-		layers.addLayer(new SpriteSet("defaultHCHL", null, new Sprite(Gui.icons, 9, 9, 79, 45), new Sprite(Gui.icons, 9, 9, 70, 45)));
-		layers.addLayer(new SpriteSet("absorbHC", null, new Sprite(Gui.icons, 9, 9, 169, 45), new Sprite(Gui.icons, 9, 9, 160, 45)));
-		layers.addLayer(new SpriteSet("poisonHC", null, new Sprite(Gui.icons, 9, 9, 97, 45), new Sprite(Gui.icons, 9, 9, 88, 45)));
-		layers.addLayer(new SpriteSet("poisonHCHL", null, new Sprite(Gui.icons, 9, 9, 115, 45), new Sprite(Gui.icons, 9, 9, 106, 45)));
-		layers.addLayer(new SpriteSet("witherHC", null, new Sprite(Gui.icons, 9, 9, 133, 45), new Sprite(Gui.icons, 9, 9, 124, 45)));
-		layers.addLayer(new SpriteSet("witherHCHL", null, new Sprite(Gui.icons, 9, 9, 151, 45), new Sprite(Gui.icons, 9, 9, 142, 45)));
+		layers.addLayer(new SpriteSet("default", (Sprite)null, new Sprite(Gui.icons, 9, 9, 61, 0), new Sprite(Gui.icons, 9, 9, 52, 0)));
+		layers.addLayer(new SpriteSet("defaultHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 79, 0), new Sprite(Gui.icons, 9, 9, 70, 0)));
+		layers.addLayer(new SpriteSet("absorb", (Sprite)null, new Sprite(Gui.icons, 9, 9, 169, 0), new Sprite(Gui.icons, 9, 9, 160, 0)));
+		layers.addLayer(new SpriteSet("poison", (Sprite)null, new Sprite(Gui.icons, 9, 9, 97, 0), new Sprite(Gui.icons, 9, 9, 88, 0)));
+		layers.addLayer(new SpriteSet("poisonHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 115, 0), new Sprite(Gui.icons, 9, 9, 106, 0)));
+		layers.addLayer(new SpriteSet("wither", (Sprite)null, new Sprite(Gui.icons, 9, 9, 133, 0), new Sprite(Gui.icons, 9, 9, 124, 0)));
+		layers.addLayer(new SpriteSet("witherHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 151, 0), new Sprite(Gui.icons, 9, 9, 142, 0)));
+		layers.addLayer(new SpriteSet("defaultHC", (Sprite)null, new Sprite(Gui.icons, 9, 9, 61, 45), new Sprite(Gui.icons, 9, 9, 52, 45)));
+		layers.addLayer(new SpriteSet("defaultHCHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 79, 45), new Sprite(Gui.icons, 9, 9, 70, 45)));
+		layers.addLayer(new SpriteSet("absorbHC", (Sprite)null, new Sprite(Gui.icons, 9, 9, 169, 45), new Sprite(Gui.icons, 9, 9, 160, 45)));
+		layers.addLayer(new SpriteSet("poisonHC", (Sprite)null, new Sprite(Gui.icons, 9, 9, 97, 45), new Sprite(Gui.icons, 9, 9, 88, 45)));
+		layers.addLayer(new SpriteSet("poisonHCHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 115, 45), new Sprite(Gui.icons, 9, 9, 106, 45)));
+		layers.addLayer(new SpriteSet("witherHC", (Sprite)null, new Sprite(Gui.icons, 9, 9, 133, 45), new Sprite(Gui.icons, 9, 9, 124, 45)));
+		layers.addLayer(new SpriteSet("witherHCHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 151, 45), new Sprite(Gui.icons, 9, 9, 142, 45)));
 	}
 	
-	private int healthLast = 0;
 	private int healthLastTick = 0;
 	private long hlTime = 0;
 	private EntityPlayer player;

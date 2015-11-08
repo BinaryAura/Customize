@@ -1,7 +1,5 @@
 package net.binaryaura.customize.client.gui.huditem;
 
-import javax.swing.event.CellEditorListener;
-
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
@@ -100,7 +98,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	protected abstract float getAmount();
 	
 	protected int shake(int icon) {
-		return this.rand.nextInt(2);
+		return rand.nextInt(2);
 	}
 	
 	protected int wave(int icon) {
@@ -115,13 +113,14 @@ public abstract class HudItemIconGauge extends HudItem {
 	protected int movingHalfSinWave(int icon) {
 		int leadIcon = updateCounter % MathHelper.ceiling_float_int(getAmount() + 5);
 		if(leadIcon < icon && icon < leadIcon + 5) {
-			return MathHelper.ceiling_double_int(5*Math.sin((icon-leadIcon)*5 / Math.PI));
+			return MathHelper.ceiling_double_int(5*Math.sin((icon - leadIcon)*5 / Math.PI));
 		}
 		return 0;
 	}
 	
 	protected int sinWave(int icon) {
-		
+		int leadIcon = updateCounter % MathHelper.ceiling_float_int(getAmount());
+		return MathHelper.ceiling_double_int(5*Math.sin(leadIcon*5 / Math.PI));
 	}
 
 	protected boolean animationFinished = true;

@@ -15,4 +15,10 @@ public class HudItemBoss extends HudItemBar {
 		
 	}
 
+	@Override
+	protected void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -16,20 +16,25 @@ public class SpriteSet {
 	}
 	
 	public SpriteSet(String name, Sprite ... sprites) {
-		setName(name);
+		this.name = name;
 		if(sprites == null) return;
 		addSprites(sprites);
 	}
 
 	public void addSprite(Sprite sprite) {
-		if(amount == 0) {
+		if(sprite == null) {
+			this.sprites.add(sprite);
+			amount++;
+			return;
+		}
+		if(location == null) {
 			height = sprite.getHeight();
 			width = sprite.getWidth();
 			location = sprite.getLocation();
 		} else if(height != sprite.getHeight() || width != sprite.getWidth()) {
 			Customize.log.error("Sprite didn't match dimentions. Skipping Sprite.");
 			return;
-		} else if(location.equals(sprite.getLocation())) {
+		} else if(!location.equals(sprite.getLocation())) {
 			Customize.log.error("Sprite isn't in the correct location: " + location + ". Sprite was in " + sprite.getLocation() + ". Skipping Sprite.");
 			return;
 		}
@@ -79,10 +84,6 @@ public class SpriteSet {
 	public void removeSprite(int index) {
 		this.sprites.remove(index);
 		amount--;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public void setSprite(int index, Sprite sprite) {

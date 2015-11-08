@@ -6,4 +6,10 @@ public class HudItemHotbar extends HudItemIconSet {
 		super(name);
 	}
 
+	@Override
+	protected void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

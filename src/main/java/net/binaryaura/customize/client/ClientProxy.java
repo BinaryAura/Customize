@@ -27,7 +27,6 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	private void registerHudItems() {
-		Customize.mc.ingameGUI = new GuiInGameCustomize(Customize.mc);
 		Customize.hudManager.registerHudItem(new HudItemHealth("health"));
 	}
 	

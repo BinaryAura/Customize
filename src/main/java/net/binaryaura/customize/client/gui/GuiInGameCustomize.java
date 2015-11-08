@@ -1,8 +1,7 @@
 package net.binaryaura.customize.client.gui;
 
-import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.*;
-
-import java.util.Iterator;
+import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.ALL;
+import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.HELMET;
 
 import org.lwjgl.opengl.GL11;
 

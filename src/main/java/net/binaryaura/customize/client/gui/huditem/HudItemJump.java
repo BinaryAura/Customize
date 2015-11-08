@@ -7,4 +7,10 @@ public class HudItemJump extends HudItemBar {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	protected void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
