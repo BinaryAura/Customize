@@ -96,7 +96,6 @@ public abstract class HudItem {
 		mc.getTextureManager().bindTexture(res);
 	}
 	
-
 	protected boolean flip = false;
 	protected boolean render = true;
 	protected int x;

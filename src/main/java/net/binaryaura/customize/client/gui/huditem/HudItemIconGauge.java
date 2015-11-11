@@ -129,7 +129,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	protected int movingHalfSinWave(int icon) {
 		int leadIcon = updateCounter % MathHelper.ceiling_float_int(getAmount() + 5);
 		if(leadIcon < icon && icon < leadIcon + 5) {
-			return MathHelper.ceiling_double_int(5*Math.sin((icon - leadIcon)*5 / Math.PI));
+			return MathHelper.ceiling_double_int(5*Math.cos((icon - leadIcon)*5 / Math.PI));
 		}
 		return 0;
 	}

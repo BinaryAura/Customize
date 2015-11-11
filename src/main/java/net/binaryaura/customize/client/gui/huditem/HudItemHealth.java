@@ -93,7 +93,7 @@ public class HudItemHealth extends HudItemIconGauge {
 		// Perpendicular Movement rules
 		int perp = 0;
 		if(player.isPotionActive(Potion.regeneration))
-			perp += -wave(icon);		
+			perp += -movingHalfSinWave(icon);		
 		else if(player.getHealth() <= 4)
 			perp += shake(icon);
 		return perp;
