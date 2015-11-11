@@ -12,14 +12,14 @@ public class HudItemExperience extends HudItemBar {
 
 	public HudItemExperience(String name) {
 		super(name);
-		orientation = Orientation.LEFT;
+		orientation = Orientation.RIGHT;
 		init();
 	}
 
 	@Override
 	protected void init() {
 		x = -20;
-		y = -30;
+		y = 10;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 182, 5, 0, 64)));
 		layers.addLayer(new SpriteSet("experience", new Sprite(Gui.icons, 182, 5, 0, 69)));
 	}

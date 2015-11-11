@@ -15,7 +15,7 @@ public class HudItemHealth extends HudItemIconGauge {
 	
 	public HudItemHealth(String name) {
 		super(name);
-		orientation = Orientation.RIGHT;
+		orientation = Orientation.UP;
 		init();
 	}
 
