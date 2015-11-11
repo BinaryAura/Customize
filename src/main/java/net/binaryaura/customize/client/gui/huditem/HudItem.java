@@ -101,6 +101,8 @@ public abstract class HudItem {
 	protected boolean render = true;
 	protected int x;
 	protected int y;
+	protected int height;
+	protected int width;
 	protected int updateCounter = 0;
 	protected long lastSystemTime;
 	protected String name;
