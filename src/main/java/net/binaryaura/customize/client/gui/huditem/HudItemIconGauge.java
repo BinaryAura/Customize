@@ -14,6 +14,14 @@ public abstract class HudItemIconGauge extends HudItem {
 		super(name);
 		type = HudItemType.ICON_GUAGE;
 	}
+	
+	public void setMaxPerRow(int max) {
+		maxPerRow = max;
+		width = (maxPerRow - 1)*space + layers.getWidth();
+		int stacks = MathHelper.ceiling_float_int(getAmount() / ((layers.getAmount() - 1) / maxPerRow));
+		int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
+		height = (stacks - 1)*stackSpace + layers.getHeight();
+	}
 
 	@Override
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
@@ -22,16 +30,17 @@ public abstract class HudItemIconGauge extends HudItem {
 		bind(layers.getLocation());
 		switch(orientation) {
 			case RIGHT:
-				space = layers.getWidth();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					int stacks = MathHelper.ceiling_float_int(getAmount() / ((layers.getAmount() - 1) / maxPerRow));
+					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
 					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					int stack = MathHelper.ceiling_float_int((float)(i+1) / maxPerRow);
+					height = (stacks - 1)*stackSpace + layers.getHeight();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						// Fix
-						int x = (res.getScaledWidth() / 2 - this.x) + space*i + getIconDeltaPara(i);
-						int y = (res.getScaledHeight() / 2 - this.y) - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
+						log.info(layers.getAmount() - 1);
+						int stack = MathHelper.ceiling_float_int((float)(i+1) / maxPerRow) - 1;
+						int x = (res.getScaledWidth() / 2 + this.x) + space*(i % maxPerRow) + getIconDeltaPara(i);
+						int y = (res.getScaledHeight() / 2 + this.y) - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
 						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
@@ -41,14 +50,15 @@ public abstract class HudItemIconGauge extends HudItem {
 			case DOWN:
 				space = layers.getHeight();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					int stacks = MathHelper.ceiling_float_int(getAmount() / ((layers.getAmount() - 1) / maxPerRow));
+					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
 					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					int stack = MathHelper.ceiling_float_int((i + 1) / maxPerRow);
+					height = (stacks - 1)*stackSpace + layers.getHeight();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						// Fix
-						int x = (res.getScaledWidth() / 2 - this.x) + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						int y = (res.getScaledHeight() / 2 - this.y) + space*(i / maxPerRow) + getIconDeltaPara(i);
+						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
+						int x = (res.getScaledWidth() / 2 + this.x) + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
+						int y = (res.getScaledHeight() / 2 + this.y) + space*(i % maxPerRow) + getIconDeltaPara(i);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
 						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
@@ -58,14 +68,15 @@ public abstract class HudItemIconGauge extends HudItem {
 			case LEFT:
 				space = layers.getWidth();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					int stacks = MathHelper.ceiling_float_int(getAmount() / ((layers.getAmount() - 1) / maxPerRow));
+					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
 					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					int stack = MathHelper.ceiling_float_int((i + 1) / maxPerRow);
+					height = (stacks - 1)*stackSpace + layers.getHeight();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						// Fix
-						int x = (res.getScaledWidth() / 2 - this.x) - space*(i / maxPerRow) + getIconDeltaPara(i);
-						int y = (res.getScaledHeight() / 2 - this.y) + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
+						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
+						int x = (res.getScaledWidth() / 2 + this.x) - space*(i % maxPerRow) + getIconDeltaPara(i);
+						int y = (res.getScaledHeight() / 2 + this.y) + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
 						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
@@ -75,14 +86,15 @@ public abstract class HudItemIconGauge extends HudItem {
 			case UP:
 				space = layers.getHeight();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					int stacks = MathHelper.ceiling_float_int(getAmount() / ((layers.getAmount() - 1) / maxPerRow));
+					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
 					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					int stack = MathHelper.ceiling_float_int((i + 1) / maxPerRow);
+					height = (stacks - 1)*stackSpace + layers.getHeight();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						// Fix
-						int x = (res.getScaledWidth() / 2 - this.x) - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						int y = (res.getScaledHeight() / 2 - this.y) - space*(i / maxPerRow) + getIconDeltaPara(i);
+						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
+						int x = (res.getScaledWidth() / 2 + this.x) - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
+						int y = (res.getScaledHeight() / 2 + this.y) - space*(i % maxPerRow) + getIconDeltaPara(i);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
 						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
@@ -118,7 +130,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	protected int movingHalfSinWave(int icon) {
 		int leadIcon = updateCounter % MathHelper.ceiling_float_int(getAmount() + 5);
 		if(leadIcon < icon && icon < leadIcon + 5) {
-			return MathHelper.ceiling_double_int(5*Math.sin((icon - leadIcon)*5 / Math.PI));
+			return MathHelper.ceiling_double_int(5*Math.cos((icon - leadIcon)*5 / Math.PI));
 		}
 		return 0;
 	}

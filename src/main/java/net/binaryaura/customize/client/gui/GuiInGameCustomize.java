@@ -63,9 +63,11 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
 		for (HudItem hudItem : hudManager.hudItems.values()) {
+			GL11.glPushMatrix();
 			if(hudItem != null) hudItem.renderHUDItem(res, eventParent);
+			GL11.glPopMatrix();
 		}
-
+		
         renderChat(res.getScaledWidth(), res.getScaledHeight());
 		
 		post(ALL);

@@ -15,13 +15,8 @@ public class HudItemHealth extends HudItemIconGauge {
 	
 	public HudItemHealth(String name) {
 		super(name);
-		orientation = Orientation.RIGHT;
+		orientation = Orientation.UP;
 		init();
-	}
-	
-	@Override
-	public void updateTick() {
-		super.updateTick();
 	}
 
 	@Override
@@ -98,7 +93,7 @@ public class HudItemHealth extends HudItemIconGauge {
 		// Perpendicular Movement rules
 		int perp = 0;
 		if(player.isPotionActive(Potion.regeneration))
-			perp += -wave(icon);		
+			perp += -movingHalfSinWave(icon);		
 		else if(player.getHealth() <= 4)
 			perp += shake(icon);
 		return perp;
@@ -120,23 +115,24 @@ public class HudItemHealth extends HudItemIconGauge {
 	protected void init() {
 		maxStackSpace = 11;
 		minStackSpace = 3;
+		space = 8;
 		x = -91;
 		y = -39;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 9, 9, 16, 0), new Sprite(Gui.icons, 9, 9, 25, 0)));
-		layers.addLayer(new SpriteSet("default", (Sprite)null, new Sprite(Gui.icons, 9, 9, 61, 0), new Sprite(Gui.icons, 9, 9, 52, 0)));
-		layers.addLayer(new SpriteSet("defaultHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 79, 0), new Sprite(Gui.icons, 9, 9, 70, 0)));
-		layers.addLayer(new SpriteSet("absorb", (Sprite)null, new Sprite(Gui.icons, 9, 9, 169, 0), new Sprite(Gui.icons, 9, 9, 160, 0)));
-		layers.addLayer(new SpriteSet("poison", (Sprite)null, new Sprite(Gui.icons, 9, 9, 97, 0), new Sprite(Gui.icons, 9, 9, 88, 0)));
-		layers.addLayer(new SpriteSet("poisonHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 115, 0), new Sprite(Gui.icons, 9, 9, 106, 0)));
-		layers.addLayer(new SpriteSet("wither", (Sprite)null, new Sprite(Gui.icons, 9, 9, 133, 0), new Sprite(Gui.icons, 9, 9, 124, 0)));
-		layers.addLayer(new SpriteSet("witherHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 151, 0), new Sprite(Gui.icons, 9, 9, 142, 0)));
-		layers.addLayer(new SpriteSet("defaultHC", (Sprite)null, new Sprite(Gui.icons, 9, 9, 61, 45), new Sprite(Gui.icons, 9, 9, 52, 45)));
-		layers.addLayer(new SpriteSet("defaultHCHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 79, 45), new Sprite(Gui.icons, 9, 9, 70, 45)));
-		layers.addLayer(new SpriteSet("absorbHC", (Sprite)null, new Sprite(Gui.icons, 9, 9, 169, 45), new Sprite(Gui.icons, 9, 9, 160, 45)));
-		layers.addLayer(new SpriteSet("poisonHC", (Sprite)null, new Sprite(Gui.icons, 9, 9, 97, 45), new Sprite(Gui.icons, 9, 9, 88, 45)));
-		layers.addLayer(new SpriteSet("poisonHCHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 115, 45), new Sprite(Gui.icons, 9, 9, 106, 45)));
-		layers.addLayer(new SpriteSet("witherHC", (Sprite)null, new Sprite(Gui.icons, 9, 9, 133, 45), new Sprite(Gui.icons, 9, 9, 124, 45)));
-		layers.addLayer(new SpriteSet("witherHCHL", (Sprite)null, new Sprite(Gui.icons, 9, 9, 151, 45), new Sprite(Gui.icons, 9, 9, 142, 45)));
+		layers.addLayer(new SpriteSet("default", null, new Sprite(Gui.icons, 9, 9, 61, 0), new Sprite(Gui.icons, 9, 9, 52, 0)));
+		layers.addLayer(new SpriteSet("defaultHL", null, new Sprite(Gui.icons, 9, 9, 79, 0), new Sprite(Gui.icons, 9, 9, 70, 0)));
+		layers.addLayer(new SpriteSet("absorb", null, new Sprite(Gui.icons, 9, 9, 169, 0), new Sprite(Gui.icons, 9, 9, 160, 0)));
+		layers.addLayer(new SpriteSet("poison", null, new Sprite(Gui.icons, 9, 9, 97, 0), new Sprite(Gui.icons, 9, 9, 88, 0)));
+		layers.addLayer(new SpriteSet("poisonHL", null, new Sprite(Gui.icons, 9, 9, 115, 0), new Sprite(Gui.icons, 9, 9, 106, 0)));
+		layers.addLayer(new SpriteSet("wither", null, new Sprite(Gui.icons, 9, 9, 133, 0), new Sprite(Gui.icons, 9, 9, 124, 0)));
+		layers.addLayer(new SpriteSet("witherHL", null, new Sprite(Gui.icons, 9, 9, 151, 0), new Sprite(Gui.icons, 9, 9, 142, 0)));
+		layers.addLayer(new SpriteSet("defaultHC", null, new Sprite(Gui.icons, 9, 9, 61, 45), new Sprite(Gui.icons, 9, 9, 52, 45)));
+		layers.addLayer(new SpriteSet("defaultHCHL", null, new Sprite(Gui.icons, 9, 9, 79, 45), new Sprite(Gui.icons, 9, 9, 70, 45)));
+		layers.addLayer(new SpriteSet("absorbHC", null, new Sprite(Gui.icons, 9, 9, 169, 45), new Sprite(Gui.icons, 9, 9, 160, 45)));
+		layers.addLayer(new SpriteSet("poisonHC", null, new Sprite(Gui.icons, 9, 9, 97, 45), new Sprite(Gui.icons, 9, 9, 88, 45)));
+		layers.addLayer(new SpriteSet("poisonHCHL", null, new Sprite(Gui.icons, 9, 9, 115, 45), new Sprite(Gui.icons, 9, 9, 106, 45)));
+		layers.addLayer(new SpriteSet("witherHC", null, new Sprite(Gui.icons, 9, 9, 133, 45), new Sprite(Gui.icons, 9, 9, 124, 45)));
+		layers.addLayer(new SpriteSet("witherHCHL", null, new Sprite(Gui.icons, 9, 9, 151, 45), new Sprite(Gui.icons, 9, 9, 142, 45)));
 	}
 	
 	private int healthLastTick = 0;

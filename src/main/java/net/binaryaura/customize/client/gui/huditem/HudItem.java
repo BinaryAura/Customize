@@ -115,11 +115,12 @@ public abstract class HudItem {
 		mc.getTextureManager().bindTexture(res);
 	}
 	
-
 	protected boolean flip = false;
 	protected boolean render = true;
 	protected int x;
 	protected int y;
+	protected int height;
+	protected int width;
 	protected int updateCounter = 0;
 	protected long lastSystemTime;
 	protected String name;
