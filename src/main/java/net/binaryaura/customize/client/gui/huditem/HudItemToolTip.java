@@ -1,8 +1,8 @@
 package net.binaryaura.customize.client.gui.huditem;
 
-public class HudItemTitle extends HudItemText {
+public class HudItemToolTip extends HudItemText {
 
-	public HudItemTitle(String name) {
+	public HudItemToolTip(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
 	}
@@ -10,7 +10,7 @@ public class HudItemTitle extends HudItemText {
 	@Override
 	protected void init() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
