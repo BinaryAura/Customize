@@ -31,10 +31,43 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 	@Override
 	public void updateTick() {
-		super.updateTick();
+		if (this.field_175195_w > 0)
+        {
+            --this.field_175195_w;
+
+            if (this.field_175195_w <= 0)
+            {
+                this.field_175201_x = "";
+                this.field_175200_y = "";
+            }
+        }
 		for (HudItem hudItem : hudManager.hudItems.values()) {
 			if(hudItem != null) hudItem.updateTick();
 		}
+	}
+	
+	public int getFadeInTime() {
+		return field_175192_A;
+	}
+	
+	public int getDisplayTime() {
+		return field_175193_B;
+	}
+	
+	public int getFadeOutTime() {
+		return field_175194_C;
+	}
+	
+	public int getTimeRemaining() {
+		return field_175195_w;
+	}
+	
+	public String getTitle() {
+		return field_175201_x;
+	}
+	
+	public String getSubTitle() {
+		return field_175200_y;
 	}
 
 	@Override

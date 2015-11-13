@@ -2,6 +2,8 @@ package net.binaryaura.customize.client;
 
 import net.binaryaura.customize.client.gui.huditem.HudItemExperience;
 import net.binaryaura.customize.client.gui.huditem.HudItemHealth;
+import net.binaryaura.customize.client.gui.huditem.HudItemObjective;
+import net.binaryaura.customize.client.gui.huditem.HudItemToolTip;
 import net.binaryaura.customize.common.CommonProxy;
 import net.binaryaura.customize.common.Customize;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -29,6 +31,7 @@ public class ClientProxy extends CommonProxy {
 	private void registerHudItems() {
 		Customize.hudManager.registerHudItem(new HudItemHealth("health"));
 		Customize.hudManager.registerHudItem(new HudItemExperience("experience"));
+		Customize.hudManager.registerHudItem(new HudItemObjective("objectives"));
 	}
 	
 	private void registerRenderers() {

@@ -2,6 +2,7 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
@@ -17,21 +18,26 @@ public abstract class HudItemText extends HudItem {
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
 		int x = res.getScaledWidth() / 2 + this.x;
 		int y = res.getScaledHeight() / 2 + this.y;
-		for(int line = 0; line < strings.length; line++) {
-			int bgColor = getBGColor(line);
-			bgColor += getBGAlpha(line) << 24;
-			for(int string = 0; string < strings[line].length; string++) {
-				int color = getColor(line, string);
-				color = getAlpha(line, string) << 24;
-			}
-		}		
+		int bgColor = getBGColor() + (getBGAlpha() << 24);
+		int color = getColor() + (getAlpha() << 24);
+		Gui.drawRect(x + getDeltaX(), y + getDeltaY(), x + fontRenderer.getStringWidth(string), y + fontRenderer.FONT_HEIGHT, bgColor);
+		if(isShadowed) {
+			fontRenderer.drawStringWithShadow(string, x, y, color);
+		} else {
+			fontRenderer.drawString(string, x, y, color);
+		}
 	}
-
-	protected abstract int getBGColor(int line);
-	protected abstract int getBGAlpha(int line);
-	protected abstract int getColor(int line, int string);
-	protected abstract int getAlpha(int line, int string);
 	
-	protected String[][] strings;
+	protected abstract int getDeltaX();
+	protected abstract int getDeltaY();
+	protected abstract int getBGColor();
+	protected abstract int getColor();
+	protected abstract int getBGAlpha();
+	protected abstract int getAlpha();
+	
+	protected boolean isShadowed;
+	protected int bgColor;
+	protected int color;
+	protected String string;
 	protected FontRenderer fontRenderer;
 }

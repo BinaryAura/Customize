@@ -86,15 +86,15 @@ public abstract class HudItem {
 	protected abstract void init();
 	
 	public void flip() {
-		flip = !flip;
+		if(canFlip) flip = !flip;
 	}
 	
 	public void rotateLeft() {
-		orientation = orientation.left();
+		if(canRotate) orientation = orientation.left();
 	}
 	
 	public void rotateRight() {
-		orientation = orientation.right();
+		if(canRotate) orientation = orientation.right();
 	}
 	
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
@@ -117,6 +117,8 @@ public abstract class HudItem {
 	
 	protected boolean flip = false;
 	protected boolean render = true;
+	protected boolean canRotate = true;
+	protected boolean canFlip = true;
 	protected int x;
 	protected int y;
 	protected int height;
