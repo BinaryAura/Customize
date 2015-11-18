@@ -63,4 +63,10 @@ public class HudItemTitle extends HudItemText {
 		return 0;
 	}
 
+	@Override
+	protected void setHeightAndWidth() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -73,7 +73,6 @@ public class HudItemObjective extends HudItemText {
         }
 
         int i = fontRenderer.getStringWidth(scoreobjective.getDisplayName());
-        log.info(scoreobjective.getDisplayName() + ": " + i);
         String s;
 
         for (Iterator iterator = arraylist1.iterator(); iterator.hasNext(); i = Math.max(i, fontRenderer.getStringWidth(s)))
@@ -81,17 +80,18 @@ public class HudItemObjective extends HudItemText {
             Score score = (Score)iterator.next();
             scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
             s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
-        	log.info(fontRenderer.getStringWidth(s));
         }
 
         int i1 = arraylist1.size() * fontRenderer.FONT_HEIGHT;
         int j1 = res.getScaledHeight() / 2 + i1 / 3;
         byte b0 = 3;
         int k1 = res.getScaledWidth() - i - b0;
-        log.info("k1: " + res.getScaledWidth() + ", " + i + ", " + b0);
         int j = 0;
         Iterator iterator1 = arraylist1.iterator();
 
+        int[] colors = {BLACK, DARK_PURPLE, DARK_GREEN, DARK_BLUE, DARK_RED, DARK_GRAY, GOLD,
+        				DARK_AQUA, WHITE, LIGHT_PURPLE, GREEN, BLUE, RED, GRAY, YELLOW, AQUA};
+        
         while (iterator1.hasNext())
         {
             Score score1 = (Score)iterator1.next();
@@ -101,33 +101,22 @@ public class HudItemObjective extends HudItemText {
             String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
             int k = j1 - j * fontRenderer.FONT_HEIGHT;
             int l = res.getScaledWidth() - b0 + 2;
-            log.info("l: " + res.getScaledWidth() + ", " + b0 + ", " + l);
-            Gui.drawRect(k1 - 2, k, l, k + fontRenderer.FONT_HEIGHT, 1342177280);
-            log.info(l - (k1 - 2));
-            fontRenderer.drawString(s1, k1, k, 553648127);
-            fontRenderer.drawString(s2, l - fontRenderer.getStringWidth(s2), k, 553648127);
+            int color = (0x50 << 24) + colors[j % colors.length];
+            Gui.drawRect(k1 - 2, k, l, k + fontRenderer.FONT_HEIGHT, color);
+            fontRenderer.drawString(s1, k1, k, 0x20FFFFFF);
+            fontRenderer.drawString(s2, l - fontRenderer.getStringWidth(s2), k, 0x20FFFFFF);
 
             if (j == arraylist1.size())
             {
                 String s3 = scoreobjective.getDisplayName();
-                Gui.drawRect(k1 - 2, k - fontRenderer.FONT_HEIGHT - 1, l, k - 1, 1610612736);
-                Gui.drawRect(k1 - 2, k - 1, l, k, 1342177280);
-                fontRenderer.drawString(s3, k1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, 553648127);
+            	color = (0x60 << 24) + colors[(j + 1) % colors.length];
+                Gui.drawRect(k1 - 2, k - fontRenderer.FONT_HEIGHT - 1, l, k - 1, color);
+                color = (0x50 << 24) + colors[(j + 2) % colors.length];
+                Gui.drawRect(k1 - 2, k - 1, l, k, color);
+                fontRenderer.drawString(s3, k1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, 0x20FFFFFF);
             }
         }
     }
-
-	@Override
-	protected int getDeltaX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	protected int getDeltaY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	protected int getBGColor() {
@@ -151,6 +140,24 @@ public class HudItemObjective extends HudItemText {
 	protected int getAlpha() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	protected int getDeltaX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int getDeltaY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected void setHeightAndWidth() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

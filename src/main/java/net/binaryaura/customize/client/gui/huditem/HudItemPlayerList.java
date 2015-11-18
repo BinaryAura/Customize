@@ -48,4 +48,10 @@ public class HudItemPlayerList extends HudItemText {
 		return 0;
 	}
 
+	@Override
+	protected void setHeightAndWidth() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

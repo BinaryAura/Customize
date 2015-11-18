@@ -2,6 +2,7 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import org.lwjgl.opengl.GL11;
 
+import net.binaryaura.customize.client.gui.GuiInGameCustomize;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,24 +16,36 @@ public class HudItemToolTip extends HudItemText {
 		super(name);
 		canFlip = false;
 		canRotate = false;
+		init();
 	}
 
 	@Override
 	protected void init() {
 		x = 0;
 		y = 0;
+		style = Style.SHADOWED;
 	}
 	
 	@Override
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-				
-		if(this.remainingHighlightTicks > 0 && this.highlightingItemStack != null) {
-			String s = this.highlightingItemStack.getDisplayName();
+		if(this.mc.gameSettings.heldItemTooltips && !this.mc.playerController.isSpectator()) {
+			boolean render = this.remainingHighlightTicks > 0 && this.highlightingItemStack != null;	
+			if(!render) return;
 			
+			string = this.highlightingItemStack.getDisplayName();		
 		    if (this.highlightingItemStack.hasDisplayName()) {
-		        s = EnumChatFormatting.ITALIC + s;
+		        string = EnumChatFormatting.ITALIC + string;
 		    }
+		    setHeightAndWidth();
+		    
+			GlStateManager.enableBlend();
+			GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+			
 		    super.renderHUDItem(res, eventParent);
+		    
+			GlStateManager.disableBlend();
+		} else if(this.mc.thePlayer.isSpectator()) {
+			((GuiInGameCustomize) mc.ingameGUI).getSpectatorGui().func_175263_a(res);
 		}
 	}
 	    
@@ -51,12 +64,12 @@ public class HudItemToolTip extends HudItemText {
 	    
 	@Override
 	protected int getBGColor() {
-		return HudItem.Color.BLACK;
+		return BLACK;
 	}
 
 	@Override
 	protected int getColor() {
-		return HudItem.Color.WHITE;
+		return WHITE;
 	}
 
 	@Override
@@ -98,6 +111,12 @@ public class HudItemToolTip extends HudItemText {
             this.highlightingItemStack = itemstack;
         }
 		super.updateTick();
+	}
+	
+	@Override
+	protected void setHeightAndWidth() {
+		width = fontRenderer.getStringWidth(string);
+		height = fontRenderer.FONT_HEIGHT;
 	}
 	
 	private int remainingHighlightTicks;

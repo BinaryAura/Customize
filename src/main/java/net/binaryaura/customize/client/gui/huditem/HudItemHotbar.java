@@ -12,4 +12,10 @@ public class HudItemHotbar extends HudItemIconSet {
 		
 	}
 
+	@Override
+	protected void setHeightAndWidth() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
