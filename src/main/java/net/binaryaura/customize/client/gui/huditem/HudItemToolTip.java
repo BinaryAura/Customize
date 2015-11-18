@@ -3,7 +3,6 @@ package net.binaryaura.customize.client.gui.huditem;
 import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.GuiInGameCustomize;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;

@@ -2,7 +2,6 @@ package net.binaryaura.customize.client;
 
 import net.binaryaura.customize.client.gui.huditem.HudItemExperience;
 import net.binaryaura.customize.client.gui.huditem.HudItemHealth;
-import net.binaryaura.customize.client.gui.huditem.HudItemObjective;
 import net.binaryaura.customize.client.gui.huditem.HudItemToolTip;
 import net.binaryaura.customize.common.CommonProxy;
 import net.binaryaura.customize.common.Customize;
