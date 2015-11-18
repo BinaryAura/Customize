@@ -17,10 +17,30 @@ public abstract class HudItemBar extends HudItem {
 	}
 	
 	@Override
+	protected void setHeightAndWidth() {
+		switch(orientation) {
+			case DOWN:
+			case UP:
+				width = layers.getHeight();
+				height = layers.getWidth();
+				break;
+			case RIGHT:
+			case LEFT:
+				width = layers.getWidth();
+				height = layers.getHeight();
+				break;
+		}
+	}
+	
+	@Override
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+		mc.mcProfiler.startSection(name);
+		
 		SpriteSet sprites = getLayers();
+		setHeightAndWidth();
 		int x = res.getScaledWidth() / 2 + this.x;
 		int y = res.getScaledHeight() / 2 + this.y;
+		
 		switch(orientation) {
 			case RIGHT:
 				break;
@@ -42,6 +62,7 @@ public abstract class HudItemBar extends HudItem {
 			int fill = MathHelper.ceiling_float_int(getAmount(i)*layers.getWidth());
 			guiRenderer.drawTexturedModalRect(x, y, sprites.getSprite(i).getX(), sprites.getSprite(i).getY(), fill, layers.getHeight());
 		}
+		mc.mcProfiler.endSection();
 	}
 	
 	protected abstract float getAmount(int layer);

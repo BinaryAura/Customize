@@ -13,4 +13,46 @@ public class HudItemSubtitle extends HudItemText {
 		
 	}
 
+	@Override
+	protected int getDeltaX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int getDeltaY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int getBGColor() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int getColor() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int getBGAlpha() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int getAlpha() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected void setHeightAndWidth() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
+import net.binaryaura.customize.client.gui.Color;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
@@ -11,8 +12,10 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.common.MinecraftForge;
 
-public abstract class HudItem {
+public abstract class HudItem implements Color{	
 	
 	public static enum Orientation {
 		UP, RIGHT, DOWN, LEFT;
@@ -47,7 +50,7 @@ public abstract class HudItem {
 			}
 		}
 	}
-	
+		
 	protected static final Random rand = new Random();
 	
 	public HudItem(String name){
@@ -56,8 +59,24 @@ public abstract class HudItem {
 		guiRenderer = new Gui();
 	}
 	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+	
 	public String getName() {
 		return name;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getWidth() {
+		return width;
 	}
 	
 	public HudItemType getType() {
@@ -67,29 +86,47 @@ public abstract class HudItem {
 	protected abstract void init();
 	
 	public void flip() {
-		flip = !flip;
+		if(canFlip) flip = !flip;
 	}
 	
 	public void rotateLeft() {
-		orientation = orientation.left();
+		if(canRotate) {
+			orientation = orientation.left();
+			height ^= width;
+			width ^= height;
+			height ^= width;
+		}
 	}
 	
 	public void rotateRight() {
-		orientation = orientation.right();
+		if(canRotate) {
+			orientation = orientation.right();
+			height ^= width;
+			width ^= height;
+			height ^= width;
+		}
 	}
 	
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-		if(render) return;
-	}
+	public abstract void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent);
 	
 	public void updateTick() {
 		++updateCounter;
 		rand.setSeed((long)(updateCounter * 312871));
 	}
+	
+	protected abstract void setHeightAndWidth();
 
 	@Override
 	public String toString() {
 		return "HUDItem " + getName();
+	}
+	
+	protected boolean pre(ElementType type, RenderGameOverlayEvent eventParent) {
+		return MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Pre(eventParent, type));
+	}
+
+	protected void post(ElementType type, RenderGameOverlayEvent eventParent) {
+		MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Post(eventParent, type));
 	}
 	
 	protected void bind(ResourceLocation res) {
@@ -97,7 +134,8 @@ public abstract class HudItem {
 	}
 	
 	protected boolean flip = false;
-	protected boolean render = true;
+	protected boolean canRotate = true;
+	protected boolean canFlip = true;
 	protected int x;
 	protected int y;
 	protected int height;

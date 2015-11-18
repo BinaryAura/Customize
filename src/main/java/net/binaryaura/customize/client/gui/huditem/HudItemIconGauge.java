@@ -17,26 +17,41 @@ public abstract class HudItemIconGauge extends HudItem {
 	
 	public void setMaxPerRow(int max) {
 		maxPerRow = max;
-		width = (maxPerRow - 1)*space + layers.getWidth();
+		setHeightAndWidth();
+	}
+	
+	@Override
+	protected void setHeightAndWidth() {
 		int stacks = MathHelper.ceiling_float_int(getAmount() / ((layers.getAmount() - 1) / maxPerRow));
 		int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-		height = (stacks - 1)*stackSpace + layers.getHeight();
+		switch(orientation) {
+			case RIGHT:
+			case LEFT:
+				width = (maxPerRow - 1)*space + layers.getWidth();
+				height = (stacks - 1)*stackSpace + layers.getHeight();
+				break;
+			case UP:
+			case DOWN:
+				height = (maxPerRow - 1)*space + layers.getWidth();
+				width = (stacks - 1)*stackSpace + layers.getHeight();
+				break;
+		}
 	}
 
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-		super.renderHUDItem(res, eventParent);
+	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {	
+		mc.mcProfiler.startSection(name);        
 		SpriteSet iconLayers;
+		setHeightAndWidth();
 		bind(layers.getLocation());
+		
 		switch(orientation) {
 			case RIGHT:
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
 					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
 					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					height = (stacks - 1)*stackSpace + layers.getHeight();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
-						// Fix
 						log.info(layers.getAmount() - 1);
 						int stack = MathHelper.ceiling_float_int((float)(i+1) / maxPerRow) - 1;
 						int x = (res.getScaledWidth() / 2 + this.x) + space*(i % maxPerRow) + getIconDeltaPara(i);
@@ -52,7 +67,6 @@ public abstract class HudItemIconGauge extends HudItem {
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
 					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
 					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					height = (stacks - 1)*stackSpace + layers.getHeight();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						// Fix
@@ -70,7 +84,6 @@ public abstract class HudItemIconGauge extends HudItem {
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
 					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
 					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					height = (stacks - 1)*stackSpace + layers.getHeight();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						// Fix
@@ -88,7 +101,6 @@ public abstract class HudItemIconGauge extends HudItem {
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
 					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
 					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					height = (stacks - 1)*stackSpace + layers.getHeight();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						// Fix
@@ -102,6 +114,7 @@ public abstract class HudItemIconGauge extends HudItem {
 				}
 				break;
 		}
+		mc.mcProfiler.endSection();
 	}
 	
 	protected abstract SpriteSet getIconSpriteSet(int icon);
