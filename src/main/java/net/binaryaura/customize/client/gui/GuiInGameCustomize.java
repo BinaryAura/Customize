@@ -41,6 +41,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	public void renderGameOverlay(float partialTicks) {
 		res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 		eventParent = new RenderGameOverlayEvent(partialTicks, res);
+		HudItem.Anchor.updateRes(res);
 
 		if (pre(ALL)) return;
 

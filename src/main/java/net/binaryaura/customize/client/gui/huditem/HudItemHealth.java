@@ -15,7 +15,7 @@ public class HudItemHealth extends HudItemIconGauge {
 	
 	public HudItemHealth(String name) {
 		super(name);
-		orientation = Orientation.UP;
+		orientation = Orientation.RIGHT;
 		init();
 	}
 
@@ -116,7 +116,8 @@ public class HudItemHealth extends HudItemIconGauge {
 		maxStackSpace = 11;
 		minStackSpace = 3;
 		space = 8;
-		x = -91;
+		anchor = Anchor.BOTTOM;
+		x = -45;
 		y = -39;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 9, 9, 16, 0), new Sprite(Gui.icons, 9, 9, 25, 0)));
 		layers.addLayer(new SpriteSet("default", null, new Sprite(Gui.icons, 9, 9, 61, 0), new Sprite(Gui.icons, 9, 9, 52, 0)));

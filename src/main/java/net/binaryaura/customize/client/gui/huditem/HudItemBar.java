@@ -19,20 +19,28 @@ public abstract class HudItemBar extends HudItem {
 	@Override
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
 		SpriteSet sprites = getLayers();
-		int x = res.getScaledWidth() / 2 + this.x;
-		int y = res.getScaledHeight() / 2 + this.y;
+		int x = getX();
+		int y = getY();
 		switch(orientation) {
 			case RIGHT:
+				height = layers.getHeight();
+				width = layers.getWidth();
 				break;
 			case DOWN:
+				height = layers.getWidth();
+				width = layers.getHeight();
 				GL11.glTranslated(x + y + layers.getHeight(), y - x, 0.0F);
 				GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
 				break;
 			case LEFT:
+				height = layers.getHeight();
+				width = layers.getWidth();
 				GL11.glTranslatef(2*x + layers.getHeight(), 2*y + layers.getHeight(), 0.0F);
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 				break;
 			case UP:
+				height = layers.getWidth();
+				width = layers.getHeight();
 				GL11.glTranslatef(x - y, y + x + layers.getHeight(), 0.0F);
 				GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
 				break;

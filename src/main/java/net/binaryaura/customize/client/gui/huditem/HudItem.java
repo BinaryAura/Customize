@@ -14,6 +14,55 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItem {
 	
+	public static enum Anchor {
+		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
+		
+		private static ScaledResolution res;
+		
+		public int getX() {
+			switch(this) {
+				case TOPLEFT:
+				case LEFT:
+				case BOTTOMLEFT:
+					return 0;
+				case TOP:
+				case CENTER:
+				case BOTTOM:
+					return res.getScaledWidth() / 2;
+				case TOPRIGHT:
+				case RIGHT:
+				case BOTTOMRIGHT:
+					return res.getScaledWidth();
+				default:
+					return 0;
+			}
+		}
+		
+		public int getY() {
+			switch(this) {
+				case TOPLEFT:
+				case TOP:
+				case TOPRIGHT:
+					return 0;
+				case LEFT:
+				case CENTER:
+				case RIGHT:
+					return res.getScaledHeight() / 2;
+				case BOTTOMLEFT:
+				case BOTTOM:
+				case BOTTOMRIGHT:
+					return res.getScaledHeight();
+				default:
+					return 0;
+			}
+		}
+		
+		public static void updateRes(ScaledResolution newRes) {
+			res = newRes;
+		}
+		
+	}
+	
 	public static enum Orientation {
 		UP, RIGHT, DOWN, LEFT;
 		
@@ -79,12 +128,52 @@ public abstract class HudItem {
 	}
 	
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-		if(render) return;
+		Anchor.updateRes(res);
 	}
 	
 	public void updateTick() {
 		++updateCounter;
 		rand.setSeed((long)(updateCounter * 312871));
+	}
+	
+	public int getX() {
+		int pxlX = anchor.getX() + x;
+		switch(anchor) {
+			case TOPLEFT:
+			case LEFT:
+			case BOTTOMLEFT:
+				return pxlX;
+			case TOP:
+			case CENTER:
+			case BOTTOM:
+				return pxlX -= width / 2;
+			case TOPRIGHT:
+			case RIGHT:
+			case BOTTOMRIGHT:
+				return pxlX -= width;
+			default:
+				return pxlX;
+		}
+	}
+	
+	public int getY() {
+		int pxlY = anchor.getY() + y;
+		switch(anchor) {
+			case TOPLEFT:
+			case TOP:
+			case TOPRIGHT:
+				return pxlY;
+			case LEFT:
+			case CENTER:
+			case RIGHT:
+				return pxlY -= height / 2;
+			case BOTTOMLEFT:
+			case BOTTOM:
+			case BOTTOMRIGHT:
+				return pxlY -= height;
+			default:
+				return pxlY;
+		}
 	}
 
 	@Override
@@ -107,6 +196,7 @@ public abstract class HudItem {
 	protected String name;
 	protected HudItemType type;
 	protected Minecraft mc;
+	protected Anchor anchor;
 	protected Orientation orientation;
 	protected Gui guiRenderer;
 	protected Logger log = Customize.log;
