@@ -6,18 +6,16 @@ import net.binaryaura.customize.client.gui.SpriteSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 public class HudItemHealth extends HudItemIconGauge {
 	
 	public HudItemHealth(String name) {
 		super(name);
-		orientation = Orientation.UP;
+		orientation = Orientation.RIGHT;
 		init();
 	}
 
@@ -80,16 +78,8 @@ public class HudItemHealth extends HudItemIconGauge {
 	@Override
 	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
 		player = (EntityPlayer)this.mc.getRenderViewEntity();
-		boolean render = this.mc.playerController.shouldDrawHUD() && player != null;
-		if(!render) return;
-		if(pre(ElementType.HEALTH, eventParent)) return;				
-		
-		GlStateManager.disableBlend();
-		
+		render = this.mc.playerController.shouldDrawHUD() && player != null;
 		super.renderHUDItem(res, eventParent);
-		
-		GlStateManager.enableBlend();
-		post(ElementType.HEALTH, eventParent);
 	}
 	
 	@Override
@@ -126,8 +116,9 @@ public class HudItemHealth extends HudItemIconGauge {
 		maxStackSpace = 11;
 		minStackSpace = 3;
 		space = 8;
-		setX(-91);
-		setY(-39);
+		anchor = Anchor.BOTTOM;
+		x = -45;
+		y = -39;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 9, 9, 16, 0), new Sprite(Gui.icons, 9, 9, 25, 0)));
 		layers.addLayer(new SpriteSet("default", null, new Sprite(Gui.icons, 9, 9, 61, 0), new Sprite(Gui.icons, 9, 9, 52, 0)));
 		layers.addLayer(new SpriteSet("defaultHL", null, new Sprite(Gui.icons, 9, 9, 79, 0), new Sprite(Gui.icons, 9, 9, 70, 0)));
