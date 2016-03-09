@@ -2,7 +2,6 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import org.lwjgl.opengl.GL11;
 
-import net.binaryaura.customize.client.gui.GuiInGameCustomize;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -43,9 +42,10 @@ public class HudItemToolTip extends HudItemText {
 		    super.renderHUDItem(res, eventParent);
 		    
 			GlStateManager.disableBlend();
-		} else if(this.mc.thePlayer.isSpectator()) {
-			((GuiInGameCustomize) mc.ingameGUI).getSpectatorGui().func_175263_a(res);
-		}
+		} //else if(this.mc.thePlayer.isSpectator()) {
+//			mc.ingameGUI.get
+//			((GuiInGameCustomize) mc.ingameGUI).get//func_175263_a(res);
+//		}
 	}
 	    
 	@Override
@@ -112,7 +112,6 @@ public class HudItemToolTip extends HudItemText {
 		super.updateTick();
 	}
 	
-	@Override
 	protected void setHeightAndWidth() {
 		width = fontRenderer.getStringWidth(string);
 		height = fontRenderer.FONT_HEIGHT;

@@ -13,6 +13,8 @@ public abstract class HudItemIconGauge extends HudItem {
 	public HudItemIconGauge(String name) {
 		super(name);
 		type = HudItemType.ICON_GUAGE;
+		canFlip = true;
+		canRotate = true;
 	}
 	
 	public void setMaxPerRow(int max) {

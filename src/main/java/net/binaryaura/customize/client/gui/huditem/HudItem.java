@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
+import net.binaryaura.customize.client.gui.Color;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
@@ -12,7 +13,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
-public abstract class HudItem {
+public abstract class HudItem implements Color{
 	
 	public static enum Anchor {
 		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
@@ -185,6 +186,8 @@ public abstract class HudItem {
 		mc.getTextureManager().bindTexture(res);
 	}
 	
+	protected boolean canFlip = false;
+	protected boolean canRotate = false;
 	protected boolean flip = false;
 	protected boolean render = true;
 	protected int x;

@@ -14,9 +14,10 @@ public abstract class HudItemBar extends HudItem {
 	public HudItemBar(String name) {
 		super(name);
 		type = HudItemType.BAR;
+		canFlip = true;
+		canRotate = true;
 	}
 	
-	@Override
 	protected void setHeightAndWidth() {
 		switch(orientation) {
 			case DOWN:
@@ -38,8 +39,8 @@ public abstract class HudItemBar extends HudItem {
 		
 		SpriteSet sprites = getLayers();
 		setHeightAndWidth();
-		int x = res.getScaledWidth() / 2 + this.x;
-		int y = res.getScaledHeight() / 2 + this.y;
+		int x = getX();
+		int y = getY();
 		
 		switch(orientation) {
 			case RIGHT:

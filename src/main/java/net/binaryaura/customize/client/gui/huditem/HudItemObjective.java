@@ -49,7 +49,6 @@ public class HudItemObjective extends HudItemText {
 		
 	}
 
-	@Override
 	protected void setHeightAndWidth() {
 		// TODO Auto-generated method stub
 		

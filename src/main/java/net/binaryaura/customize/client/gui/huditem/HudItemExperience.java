@@ -12,7 +12,7 @@ public class HudItemExperience extends HudItemBar {
 
 	public HudItemExperience(String name) {
 		super(name);
-		orientation = Orientation.RIGHT;
+		orientation = Orientation.UP;
 		init();
 	}
 
