@@ -7,11 +7,9 @@ to adjust the many aspects that makes up the HUD, including moving and rotating 
   This mod is made for the developer in mind with an easy to implement API. Simply make and register a HUDItem class and the
 mod takes care of the rest. 
 
-###Disclaimer
+###Installation
 
-  If you plan to use this mod please take in mind that this mod in currently in development and will be released for Alpha soon.
-This means that there are sure to be problems. As alpha, the mod is NOT is full operation. Only the bare minumum to test the
-functions of the mod without changing code.
+  To install this mod install Forge for Minecraft 1.8.X. and move the zip file to mods directory in the .minecraft file in %AppData%. 
 
 ###Development
 
@@ -31,3 +29,9 @@ Xms is the minimum memory and Xmx is the maximum memory. Set these to whatever y
 Directory," click other and type "&(workspace_loc)" or click Variables and select workspcae_loc. To make the second Launch
 Configuration follow the same instructions except name it "<ModName> Server" and the Main Class should be "GradleStartServer".
 Of coarse what you name the configurations is up to you, however I recomend naming them something meaningful.
+
+###Disclaimer
+
+  If you plan to use this mod please take in mind that this mod in currently in development and will be released for Alpha soon.
+This means that there are sure to be problems. As alpha, the mod is NOT is full operation. Only the bare minumum to test the
+functions of the mod without changing code. Additionally, this is first and foremost an API. This means this operates at a lower level than other mods. If I get enough requests for a particular mod I may make a class to accomadate it however, I would NOT be responsible for that class's upkeep.
