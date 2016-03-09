@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
-import net.binaryaura.customize.client.gui.Color;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
@@ -12,10 +11,57 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.common.MinecraftForge;
 
-public abstract class HudItem implements Color{	
+public abstract class HudItem {
+	
+	public static enum Anchor {
+		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
+		
+		private static ScaledResolution res;
+		
+		public int getX() {
+			switch(this) {
+				case TOPLEFT:
+				case LEFT:
+				case BOTTOMLEFT:
+					return 0;
+				case TOP:
+				case CENTER:
+				case BOTTOM:
+					return res.getScaledWidth() / 2;
+				case TOPRIGHT:
+				case RIGHT:
+				case BOTTOMRIGHT:
+					return res.getScaledWidth();
+				default:
+					return 0;
+			}
+		}
+		
+		public int getY() {
+			switch(this) {
+				case TOPLEFT:
+				case TOP:
+				case TOPRIGHT:
+					return 0;
+				case LEFT:
+				case CENTER:
+				case RIGHT:
+					return res.getScaledHeight() / 2;
+				case BOTTOMLEFT:
+				case BOTTOM:
+				case BOTTOMRIGHT:
+					return res.getScaledHeight();
+				default:
+					return 0;
+			}
+		}
+		
+		public static void updateRes(ScaledResolution newRes) {
+			res = newRes;
+		}
+		
+	}
 	
 	public static enum Orientation {
 		UP, RIGHT, DOWN, LEFT;
@@ -50,7 +96,7 @@ public abstract class HudItem implements Color{
 			}
 		}
 	}
-		
+	
 	protected static final Random rand = new Random();
 	
 	public HudItem(String name){
@@ -59,24 +105,8 @@ public abstract class HudItem implements Color{
 		guiRenderer = new Gui();
 	}
 	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
-	
 	public String getName() {
 		return name;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-	
-	public int getWidth() {
-		return width;
 	}
 	
 	public HudItemType getType() {
@@ -86,47 +116,69 @@ public abstract class HudItem implements Color{
 	protected abstract void init();
 	
 	public void flip() {
-		if(canFlip) flip = !flip;
+		flip = !flip;
 	}
 	
 	public void rotateLeft() {
-		if(canRotate) {
-			orientation = orientation.left();
-			height ^= width;
-			width ^= height;
-			height ^= width;
-		}
+		orientation = orientation.left();
 	}
 	
 	public void rotateRight() {
-		if(canRotate) {
-			orientation = orientation.right();
-			height ^= width;
-			width ^= height;
-			height ^= width;
-		}
+		orientation = orientation.right();
 	}
 	
-	public abstract void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent);
+	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+		Anchor.updateRes(res);
+	}
 	
 	public void updateTick() {
 		++updateCounter;
 		rand.setSeed((long)(updateCounter * 312871));
 	}
 	
-	protected abstract void setHeightAndWidth();
+	public int getX() {
+		int pxlX = anchor.getX() + x;
+		switch(anchor) {
+			case TOPLEFT:
+			case LEFT:
+			case BOTTOMLEFT:
+				return pxlX;
+			case TOP:
+			case CENTER:
+			case BOTTOM:
+				return pxlX -= width / 2;
+			case TOPRIGHT:
+			case RIGHT:
+			case BOTTOMRIGHT:
+				return pxlX -= width;
+			default:
+				return pxlX;
+		}
+	}
+	
+	public int getY() {
+		int pxlY = anchor.getY() + y;
+		switch(anchor) {
+			case TOPLEFT:
+			case TOP:
+			case TOPRIGHT:
+				return pxlY;
+			case LEFT:
+			case CENTER:
+			case RIGHT:
+				return pxlY -= height / 2;
+			case BOTTOMLEFT:
+			case BOTTOM:
+			case BOTTOMRIGHT:
+				return pxlY -= height;
+			default:
+				return pxlY;
+		}
+	}
 
 	@Override
 	public String toString() {
 		return "HUDItem " + getName();
-	}
-	
-	protected boolean pre(ElementType type, RenderGameOverlayEvent eventParent) {
-		return MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Pre(eventParent, type));
-	}
-
-	protected void post(ElementType type, RenderGameOverlayEvent eventParent) {
-		MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Post(eventParent, type));
 	}
 	
 	protected void bind(ResourceLocation res) {
@@ -134,8 +186,7 @@ public abstract class HudItem implements Color{
 	}
 	
 	protected boolean flip = false;
-	protected boolean canRotate = true;
-	protected boolean canFlip = true;
+	protected boolean render = true;
 	protected int x;
 	protected int y;
 	protected int height;
@@ -145,6 +196,7 @@ public abstract class HudItem implements Color{
 	protected String name;
 	protected HudItemType type;
 	protected Minecraft mc;
+	protected Anchor anchor;
 	protected Orientation orientation;
 	protected Gui guiRenderer;
 	protected Logger log = Customize.log;

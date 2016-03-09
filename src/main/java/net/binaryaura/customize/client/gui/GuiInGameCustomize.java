@@ -11,7 +11,6 @@ import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiSpectator;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
@@ -32,53 +31,17 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 	@Override
 	public void updateTick() {
-		if (this.field_175195_w > 0)
-        {
-            --this.field_175195_w;
-
-            if (this.field_175195_w <= 0)
-            {
-                this.field_175201_x = "";
-                this.field_175200_y = "";
-            }
-        }
+		super.updateTick();
 		for (HudItem hudItem : hudManager.hudItems.values()) {
 			if(hudItem != null) hudItem.updateTick();
 		}
-	}
-	
-	public int getFadeInTime() {
-		return field_175192_A;
-	}
-	
-	public int getDisplayTime() {
-		return field_175193_B;
-	}
-	
-	public int getFadeOutTime() {
-		return field_175194_C;
-	}
-	
-	public int getTimeRemaining() {
-		return field_175195_w;
-	}
-	
-	public String getTitle() {
-		return field_175201_x;
-	}
-	
-	public String getSubTitle() {
-		return field_175200_y;
-	}
-	
-	public GuiSpectator getSpectatorGui() {
-		return spectatorGui;
 	}
 
 	@Override
 	public void renderGameOverlay(float partialTicks) {
 		res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 		eventParent = new RenderGameOverlayEvent(partialTicks, res);
+		HudItem.Anchor.updateRes(res);
 
 		if (pre(ALL)) return;
 
@@ -98,10 +61,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 			renderPortal(res, partialTicks);
 		}
 		
-		zLevel = -90.0F;
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		
-		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());		
+		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
 		for (HudItem hudItem : hudManager.hudItems.values()) {
 			GL11.glPushMatrix();
@@ -109,15 +69,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 			GL11.glPopMatrix();
 		}
 		
-		GlStateManager.enableBlend();
-		GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-		GlStateManager.disableAlpha();
-		
         renderChat(res.getScaledWidth(), res.getScaledHeight());
-        
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.disableLighting();
-        GlStateManager.enableAlpha();
 		
 		post(ALL);
 	}
