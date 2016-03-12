@@ -5,6 +5,8 @@ import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.HELMET;
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.PORTAL;
 
+import java.util.HashMap;
+
 import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
@@ -32,7 +34,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	@Override
 	public void updateTick() {
 		super.updateTick();
-		for (HudItem hudItem : hudManager.hudItems.values()) {
+		for (HudItem hudItem : HudItemManager.hudItems.values()) {
 			if(hudItem != null) hudItem.updateTick();
 		}
 	}
@@ -63,7 +65,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		
 		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
-		for (HudItem hudItem : hudManager.hudItems.values()) {
+		for (HudItem hudItem : HudItemManager.hudItems.values()) {
 			GL11.glPushMatrix();
 			if(hudItem != null) hudItem.renderHUDItem(res, eventParent);
 			GL11.glPopMatrix();
@@ -137,5 +139,6 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 	private ScaledResolution res = null;
 	private RenderGameOverlayEvent eventParent;
+	@Deprecated
 	private HudItemManager hudManager = null;
 }

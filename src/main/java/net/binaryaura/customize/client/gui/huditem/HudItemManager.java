@@ -6,6 +6,7 @@ import net.binaryaura.customize.common.Customize;
 
 public class HudItemManager {
 	
+	// What about future(modded-in) types?
 	public static enum HudItemType {
 		BAR(),
 		ICON(),
@@ -15,6 +16,8 @@ public class HudItemManager {
 		
 		HudItemType() {}
 	}
+	
+	public static HashMap<String, HudItem> hudItems;
 
 	public HudItemManager() {
 		hudItems = new HashMap<String, HudItem>();
@@ -38,5 +41,5 @@ public class HudItemManager {
 		}
 	}
 	
-	public HashMap<String, HudItem> hudItems;
+	private int screenWidth, screenHeight;
 }
