@@ -35,10 +35,10 @@ public class HudItemExperience extends HudItemBar {
 	}
 
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+	public void renderHUDItem() {
 		player = (EntityPlayer)this.mc.getRenderViewEntity();
 		render = mc.playerController.gameIsSurvivalOrAdventure() && player != null;
-		super.renderHUDItem(res, eventParent);
+		super.renderHUDItem();
 	}
 	
 	private EntityPlayer player;

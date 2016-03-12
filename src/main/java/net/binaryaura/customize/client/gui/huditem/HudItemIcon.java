@@ -12,7 +12,7 @@ public abstract class HudItemIcon extends HudItem{
 	}
 	
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+	public void renderHUDItem() {
 		
 	}
 }

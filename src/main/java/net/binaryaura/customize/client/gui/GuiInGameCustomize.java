@@ -43,7 +43,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	public void renderGameOverlay(float partialTicks) {
 		res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 		eventParent = new RenderGameOverlayEvent(partialTicks, res);
-		HudItem.Anchor.updateRes(res);
+		HudItemManager.updateRes(res);
 
 		if (pre(ALL)) return;
 
@@ -67,7 +67,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		
 		for (HudItem hudItem : HudItemManager.hudItems.values()) {
 			GL11.glPushMatrix();
-			if(hudItem != null) hudItem.renderHUDItem(res, eventParent);
+			if(hudItem != null)	hudItem.renderHUDItem();
 			GL11.glPopMatrix();
 		}
 		

@@ -26,8 +26,10 @@ public abstract class HudItemIconGauge extends HudItem {
 	}
 
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-		super.renderHUDItem(res, eventParent);
+	public void renderHUDItem() {
+		mc.mcProfiler.startSection(name);
+		
+		super.renderHUDItem();
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
 		switch(orientation) {
@@ -103,6 +105,7 @@ public abstract class HudItemIconGauge extends HudItem {
 				}
 				break;
 		}
+		mc.mcProfiler.endSection();
 	}
 	
 	protected abstract SpriteSet getIconSpriteSet(int icon);

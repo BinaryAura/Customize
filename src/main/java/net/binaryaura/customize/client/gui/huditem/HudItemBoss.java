@@ -11,7 +11,7 @@ public class HudItemBoss extends HudItemBar {
 	}
 
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+	public void renderHUDItem() {
 		// TODO Auto-generated method stub
 		
 	}

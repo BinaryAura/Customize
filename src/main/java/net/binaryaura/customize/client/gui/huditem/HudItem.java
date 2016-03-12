@@ -18,8 +18,6 @@ public abstract class HudItem implements Color{
 	public static enum Anchor {
 		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
 		
-		private static ScaledResolution res;
-		
 		public int getX() {
 			switch(this) {
 				case TOPLEFT:
@@ -29,11 +27,11 @@ public abstract class HudItem implements Color{
 				case TOP:
 				case CENTER:
 				case BOTTOM:
-					return res.getScaledWidth() / 2;
+					return HudItemManager.getRes().getScaledWidth() / 2;
 				case TOPRIGHT:
 				case RIGHT:
 				case BOTTOMRIGHT:
-					return res.getScaledWidth();
+					return HudItemManager.getRes().getScaledWidth();
 				default:
 					return 0;
 			}
@@ -48,20 +46,15 @@ public abstract class HudItem implements Color{
 				case LEFT:
 				case CENTER:
 				case RIGHT:
-					return res.getScaledHeight() / 2;
+					return HudItemManager.getRes().getScaledHeight() / 2;
 				case BOTTOMLEFT:
 				case BOTTOM:
 				case BOTTOMRIGHT:
-					return res.getScaledHeight();
+					return HudItemManager.getRes().getScaledHeight();
 				default:
 					return 0;
 			}
-		}
-		
-		public static void updateRes(ScaledResolution newRes) {
-			res = newRes;
-		}
-		
+		}		
 	}
 	
 	public static enum Orientation {
@@ -128,8 +121,11 @@ public abstract class HudItem implements Color{
 		orientation = orientation.right();
 	}
 	
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-		Anchor.updateRes(res);
+	public void renderHUDItem() {
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void updateTick() {
@@ -176,6 +172,18 @@ public abstract class HudItem implements Color{
 				return pxlY;
 		}
 	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getId() {
+		return id;
+	}
 
 	@Override
 	public String toString() {
@@ -194,6 +202,7 @@ public abstract class HudItem implements Color{
 	protected int y;
 	protected int height;
 	protected int width;
+	protected int id;
 	protected int updateCounter = 0;
 	protected long lastSystemTime;
 	protected String name;

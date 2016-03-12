@@ -12,7 +12,7 @@ public abstract class HudItemIconSet extends HudItem {
 	}
 
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+	public void renderHUDItem() {
 		// TODO Auto-generated method stub
 
 	}

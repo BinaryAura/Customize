@@ -23,9 +23,9 @@ public abstract class HudItemText extends HudItem {
 	}
 
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-		int x = res.getScaledWidth() / 2 + this.x + getDeltaX();
-		int y = res.getScaledHeight() / 2 + this.y + getDeltaY();
+	public void renderHUDItem() {
+		int x = HudItemManager.getRes().getScaledWidth() / 2 + this.x + getDeltaX();
+		int y = HudItemManager.getRes().getScaledHeight() / 2 + this.y + getDeltaY();
 		int styleAdd = (style == Style.SHADOWED ? 1 : style == Style.OUTLINED ? 2 : 0);
 		if(getBGAlpha() > 0) {
 			int bgColor = getBGColor() + (getBGAlpha() << 24);

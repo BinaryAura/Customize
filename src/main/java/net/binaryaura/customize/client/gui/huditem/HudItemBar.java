@@ -34,7 +34,7 @@ public abstract class HudItemBar extends HudItem {
 	}
 	
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+	public void renderHUDItem() {
 		mc.mcProfiler.startSection(name);
 		
 		SpriteSet sprites = getLayers();

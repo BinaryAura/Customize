@@ -11,7 +11,7 @@ public class HudItemTitle extends HudItemText {
 	}
 
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+	public void renderHUDItem() {
 		
 	}
 	
