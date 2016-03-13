@@ -19,6 +19,7 @@ public class HudItemToolTip extends HudItemText {
 
 	@Override
 	protected void init() {
+		anchor = Anchor.BOTTOM;
 		x = 0;
 		y = 0;
 		style = Style.SHADOWED;

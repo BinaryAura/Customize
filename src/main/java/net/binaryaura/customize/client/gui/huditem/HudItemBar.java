@@ -18,7 +18,9 @@ public abstract class HudItemBar extends HudItem {
 		canRotate = true;
 	}
 	
+	@Override
 	protected void setHeightAndWidth() {
+		log.info("BAR");
 		switch(orientation) {
 			case DOWN:
 			case UP:
@@ -42,6 +44,8 @@ public abstract class HudItemBar extends HudItem {
 		int x = getX();
 		int y = getY();
 		
+		log.info(x + " : " + y);
+		
 		switch(orientation) {
 			case RIGHT:
 				break;
@@ -50,11 +54,11 @@ public abstract class HudItemBar extends HudItem {
 				GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
 				break;
 			case LEFT:
-				GL11.glTranslatef(2*x + layers.getHeight(), 2*y + layers.getHeight(), 0.0F);
+				GL11.glTranslatef(2*x + layers.getWidth(), 2*y + layers.getHeight(), 0.0F);
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 				break;
 			case UP:
-				GL11.glTranslatef(x - y, y + x + layers.getHeight(), 0.0F);
+				GL11.glTranslatef(x - y, y + x + layers.getWidth(), 0.0F);
 				GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
 				break;
 		}

@@ -20,7 +20,7 @@ public class HudItemExperience extends HudItemBar {
 	protected void init() {
 		anchor = Anchor.BOTTOM;
 		x = 0;
-		y = -29;
+		y = 0;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 182, 5, 0, 64)));
 		layers.addLayer(new SpriteSet("experience", new Sprite(Gui.icons, 182, 5, 0, 69)));
 	}

@@ -19,6 +19,7 @@ public abstract class HudItem implements Color{
 		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
 		
 		public int getX() {
+			Customize.log.info("Width: " + HudItemManager.getRes().getScaledWidth());
 			switch(this) {
 				case TOPLEFT:
 				case LEFT:
@@ -38,6 +39,7 @@ public abstract class HudItem implements Color{
 		}
 		
 		public int getY() {
+			Customize.log.info("Height: " + HudItemManager.getRes().getScaledHeight());
 			switch(this) {
 				case TOPLEFT:
 				case TOP:
@@ -99,6 +101,10 @@ public abstract class HudItem implements Color{
 		guiRenderer = new Gui();
 	}
 	
+	protected void setHeightAndWidth() {
+		log.info("HUDITEM");
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -115,14 +121,15 @@ public abstract class HudItem implements Color{
 	
 	public void rotateLeft() {
 		orientation = orientation.left();
+		setHeightAndWidth();
 	}
 	
 	public void rotateRight() {
 		orientation = orientation.right();
+		setHeightAndWidth();
 	}
 	
-	public void renderHUDItem() {
-	}
+	public void renderHUDItem() {}
 	
 	public void setId(int id) {
 		this.id = id;
@@ -135,6 +142,7 @@ public abstract class HudItem implements Color{
 	
 	public int getX() {
 		int pxlX = anchor.getX() + x;
+		log.info(name + "X: " + pxlX + "  " + name + "Width: " + width);
 		switch(anchor) {
 			case TOPLEFT:
 			case LEFT:
@@ -143,11 +151,11 @@ public abstract class HudItem implements Color{
 			case TOP:
 			case CENTER:
 			case BOTTOM:
-				return pxlX -= width / 2;
+					return pxlX -= width / 2;
 			case TOPRIGHT:
 			case RIGHT:
 			case BOTTOMRIGHT:
-				return pxlX -= width;
+					return pxlX -= width;
 			default:
 				return pxlX;
 		}
@@ -155,6 +163,7 @@ public abstract class HudItem implements Color{
 	
 	public int getY() {
 		int pxlY = anchor.getY() + y;
+		log.info(name + "Y: " + pxlY + "  " + name + "Height: " + height);
 		switch(anchor) {
 			case TOPLEFT:
 			case TOP:
@@ -163,11 +172,11 @@ public abstract class HudItem implements Color{
 			case LEFT:
 			case CENTER:
 			case RIGHT:
-				return pxlY -= height / 2;
+					return pxlY -= height / 2;
 			case BOTTOMLEFT:
 			case BOTTOM:
 			case BOTTOMRIGHT:
-				return pxlY -= height;
+					return pxlY -= height;
 			default:
 				return pxlY;
 		}

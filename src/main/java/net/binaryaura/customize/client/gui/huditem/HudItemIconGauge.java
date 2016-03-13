@@ -26,19 +26,44 @@ public abstract class HudItemIconGauge extends HudItem {
 	}
 
 	@Override
+	protected void setHeightAndWidth() {
+					stacks = MathHelper.ceiling_float_int(amount / (layers.getAmount() - 1) / maxPerRow);
+					stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
+		switch(orientation) {
+			case RIGHT:
+					height = (stacks - 1)*stackSpace + layers.getHeight();
+					width = space*maxPerRow + 1;
+				break;
+			case DOWN:
+					height = space*maxPerRow + 1;
+					width = (stacks - 1)*stackSpace + layers.getWidth();
+				break;
+			case LEFT:
+					height = (stacks - 1)*stackSpace + layers.getHeight();
+					width = space*maxPerRow + 1;
+				break;
+			case UP:
+					height = space*maxPerRow + 1;
+					width = (stacks - 1)*stackSpace + layers.getWidth();
+				break;
+		}
+	}
+
+	@Override
 	public void renderHUDItem() {
 		mc.mcProfiler.startSection(name);
 		
 		super.renderHUDItem();
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
+		if(amount != getAmount()) {
+			amount = getAmount();
+			setHeightAndWidth();
+		}
+			
 		switch(orientation) {
 			case RIGHT:
-				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
-					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					height = (stacks - 1)*stackSpace + layers.getHeight();
-					width = space*maxPerRow + 1;
+				for(int i = MathHelper.ceiling_float_int(amount / (layers.getAmount() - 1) - 1); i >= 0; --i) {
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						int stack = MathHelper.ceiling_float_int((float)(i+1) / maxPerRow) - 1;
@@ -53,10 +78,6 @@ public abstract class HudItemIconGauge extends HudItem {
 			case DOWN:
 				space = layers.getHeight();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
-					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					height = space*maxPerRow + 1;
-					width = (stacks - 1)*stackSpace + layers.getWidth();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
@@ -71,10 +92,6 @@ public abstract class HudItemIconGauge extends HudItem {
 			case LEFT:
 				space = layers.getWidth();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
-					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					height = (stacks - 1)*stackSpace + layers.getHeight();
-					width = space*maxPerRow + 1;
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
@@ -89,10 +106,6 @@ public abstract class HudItemIconGauge extends HudItem {
 			case UP:
 				space = layers.getHeight();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					int stacks = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) / maxPerRow);
-					int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-					height = space*maxPerRow + 1;
-					width = (stacks - 1)*stackSpace + layers.getWidth();
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
@@ -144,10 +157,15 @@ public abstract class HudItemIconGauge extends HudItem {
 		return MathHelper.ceiling_double_int(5*Math.sin(leadIcon*5 / Math.PI));
 	}
 
+	private int stacks = 0;
+	private int stackSpace = 0;
+	private float amount = 0;
 	protected boolean animationFinished = true;
-	protected int maxStackSpace;
-	protected int minStackSpace;
-	protected int space;
+	
+	// Defaults Based on the default vitals bars
+	protected int maxStackSpace = 11;
+	protected int minStackSpace = 3;
+	protected int space = 8;
 	protected int maxPerRow = 10;
 	protected LayeredSprite layers;
 }
