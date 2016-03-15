@@ -23,27 +23,27 @@ public abstract class HudItemText extends HudItem {
 	}
 
 	@Override
-	public void renderHUDItem() {
-		int x = HudItemManager.getRes().getScaledWidth() / 2 + this.x + getDeltaX();
-		int y = HudItemManager.getRes().getScaledHeight() / 2 + this.y + getDeltaY();
+	public void renderHUDItem(int x, int y) {
+		int textX = HudItemManager.getRes().getScaledWidth() / 2 + x + getDeltaX();
+		int textY = HudItemManager.getRes().getScaledHeight() / 2 + y + getDeltaY();
 		int styleAdd = (style == Style.SHADOWED ? 1 : style == Style.OUTLINED ? 2 : 0);
 		if(getBGAlpha() > 0) {
 			int bgColor = getBGColor() + (getBGAlpha() << 24);
-			Gui.drawRect(x - (style == Style.OUTLINED ? 1 : 0), y - (style == Style.OUTLINED ? 1 : 0), x + fontRenderer.getStringWidth(string) + styleAdd, y + fontRenderer.FONT_HEIGHT + styleAdd, bgColor);
+			Gui.drawRect(textX - (style == Style.OUTLINED ? 1 : 0), textY - (style == Style.OUTLINED ? 1 : 0), textX + fontRenderer.getStringWidth(string) + styleAdd, textY + fontRenderer.FONT_HEIGHT + styleAdd, bgColor);
 			}
 		if(getAlpha() > 0) {
 			int color = getColor() + (getAlpha() << 24);
 			switch(style) {
 				case OUTLINED:
-					fontRenderer.drawString(string, x + 1, y, 0);
-					fontRenderer.drawString(string, x - 1, y, 0);
-					fontRenderer.drawString(string, x, y + 1, 0);
-					fontRenderer.drawString(string, x, y - 1, 0);
+					fontRenderer.drawString(string, textX + 1, textY, 0);
+					fontRenderer.drawString(string, textX - 1, textY, 0);
+					fontRenderer.drawString(string, textX, textY + 1, 0);
+					fontRenderer.drawString(string, textX, textY - 1, 0);
 				case NORMAL:
-					fontRenderer.drawString(string, x, y, color);
+					fontRenderer.drawString(string, textX, textY, color);
 					break;
 				case SHADOWED:
-					fontRenderer.drawStringWithShadow(string, x, y, color);
+					fontRenderer.drawStringWithShadow(string, textX, textY, color);
 					break;
 			}
 		}

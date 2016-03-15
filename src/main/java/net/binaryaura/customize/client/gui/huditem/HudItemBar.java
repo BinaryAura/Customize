@@ -20,7 +20,6 @@ public abstract class HudItemBar extends HudItem {
 	
 	@Override
 	protected void setHeightAndWidth() {
-		log.info("BAR");
 		switch(orientation) {
 			case DOWN:
 			case UP:
@@ -36,32 +35,15 @@ public abstract class HudItemBar extends HudItem {
 	}
 	
 	@Override
-	public void renderHUDItem() {
+	public void renderHUDItem(int x, int y) {
 		mc.mcProfiler.startSection(name);
 		
 		SpriteSet sprites = getLayers();
 		setHeightAndWidth();
-		int x = getX();
-		int y = getY();
 		
-		log.info(x + " : " + y);
+		GL11.glTranslated(getTranslateX(x, y), getTranslateY(x, y), 0.0F);
+		GL11.glRotatef(getRotation(), 0.0F, 0.0F, 1.0F);
 		
-		switch(orientation) {
-			case RIGHT:
-				break;
-			case DOWN:
-				GL11.glTranslated(x + y + layers.getHeight(), y - x, 0.0F);
-				GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
-				break;
-			case LEFT:
-				GL11.glTranslatef(2*x + layers.getWidth(), 2*y + layers.getHeight(), 0.0F);
-				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-				break;
-			case UP:
-				GL11.glTranslatef(x - y, y + x + layers.getWidth(), 0.0F);
-				GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
-				break;
-		}
 		bind(sprites.getLocation());
 		for(int i = 0; i < layers.getAmount() + 1; i++) {
 			int fill = MathHelper.ceiling_float_int(getAmount(i)*layers.getWidth());
@@ -70,6 +52,99 @@ public abstract class HudItemBar extends HudItem {
 		mc.mcProfiler.endSection();
 	}
 	
+	private int alignmentTransX() {
+		switch(anchor) {
+			case TOP:
+			case CENTER:
+			case BOTTOM:
+				return -width / 2;
+			case TOPRIGHT:
+			case RIGHT:
+			case BOTTOMRIGHT:
+				return -width;
+			default:
+				return 0;
+		}
+	}
+	
+	private int alignmentTransY() {
+		switch(anchor) {
+			case LEFT:
+			case CENTER:
+			case RIGHT:
+				return -height / 2;
+			case BOTTOMLEFT:
+			case BOTTOM:
+			case BOTTOMRIGHT:
+				return -height;
+			default:
+				return 0;
+		}
+	}
+	
+	private int getTranslateX(int x, int y) {
+		switch(orientation) {
+			case DOWN:
+				return x + y + (layers.getWidth() + layers.getHeight()) / 2;
+			case LEFT:
+				return 2*x + layers.getWidth();
+			case UP:
+				return x - y + (layers.getWidth() + layers.getHeight()) / 2;
+			default:
+				return 0;
+		}
+	}
+	
+	private int getTranslateY(int x, int y) {
+		switch(orientation) {
+			case DOWN:
+				return y - x + (layers.getHeight() - layers.getWidth()) / 2;
+			case LEFT:
+				return 2*y + layers.getHeight();
+			case UP:
+				return x + y + (layers.getWidth() + layers.getHeight()) / 2;
+			default:
+				return 0;
+		}
+	}
+	
+	private float getRotation() {
+		switch(orientation) {
+			case DOWN:
+				return 90.0F;
+			case LEFT:
+				return 180.0F;
+			case UP:
+				return -90.0F;
+			default:
+				return 0.0F;
+		}
+	}
+
+	@Override
+	public int getButtonX(int x, int y) {
+		switch(getOrientation()) {
+			case DOWN:
+				return getX() + (height - width) / 2;
+			case UP:
+				return getX() + (height + width) / 2;
+			default:
+				return getX();
+		}
+	}
+
+	@Override
+	public int getButtonY(int x, int y) {
+		switch(getOrientation()) {
+			case DOWN:				
+				return getY() - (height - width) / 2;
+			case UP:
+				return getY() - (int)Math.ceil((height - width) / 2.0);
+			default:
+				return getY();
+		}
+	}
+
 	protected abstract float getAmount(int layer);
 	protected abstract SpriteSet getLayers();
 	protected abstract SpriteSet getDefaultSpriteSet();

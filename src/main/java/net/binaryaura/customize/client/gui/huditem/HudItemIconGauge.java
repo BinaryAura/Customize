@@ -4,9 +4,7 @@ import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItemIconGauge extends HudItem {
 
@@ -50,10 +48,10 @@ public abstract class HudItemIconGauge extends HudItem {
 	}
 
 	@Override
-	public void renderHUDItem() {
+	public void renderHUDItem(int x, int y) {
 		mc.mcProfiler.startSection(name);
 		
-		super.renderHUDItem();
+		super.renderHUDItem(x, y);
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
 		if(amount != getAmount()) {
@@ -67,11 +65,11 @@ public abstract class HudItemIconGauge extends HudItem {
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						int stack = MathHelper.ceiling_float_int((float)(i+1) / maxPerRow) - 1;
-						int x = getX() + space*(i % maxPerRow) + getIconDeltaPara(i);
-						int y = getY() - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
+						int iconX = x + space*(i % maxPerRow) + getIconDeltaPara(i);
+						int iconY = y - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
-						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
+						guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
 					}
 				}
 				break;
@@ -81,11 +79,11 @@ public abstract class HudItemIconGauge extends HudItem {
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
-						int x = getX() + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						int y = getY() + space*(i % maxPerRow) + getIconDeltaPara(i);
+						int iconX = x + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
+						int iconY = y + space*(i % maxPerRow) + getIconDeltaPara(i);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
-						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
+						guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
 					}
 				}
 				break;
@@ -95,11 +93,11 @@ public abstract class HudItemIconGauge extends HudItem {
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
-						int x = getX() - space*(i % maxPerRow) + getIconDeltaPara(i);
-						int y = getY() + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
+						int iconX = x - space*(i % maxPerRow) + getIconDeltaPara(i);
+						int iconY = y + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
-						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
+						guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
 					}
 				}
 				break;
@@ -109,11 +107,11 @@ public abstract class HudItemIconGauge extends HudItem {
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {
 						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
-						int x = getX() - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						int y = getY() - space*(i % maxPerRow) + getIconDeltaPara(i);
+						int iconX = x - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
+						int iconY = y - space*(i % maxPerRow) + getIconDeltaPara(i);
 						Sprite sprite = iconLayers.getSprite(j);
 						if (sprite == null) continue;
-						guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
+						guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
 					}
 				}
 				break;
@@ -135,6 +133,7 @@ public abstract class HudItemIconGauge extends HudItem {
 		return 2*rand.nextInt(2);
 	}
 	
+	// TODO: Fix IconGauge Animation Methods
 	protected int wave(int icon) {
 		if(updateCounter % MathHelper.ceiling_float_int(getAmount() + 5) == icon) {
 			animationFinished = false;

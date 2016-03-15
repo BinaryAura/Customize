@@ -25,16 +25,17 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 
 public class GuiInGameCustomize extends GuiIngameForge {
+	
+	public static boolean renderHUD = true;
 
 	public GuiInGameCustomize(Minecraft mc) {
 		super(mc);
-		hudManager = Customize.hudManager;
 	}
 
 	@Override
 	public void updateTick() {
 		super.updateTick();
-		for (HudItem hudItem : HudItemManager.hudItems.values()) {
+		for (HudItem hudItem : HudItemManager.getHudItems()) {
 			if(hudItem != null) hudItem.updateTick();
 		}
 	}
@@ -65,10 +66,12 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		
 		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
-		for (HudItem hudItem : HudItemManager.hudItems.values()) {
-			GL11.glPushMatrix();
-			if(hudItem != null)	hudItem.renderHUDItem();
-			GL11.glPopMatrix();
+		if(renderHUD) {
+			for (HudItem hudItem : HudItemManager.getHudItems()) {
+				GL11.glPushMatrix();
+				if(hudItem != null)	hudItem.renderHUDItem();
+				GL11.glPopMatrix();
+			}
 		}
 		
         renderChat(res.getScaledWidth(), res.getScaledHeight());
@@ -139,6 +142,4 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 	private ScaledResolution res = null;
 	private RenderGameOverlayEvent eventParent;
-	@Deprecated
-	private HudItemManager hudManager = null;
 }

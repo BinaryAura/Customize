@@ -8,12 +8,10 @@ public class HudItemCrosshairs extends HudItemIcon {
 
 	@Override
 	protected void init() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	protected void setHeightAndWidth() {
-		// TODO Auto-generated method stub
 		
 	}
 

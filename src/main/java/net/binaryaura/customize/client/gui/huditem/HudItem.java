@@ -19,7 +19,6 @@ public abstract class HudItem implements Color{
 		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
 		
 		public int getX() {
-			Customize.log.info("Width: " + HudItemManager.getRes().getScaledWidth());
 			switch(this) {
 				case TOPLEFT:
 				case LEFT:
@@ -39,7 +38,6 @@ public abstract class HudItem implements Color{
 		}
 		
 		public int getY() {
-			Customize.log.info("Height: " + HudItemManager.getRes().getScaledHeight());
 			switch(this) {
 				case TOPLEFT:
 				case TOP:
@@ -96,7 +94,7 @@ public abstract class HudItem implements Color{
 	protected static final Random rand = new Random();
 	
 	public HudItem(String name){
-		this.name = name;
+		this.name = name.toLowerCase();
 		mc = Minecraft.getMinecraft();
 		guiRenderer = new Gui();
 	}
@@ -119,6 +117,7 @@ public abstract class HudItem implements Color{
 		flip = !flip;
 	}
 	
+	//	TODO: Fix Rotation to simulate an axis	
 	public void rotateLeft() {
 		orientation = orientation.left();
 		setHeightAndWidth();
@@ -129,7 +128,11 @@ public abstract class HudItem implements Color{
 		setHeightAndWidth();
 	}
 	
-	public void renderHUDItem() {}
+	public void renderHUDItem() {
+		renderHUDItem(getX(), getY());
+	}
+	
+	public void renderHUDItem(int x, int y) {}
 	
 	public void setId(int id) {
 		this.id = id;
@@ -140,9 +143,24 @@ public abstract class HudItem implements Color{
 		rand.setSeed((long)(updateCounter * 312871));
 	}
 	
+	public int getButtonX(int x, int y) {
+		return getX();
+	}
+	
+	public int getButtonY(int x, int y) {
+		return getY();
+	}
+	
+	public int getButtonX() {
+		return getButtonX(getX(), getY());
+	}
+	
+	public int getButtonY() {
+		return getButtonY(getX(), getY());
+	}
+	
 	public int getX() {
 		int pxlX = anchor.getX() + x;
-		log.info(name + "X: " + pxlX + "  " + name + "Width: " + width);
 		switch(anchor) {
 			case TOPLEFT:
 			case LEFT:
@@ -151,19 +169,22 @@ public abstract class HudItem implements Color{
 			case TOP:
 			case CENTER:
 			case BOTTOM:
-					return pxlX -= width / 2;
+				return pxlX -= width / 2;
 			case TOPRIGHT:
 			case RIGHT:
 			case BOTTOMRIGHT:
-					return pxlX -= width;
+				return pxlX -= width;
 			default:
 				return pxlX;
 		}
 	}
 	
+	public void setAnchor(Anchor anchor) {
+		this.anchor = anchor;
+	}
+	
 	public int getY() {
 		int pxlY = anchor.getY() + y;
-		log.info(name + "Y: " + pxlY + "  " + name + "Height: " + height);
 		switch(anchor) {
 			case TOPLEFT:
 			case TOP:
@@ -172,14 +193,63 @@ public abstract class HudItem implements Color{
 			case LEFT:
 			case CENTER:
 			case RIGHT:
-					return pxlY -= height / 2;
+				return pxlY -= height / 2;
 			case BOTTOMLEFT:
 			case BOTTOM:
 			case BOTTOMRIGHT:
-					return pxlY -= height;
+				return pxlY -= height;
 			default:
 				return pxlY;
 		}
+	}
+	
+	public Orientation getOrientation() {
+		return orientation;
+	}
+	
+	//	TODO: Set up Border Collision
+	public void setPos(int x, int y) {
+		log.info(this.x + " : " + this.y);
+		log.info("anchorPos: " + anchor.getX() + " : " + anchor.getY());
+		
+		switch(anchor) {
+			case TOPLEFT:
+				break;
+			case TOP:
+				x += width / 2;
+				break;
+			case TOPRIGHT:
+				x += width;
+				break;
+				
+			case LEFT:
+				y += height / 2;
+				break;
+			case CENTER:
+				x += width / 2;
+				y += height / 2;
+				break;
+			case RIGHT:
+				x += width;
+				y += height / 2;
+				break;
+				
+			case BOTTOMLEFT:
+				y += height;
+				break;
+			case BOTTOM:
+				x += width / 2;
+				y += height;
+				break;
+			case BOTTOMRIGHT:
+				x += width;
+				y += height;
+				break;
+		}
+		
+		this.x = x - anchor.getX();
+		this.y = y - anchor.getY();
+		log.info("Saved: " + anchor + ": (" + this.x + ":" + this.y + ")");
 	}
 	
 	public int getWidth() {

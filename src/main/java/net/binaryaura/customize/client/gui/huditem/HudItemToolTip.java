@@ -26,7 +26,7 @@ public class HudItemToolTip extends HudItemText {
 	}
 	
 	@Override
-	public void renderHUDItem() {
+	public void renderHUDItem(int x, int y) {
 		if(this.mc.gameSettings.heldItemTooltips && !this.mc.playerController.isSpectator()) {
 			boolean render = this.remainingHighlightTicks > 0 && this.highlightingItemStack != null;	
 			if(!render) return;
@@ -40,7 +40,7 @@ public class HudItemToolTip extends HudItemText {
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 			
-		    super.renderHUDItem();
+		    super.renderHUDItem(x, y);
 		    
 			GlStateManager.disableBlend();
 		} //else if(this.mc.thePlayer.isSpectator()) {

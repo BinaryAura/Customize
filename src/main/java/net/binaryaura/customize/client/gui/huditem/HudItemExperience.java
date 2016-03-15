@@ -12,13 +12,13 @@ public class HudItemExperience extends HudItemBar {
 
 	public HudItemExperience(String name) {
 		super(name);
-		orientation = Orientation.UP;
+		orientation = Orientation.RIGHT;
 		init();
 	}
 
 	@Override
 	protected void init() {
-		anchor = Anchor.BOTTOM;
+		anchor = Anchor.TOPLEFT;
 		x = 0;
 		y = 0;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 182, 5, 0, 64)));
@@ -35,10 +35,10 @@ public class HudItemExperience extends HudItemBar {
 	}
 
 	@Override
-	public void renderHUDItem() {
+	public void renderHUDItem(int x, int y) {
 		player = (EntityPlayer)this.mc.getRenderViewEntity();
 		render = mc.playerController.gameIsSurvivalOrAdventure() && player != null;
-		super.renderHUDItem();
+		super.renderHUDItem(x, y);
 	}
 	
 	private EntityPlayer player;

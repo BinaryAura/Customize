@@ -1,5 +1,6 @@
 package net.binaryaura.customize.client.gui.huditem;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import net.binaryaura.customize.common.Customize;
@@ -21,7 +22,7 @@ public class HudItemManager {
 	private static int nextId = 0;
 	
 	private static ScaledResolution res;
-	public static HashMap<String, HudItem> hudItems;
+	private static HashMap<String, HudItem> hudItems;
 	
 	public static void updateRes(ScaledResolution res) {
 		HudItemManager.res = res;
@@ -29,6 +30,23 @@ public class HudItemManager {
 	
 	public static ScaledResolution getRes() {
 		return res;
+	}
+	
+	public static Iterable<HudItem> getHudItems() {
+		return hudItems.values();
+	}
+	
+	public static HudItem getHudItem(String name) {
+		return hudItems.get(name);
+	}
+	
+	public static HudItem getHudItem(int id) {
+		for(HudItem hudItem : hudItems.values()) {
+			if(hudItem.getId() == id)
+				return hudItem;
+		}
+		Customize.log.warn("ID " + id + " doesn't relate to a HudItem.");
+		return null;
 	}
 
 	public HudItemManager() {
@@ -39,7 +57,7 @@ public class HudItemManager {
 		if(hudItem != null) {			
 			hudItems.put(hudItem.getName(), hudItem);
 			hudItem.setId(nextId++);
-			Customize.log.info("Registered " + hudItem);
+			Customize.log.info("Registered " + hudItem + " (" + hudItem.getId() + ")");
 		} else {
 			Customize.log.warn("Null HudItem. Skipping.");
 		}

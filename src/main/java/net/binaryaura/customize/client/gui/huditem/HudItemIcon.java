@@ -12,7 +12,7 @@ public abstract class HudItemIcon extends HudItem{
 	}
 	
 	@Override
-	public void renderHUDItem() {
+	public void renderHUDItem(int x, int y) {
 		
 	}
 }

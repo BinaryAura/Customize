@@ -12,8 +12,7 @@ public abstract class HudItemIconSet extends HudItem {
 	}
 
 	@Override
-	public void renderHUDItem() {
-		// TODO Auto-generated method stub
+	public void renderHUDItem(int x, int y) {
 
 	}
 

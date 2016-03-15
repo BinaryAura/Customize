@@ -30,7 +30,7 @@ public class ClientProxy extends CommonProxy {
 	private void registerHudItems() {
 		Customize.hudManager.registerHudItem(new HudItemHealth("health"));
 		Customize.hudManager.registerHudItem(new HudItemExperience("experience"));
-		Customize.hudManager.registerHudItem(new HudItemToolTip("tooltip"));
+//		Customize.hudManager.registerHudItem(new HudItemToolTip("tooltip"));
 	}
 	
 	private void registerRenderers() {

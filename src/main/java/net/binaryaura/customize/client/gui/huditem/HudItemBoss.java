@@ -11,32 +11,27 @@ public class HudItemBoss extends HudItemBar {
 	}
 
 	@Override
-	public void renderHUDItem() {
-		// TODO Auto-generated method stub
+	public void renderHUDItem(int x, int y) {
 		
 	}
 
 	@Override
 	protected void init() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected float getAmount(int layer) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	protected SpriteSet getLayers() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected SpriteSet getDefaultSpriteSet() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

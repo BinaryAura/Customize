@@ -4,7 +4,6 @@ public abstract class HudItemAdvancedText extends HudItem{
 
 	public HudItemAdvancedText(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	protected abstract int getBGColor(int line);
@@ -17,7 +16,6 @@ public abstract class HudItemAdvancedText extends HudItem{
 
 	@Override
 	protected void init() {
-		// TODO Auto-generated method stub
 
 	}
 
