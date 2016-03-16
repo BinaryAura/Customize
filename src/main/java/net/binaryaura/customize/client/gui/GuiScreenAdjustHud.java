@@ -46,17 +46,12 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		if(button instanceof GuiButtonHudItem) {
-			HudItem hudItem = HudItemManager.getHudItem(button.id);
-//			HudItem hudItem = HudItemManager.getHudItem(button.displayString);
-			if(hudItem != null) {
-				if(menu == null || button != selected)
-					menu = new GuiHudItemMenu(this, (GuiButtonHudItem) button);
-				else
-					onSubscreenClosed();
+			Customize.log.info(button == selected);
+			if(menu == null || button != selected){
+				menu = new GuiHudItemMenu(this, (GuiButtonHudItem) button);
 				selectButton((GuiButtonHudItem) button);
-			} else if(menu != null) {
-				onSubscreenClosed();
-			}
+			} else
+				onMenuClosed();
 		}
 		super.actionPerformed(button);
 	}
@@ -71,7 +66,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		    	deselectButton();
 		    }
 		    if(menu != null) {
-		    	onSubscreenClosed();
+		    	onMenuClosed();
 		    }
 		 	super.actionPerformed(button);
 		}
@@ -172,6 +167,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		//	LEFT -- HUDITEM MENU (HOVERED) / CLOSE HUDITEM MENU
 		//	RIGHT -- ROTATE HUDITEM
+		Customize.log.info("CLICK");
 		if(menu != null) {
 			menu.mouseClicked(mouseX, mouseY, mouseButton);
 		}
@@ -203,50 +199,51 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		}
 		
 		//	Clicked Nothing
-		if(menu != null)	onSubscreenClosed();
+		if(menu != null)	onMenuClosed();
 		deselectButton();
 	}
 	
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		if(selected != null) {
+		Customize.log.info("RELEASE");
+		if(selected != null && mouseHeld) {
+			mouseHeld = false;
 			selected.savePosition();
+			deselectButton();
 			Customize.log.info("MOUSE: (" + mouseX + ":" + mouseY + ")");
 			initGui();
 		}
-		if(menu == null)	deselectButton();
 		super.mouseReleased(mouseX, mouseY, state);
 	}
 
 	@Override
 	protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
 		//	LEFT -- MOVE HUDITEM
-		if(menu != null)	onSubscreenClosed();
+		if(menu != null)	onMenuClosed();
 		if(selected != null && clickedMouseButton == 0) {
+			if(!mouseHeld)	mouseHeld = true;
 			selected.editPosition(mouseX - mouseStartX, mouseY - mouseStartY);
 		}
 		super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
 	}
 	
-//	@SuppressWarnings("unchecked")
 	protected void deselectButton() {
-//		buttonList.add(selected);
+		Customize.log.info("Deselected Button");
 		selected = null;
 	}
 	
-//	@SuppressWarnings("unchecked")
 	protected void selectButton(GuiButtonHudItem button) {
-//		if(selected != null)	buttonList.add(selected);
-//		buttonList.remove(button);
+		Customize.log.info("Selected Button");
 		selected = button;
 	}
 	
-	protected void onSubscreenClosed() {
+	protected void onMenuClosed() {
 		Customize.log.info("Closing Menu");
 		menu.onGuiClosed();
 		menu = null;
 	}
 	
+	private boolean mouseHeld = false;
 	private int mouseStartX;
 	private int mouseStartY;
 	protected GuiButtonHudItem selected;
