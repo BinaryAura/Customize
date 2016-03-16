@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
-import net.binaryaura.customize.client.gui.huditem.HudItem.Orientation;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
@@ -66,11 +65,17 @@ public class GuiButtonHudItem extends GuiButton {
 	public void recover() {
 		int screenHeight = HudItemManager.getRes().getScaledHeight();
 		int screenWidth = HudItemManager.getRes().getScaledWidth();
-		if(hudItemX < 5)	hudItemX = 25;
-		if(hudItemX > screenWidth - 5)	hudItemX = screenWidth - 25;
-		if(hudItemY < 5)	hudItemX = 25;
-		if(hudItemY > screenHeight - 5)	hudItemY = screenHeight - 25;
-		editPosition(0, 0);
+		int deltaX = 0;
+		int deltaY = 0;
+		if(xPosition < 5)
+			deltaX = 25 - xPosition;
+		if(xPosition > screenWidth - 5)
+			deltaX = screenWidth - 25 - xPosition;
+		if(yPosition < 5)
+			deltaY = 25 - yPosition;
+		if(yPosition > screenHeight - 5)
+			deltaY = screenHeight - 25 - yPosition;
+		editPosition(deltaX, deltaY);
 		savePosition();
 	}
 	

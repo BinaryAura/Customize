@@ -148,7 +148,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 				if(selected != null) selected.setAnchor(Anchor.BOTTOM);
 				break;
 			case Keyboard.KEY_NUMPAD3:
-				if(selected != null) selected.setAnchor(Anchor.RIGHT);
+				if(selected != null) selected.setAnchor(Anchor.BOTTOMRIGHT);
 				break;
 			case Keyboard.KEY_HOME:
 				GuiButtonHudItem button;

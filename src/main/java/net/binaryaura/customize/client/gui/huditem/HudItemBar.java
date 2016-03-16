@@ -53,30 +53,32 @@ public abstract class HudItemBar extends HudItem {
 	}
 	
 	private int alignmentTransX() {
+		if(orientation == Orientation.LEFT || orientation == Orientation.RIGHT) return 0;
 		switch(anchor) {
 			case TOP:
 			case CENTER:
 			case BOTTOM:
-				return -width / 2;
+				return -height / 2;
 			case TOPRIGHT:
 			case RIGHT:
 			case BOTTOMRIGHT:
-				return -width;
+				return -height;
 			default:
 				return 0;
 		}
 	}
 	
 	private int alignmentTransY() {
+		if(orientation == Orientation.LEFT || orientation == Orientation.RIGHT) return 0;
 		switch(anchor) {
 			case LEFT:
 			case CENTER:
 			case RIGHT:
-				return -height / 2;
+				return height / 2;
 			case BOTTOMLEFT:
 			case BOTTOM:
 			case BOTTOMRIGHT:
-				return -height;
+				return height;
 			default:
 				return 0;
 		}
@@ -119,6 +121,16 @@ public abstract class HudItemBar extends HudItem {
 			default:
 				return 0.0F;
 		}
+	}
+
+	@Override
+	public int getX() {
+		return super.getX() + alignmentTransX();
+	}
+
+	@Override
+	public int getY() {
+		return super.getY() + alignmentTransY();
 	}
 
 	@Override
