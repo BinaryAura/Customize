@@ -2,6 +2,10 @@ package net.binaryaura.customize.client.gui.huditem;
 
 public class HudItemPlayerList extends HudItemText {
 
+	//	TODO: Make Player List HudItem
+	//		Icon/IconList for player heads
+	//		IconGauge for Signal
+	//		Text for names
 	public HudItemPlayerList(String name) {
 		super(name);
 	}

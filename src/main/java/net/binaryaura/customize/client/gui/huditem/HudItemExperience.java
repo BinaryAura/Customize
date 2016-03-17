@@ -4,9 +4,7 @@ import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class HudItemExperience extends HudItemBar {
 
@@ -37,8 +35,8 @@ public class HudItemExperience extends HudItemBar {
 	@Override
 	public void renderHUDItem(int x, int y) {
 		player = (EntityPlayer)this.mc.getRenderViewEntity();
-		render = mc.playerController.gameIsSurvivalOrAdventure() && player != null;
-		super.renderHUDItem(x, y);
+		if(mc.playerController.gameIsSurvivalOrAdventure() && player != null)
+			super.renderHUDItem(x, y);
 	}
 	
 	private EntityPlayer player;

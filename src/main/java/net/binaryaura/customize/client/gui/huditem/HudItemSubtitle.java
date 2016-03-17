@@ -2,6 +2,7 @@ package net.binaryaura.customize.client.gui.huditem;
 
 public class HudItemSubtitle extends HudItemText {
 
+	//	TODO: Make Subtitle HudItem
 	public HudItemSubtitle(String name) {
 		super(name);
 	}

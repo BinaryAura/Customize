@@ -1,5 +1,6 @@
 package net.binaryaura.customize.client.gui.huditem;
 
+import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
@@ -30,18 +31,18 @@ public abstract class HudItemIconGauge extends HudItem {
 		switch(orientation) {
 			case RIGHT:
 					height = (stacks - 1)*stackSpace + layers.getHeight();
-					width = space*maxPerRow + 1;
+					width = space*maxPerRow;
 				break;
 			case DOWN:
-					height = space*maxPerRow + 1;
+					height = space*maxPerRow;
 					width = (stacks - 1)*stackSpace + layers.getWidth();
 				break;
 			case LEFT:
 					height = (stacks - 1)*stackSpace + layers.getHeight();
-					width = space*maxPerRow + 1;
+					width = space*maxPerRow;
 				break;
 			case UP:
-					height = space*maxPerRow + 1;
+					height = space*maxPerRow;
 					width = (stacks - 1)*stackSpace + layers.getWidth();
 				break;
 		}
@@ -50,8 +51,6 @@ public abstract class HudItemIconGauge extends HudItem {
 	@Override
 	public void renderHUDItem(int x, int y) {
 		mc.mcProfiler.startSection(name);
-		
-		super.renderHUDItem(x, y);
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
 		if(amount != getAmount()) {
@@ -88,6 +87,7 @@ public abstract class HudItemIconGauge extends HudItem {
 				}
 				break;
 			case LEFT:
+				x += width - layers.getWidth();
 				space = layers.getWidth();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
 					iconLayers = getIconSpriteSet(i);
@@ -102,6 +102,7 @@ public abstract class HudItemIconGauge extends HudItem {
 				}
 				break;
 			case UP:
+				y += height - layers.getHeight();
 				space = layers.getHeight();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
 					iconLayers = getIconSpriteSet(i);

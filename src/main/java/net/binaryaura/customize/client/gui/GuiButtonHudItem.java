@@ -9,6 +9,7 @@ import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.MathHelper;
 
 public class GuiButtonHudItem extends GuiButton {
 
@@ -19,10 +20,10 @@ public class GuiButtonHudItem extends GuiButton {
 	public GuiButtonHudItem(int buttonId, int x, int y, int width, int height, String name) {
 		super(buttonId, x, y, width, height, name);
 		hudItem = HudItemManager.getHudItem(name);
-		hudItemX = x;
-		hudItemY = y;
-		xPosition = hudItem.getButtonX();
-		yPosition = hudItem.getButtonY();	
+//		hudItemX = x;
+//		hudItemY = y;
+//		xPosition = hudItem.getButtonX();
+//		yPosition = hudItem.getButtonY();	
 	}
 
 	@Override
@@ -33,9 +34,9 @@ public class GuiButtonHudItem extends GuiButton {
 			FontRenderer fontrenderer = mc.fontRendererObj;
 			if(hudItem != null) {
 				GL11.glPushMatrix();
-				if(isMouseOver())
+				if(isMouseOver() || hudItem.guiBackground())
 					drawRect(xPosition + deltaX, yPosition + deltaY, xPosition + deltaX + width, yPosition + deltaY + height, Color.WHITE + (0x22 << 24));
-				hudItem.renderHUDItem(hudItemX + deltaX, hudItemY + deltaY);
+				hudItem.renderHUDItem(xPosition + deltaX, yPosition + deltaY);
 				GL11.glPopMatrix();
 			} else {
 				Customize.log.warn("HudItem " + displayString + " doesn't exist.");
@@ -57,8 +58,15 @@ public class GuiButtonHudItem extends GuiButton {
 		savePosition();
 	}
 	
+	//	TODO: Fix Graphical Rotate Bug with Bar HudItems
 	public void rotate() {
-		hudItem.rotateLeft();
+		if(hudItem.canRotate()) {
+			hudItem.rotateLeft();
+			editPosition((width - height) / 2, (height - width) / 2);
+			width = hudItem.getWidth();
+			height = hudItem.getHeight();
+			savePosition();
+		}
 	}	
 	
 	@Deprecated
@@ -79,21 +87,24 @@ public class GuiButtonHudItem extends GuiButton {
 		savePosition();
 	}
 	
-	public void savePosition() {		
-		hudItemX += deltaX;
-		hudItemY += deltaY;
+	public void savePosition() {
+		Customize.log.info("SAVE");
+		xPosition += deltaX;
+		yPosition += deltaY;
 		editPosition(0, 0);
-		hudItem.setPos(hudItemX, hudItemY);
+		hudItem.setPos(xPosition, yPosition);
 	}
 	
 	public void editPosition(int deltaX, int deltaY) {
+		int screenHeight = HudItemManager.getRes().getScaledHeight();
+		int screenWidth = HudItemManager.getRes().getScaledWidth();
+		deltaX = MathHelper.clamp_int(deltaX, -xPosition, screenWidth - width - xPosition);
+		deltaY = MathHelper.clamp_int(deltaY, -yPosition, screenHeight - height - yPosition);
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 	}
 	
 	private int deltaX;
 	private int deltaY;
-	private int hudItemX;
-	private int hudItemY;
 	private HudItem hudItem;
 }

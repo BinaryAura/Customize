@@ -5,11 +5,9 @@ import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class HudItemHealth extends HudItemIconGauge {
 	
@@ -78,8 +76,8 @@ public class HudItemHealth extends HudItemIconGauge {
 	@Override
 	public void renderHUDItem(int x, int y) {
 		player = (EntityPlayer)this.mc.getRenderViewEntity();
-		render = this.mc.playerController.shouldDrawHUD() && player != null;
-		super.renderHUDItem(x, y);
+		if(this.mc.playerController.shouldDrawHUD() && player != null)
+			super.renderHUDItem(x, y);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import net.binaryaura.customize.client.gui.SpriteSet;
 
 public class HudItemMountHealth extends HudItemIconGauge {
 
+	//	TODO: Make Mount Health Gauge HudItem
 	public HudItemMountHealth(String name) {
 		super(name);
 	}

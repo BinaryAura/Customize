@@ -2,6 +2,7 @@ package net.binaryaura.customize.client.gui.huditem;
 
 public class HudItemObjective extends HudItemText {
 
+	//	TODO: Make Objective HudItem
 	public HudItemObjective(String name) {
 		super(name);
 	}

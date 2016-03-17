@@ -4,6 +4,7 @@ import net.binaryaura.customize.client.gui.SpriteSet;
 
 public class HudItemFood extends HudItemIconGauge {
 
+	//	TODO: Make Food Gauge HudItem
 	public HudItemFood(String name) {
 		super(name);
 	}

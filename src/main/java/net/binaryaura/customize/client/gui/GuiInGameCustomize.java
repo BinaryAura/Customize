@@ -5,13 +5,10 @@ import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.HELMET;
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.PORTAL;
 
-import java.util.HashMap;
-
 import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
-import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -97,7 +94,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	public ScaledResolution getResolution() {
 		return res;
 	}
-
+	
 	private void renderHelmet(ScaledResolution res, float partialTicks) {
 		if (pre(HELMET))
 			return;

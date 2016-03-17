@@ -2,17 +2,15 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.gui.ScaledResolution;
+import net.binaryaura.customize.client.gui.GuiInGameCustomize;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class HudItemToolTip extends HudItemText {
 
 	public HudItemToolTip(String name) {
 		super(name);
-		canFlip = false;
 		canRotate = false;
 		init();
 	}
@@ -27,26 +25,25 @@ public class HudItemToolTip extends HudItemText {
 	
 	@Override
 	public void renderHUDItem(int x, int y) {
-		if(this.mc.gameSettings.heldItemTooltips && !this.mc.playerController.isSpectator()) {
-			boolean render = this.remainingHighlightTicks > 0 && this.highlightingItemStack != null;	
-			if(!render) return;
-			
-			string = this.highlightingItemStack.getDisplayName();		
-		    if (this.highlightingItemStack.hasDisplayName()) {
-		        string = EnumChatFormatting.ITALIC + string;
-		    }
-		    setHeightAndWidth();
-		    
-			GlStateManager.enableBlend();
-			GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-			
-		    super.renderHUDItem(x, y);
-		    
-			GlStateManager.disableBlend();
-		} //else if(this.mc.thePlayer.isSpectator()) {
-//			mc.ingameGUI.get
-//			((GuiInGameCustomize) mc.ingameGUI).get//func_175263_a(res);
-//		}
+		if(mc.gameSettings.heldItemTooltips && !mc.playerController.isSpectator()) {
+			if(remainingHighlightTicks > 0 && highlightingItemStack != null) {
+				string = this.highlightingItemStack.getDisplayName();		
+			    if (this.highlightingItemStack.hasDisplayName()) {
+			        string = EnumChatFormatting.ITALIC + string;
+			    }
+			    
+				GlStateManager.enableBlend();
+				GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+				
+			    super.renderHUDItem(x, y);
+			    
+				GlStateManager.disableBlend();
+			}
+			//	Unfortunately the Spectator Menu is stuck where it is. Thank you protected fields.
+		} else if(this.mc.thePlayer.isSpectator()) {
+			GuiInGameCustomize guiInGame = (GuiInGameCustomize) mc.ingameGUI;
+			guiInGame.func_175187_g().func_175263_a(HudItemManager.getRes());
+		}
 	}
 	    
 	@Override
@@ -79,11 +76,11 @@ public class HudItemToolTip extends HudItemText {
 
 	@Override
 	protected int getAlpha() {
-		int k = (int)((float)this.remainingHighlightTicks * 256.0F / 10.0F);
+		int alpha = (int)((float)this.remainingHighlightTicks * 256.0F / 10.0F);
 		
-	    if (k > 255) k = 255;
+	    if (alpha > 255) alpha = 255;
 	    
-		return k;
+		return alpha;
 	}
 	
 	@Override
@@ -111,11 +108,6 @@ public class HudItemToolTip extends HudItemText {
             this.highlightingItemStack = itemstack;
         }
 		super.updateTick();
-	}
-	
-	protected void setHeightAndWidth() {
-		width = fontRenderer.getStringWidth(string);
-		height = fontRenderer.FONT_HEIGHT;
 	}
 	
 	private int remainingHighlightTicks;

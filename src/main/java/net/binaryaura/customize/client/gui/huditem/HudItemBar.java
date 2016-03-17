@@ -5,9 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItemBar extends HudItem {
 
@@ -52,46 +50,14 @@ public abstract class HudItemBar extends HudItem {
 		mc.mcProfiler.endSection();
 	}
 	
-	private int alignmentTransX() {
-		if(orientation == Orientation.LEFT || orientation == Orientation.RIGHT) return 0;
-		switch(anchor) {
-			case TOP:
-			case CENTER:
-			case BOTTOM:
-				return -height / 2;
-			case TOPRIGHT:
-			case RIGHT:
-			case BOTTOMRIGHT:
-				return -height;
-			default:
-				return 0;
-		}
-	}
-	
-	private int alignmentTransY() {
-		if(orientation == Orientation.LEFT || orientation == Orientation.RIGHT) return 0;
-		switch(anchor) {
-			case LEFT:
-			case CENTER:
-			case RIGHT:
-				return height / 2;
-			case BOTTOMLEFT:
-			case BOTTOM:
-			case BOTTOMRIGHT:
-				return height;
-			default:
-				return 0;
-		}
-	}
-	
 	private int getTranslateX(int x, int y) {
 		switch(orientation) {
 			case DOWN:
-				return x + y + (layers.getWidth() + layers.getHeight()) / 2;
+				return x + y + layers.getHeight();
 			case LEFT:
 				return 2*x + layers.getWidth();
 			case UP:
-				return x - y + (layers.getWidth() + layers.getHeight()) / 2;
+				return x - y;
 			default:
 				return 0;
 		}
@@ -100,11 +66,11 @@ public abstract class HudItemBar extends HudItem {
 	private int getTranslateY(int x, int y) {
 		switch(orientation) {
 			case DOWN:
-				return y - x + (layers.getHeight() - layers.getWidth()) / 2;
+				return y - x;
 			case LEFT:
 				return 2*y + layers.getHeight();
 			case UP:
-				return x + y + (layers.getWidth() + layers.getHeight()) / 2;
+				return x + y + layers.getWidth();
 			default:
 				return 0;
 		}
@@ -120,40 +86,6 @@ public abstract class HudItemBar extends HudItem {
 				return -90.0F;
 			default:
 				return 0.0F;
-		}
-	}
-
-	@Override
-	public int getX() {
-		return super.getX() + alignmentTransX();
-	}
-
-	@Override
-	public int getY() {
-		return super.getY() + alignmentTransY();
-	}
-
-	@Override
-	public int getButtonX(int x, int y) {
-		switch(getOrientation()) {
-			case DOWN:
-				return getX() + (height - width) / 2;
-			case UP:
-				return getX() + (height + width) / 2;
-			default:
-				return getX();
-		}
-	}
-
-	@Override
-	public int getButtonY(int x, int y) {
-		switch(getOrientation()) {
-			case DOWN:				
-				return getY() - (height - width) / 2;
-			case UP:
-				return getY() - (int)Math.ceil((height - width) / 2.0);
-			default:
-				return getY();
 		}
 	}
 

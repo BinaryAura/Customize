@@ -4,6 +4,7 @@ import net.binaryaura.customize.client.gui.SpriteSet;
 
 public class HudItemJump extends HudItemBar {
 
+	//	TODO: Make Jump Bar HudItem
 	public HudItemJump(String name) {
 		super(name);
 	}

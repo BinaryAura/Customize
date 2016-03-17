@@ -74,15 +74,15 @@ public class GuiScreenAdjustHud extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		// 	TODO: Setup Key Controls
-		//	LEFT / RIGHT -- PREV / NEXT CONFIG (SAVES)
-		//	DOWN / UP -- PREV / NEXT CONFIG PAGE (SAVES)
-		//  0-9 -- LOAD CONFIG # (SAVES)
-		//	DEL -- DELETE CONFIG (RESET TO DEFAULT) (CONFIRM) (SAVES)
-		//	ESC -- EXIT (SAVES)
-		//	BS -- CANCEL CHANGES
-		//	HOLD CTRL -- SHOW ANCHORS
-		//	F1 -- HELP
+		// 	TODO: Set up Key Controls
+		//		LEFT / RIGHT -- PREV / NEXT CONFIG (SAVES)
+		//		DOWN / UP -- PREV / NEXT CONFIG PAGE (SAVES)
+		//  	0-9 -- LOAD CONFIG # (SAVES)
+		//		DEL -- DELETE CONFIG (RESET TO DEFAULT) (CONFIRM) (SAVES)
+		//		ESC -- EXIT (SAVES)
+		//		BS -- CANCEL CHANGES
+		//		HOLD CTRL -- SHOW ANCHORS
+		//		F1 -- HELP
 		
 		if(keyCode >= Keyboard.KEY_1 && keyCode <= Keyboard.KEY_0) {
 			Customize.log.info("CONFIGURATION " + typedChar);
@@ -162,7 +162,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 				break;
 		}
 	}
-	
+	//	TODO: Fix Draging Dual Click Bug
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		//	LEFT -- HUDITEM MENU (HOVERED) / CLOSE HUDITEM MENU

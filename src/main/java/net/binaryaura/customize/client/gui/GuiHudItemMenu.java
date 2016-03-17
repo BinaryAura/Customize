@@ -17,7 +17,7 @@ public class GuiHudItemMenu extends GuiScreen {
 	@Override
 	public void initGui() {
 		buttonList.clear();
-		//	TODO: Setup HudItem Menus and their locations
+		//	TODO: Set up HudItem Menus and their locations
 		buttonList.add(new GuiButton(100, 10, 10, Localization.get("menu.test")));
 	}
 

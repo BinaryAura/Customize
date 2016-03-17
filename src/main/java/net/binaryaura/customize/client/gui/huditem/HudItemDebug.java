@@ -2,6 +2,8 @@ package net.binaryaura.customize.client.gui.huditem;
 
 public class HudItemDebug extends HudItemText {
 
+	//	TODO: Make Debug Text Screen 
+	//		HudItem or otherwise
 	public HudItemDebug(String name) {
 		super(name);
 	}

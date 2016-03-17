@@ -9,9 +9,7 @@ import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItem implements Color{
 	
@@ -117,7 +115,6 @@ public abstract class HudItem implements Color{
 		flip = !flip;
 	}
 	
-	//	TODO: Fix Rotation to simulate an axis	
 	public void rotateLeft() {
 		orientation = orientation.left();
 		setHeightAndWidth();
@@ -141,22 +138,6 @@ public abstract class HudItem implements Color{
 	public void updateTick() {
 		++updateCounter;
 		rand.setSeed((long)(updateCounter * 312871));
-	}
-	
-	public int getButtonX(int x, int y) {
-		return getX();
-	}
-	
-	public int getButtonY(int x, int y) {
-		return getY();
-	}
-	
-	public int getButtonX() {
-		return getButtonX(getX(), getY());
-	}
-	
-	public int getButtonY() {
-		return getButtonY(getX(), getY());
 	}
 	
 	public int getX() {
@@ -263,7 +244,23 @@ public abstract class HudItem implements Color{
 	public int getId() {
 		return id;
 	}
+	
+	public boolean guiBackground() {
+		return guiBackground;
+	}
 
+	public boolean canMove() {
+		return canMove;
+	}
+	
+	public boolean canFlip() {
+		return canFlip;
+	}
+	
+	public boolean canRotate() {
+		return canRotate;
+	}
+	
 	@Override
 	public String toString() {
 		return "HUDItem " + getName();
@@ -273,10 +270,11 @@ public abstract class HudItem implements Color{
 		mc.getTextureManager().bindTexture(res);
 	}
 	
+	protected boolean guiBackground = false;
+	protected boolean canMove = true;
 	protected boolean canFlip = false;
 	protected boolean canRotate = false;
 	protected boolean flip = false;
-	protected boolean render = true;
 	protected int x;
 	protected int y;
 	protected int height;

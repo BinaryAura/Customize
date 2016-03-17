@@ -3,8 +3,6 @@ package net.binaryaura.customize.client.gui.huditem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItemText extends HudItem {
 
@@ -14,9 +12,8 @@ public abstract class HudItemText extends HudItem {
 	
 	public HudItemText(String name) {
 		super(name);
-		flip = false;
 		orientation = Orientation.RIGHT;
-		canFlip = false;
+		guiBackground = true;
 		canRotate = false;
 		type = HudItemType.TEXT;
 		fontRenderer = mc.fontRendererObj;
@@ -24,8 +21,9 @@ public abstract class HudItemText extends HudItem {
 
 	@Override
 	public void renderHUDItem(int x, int y) {
-		int textX = HudItemManager.getRes().getScaledWidth() / 2 + x + getDeltaX();
-		int textY = HudItemManager.getRes().getScaledHeight() / 2 + y + getDeltaY();
+		setHeightAndWidth();
+		int textX = x + getDeltaX();
+		int textY = y + getDeltaY();
 		int styleAdd = (style == Style.SHADOWED ? 1 : style == Style.OUTLINED ? 2 : 0);
 		if(getBGAlpha() > 0) {
 			int bgColor = getBGColor() + (getBGAlpha() << 24);
@@ -47,6 +45,11 @@ public abstract class HudItemText extends HudItem {
 					break;
 			}
 		}
+	}
+	
+	protected void setHeightAndWidth() {
+		width = fontRenderer.getStringWidth(string);
+		height = fontRenderer.FONT_HEIGHT;
 	}
 	
 	protected abstract int getDeltaX();
