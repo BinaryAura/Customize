@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
-import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,16 +22,17 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 
 public class GuiInGameCustomize extends GuiIngameForge {
+	
+	public static boolean renderHUD = true;
 
 	public GuiInGameCustomize(Minecraft mc) {
 		super(mc);
-		hudManager = Customize.hudManager;
 	}
 
 	@Override
 	public void updateTick() {
 		super.updateTick();
-		for (HudItem hudItem : hudManager.hudItems.values()) {
+		for (HudItem hudItem : HudItemManager.getHudItems()) {
 			if(hudItem != null) hudItem.updateTick();
 		}
 	}
@@ -41,7 +41,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	public void renderGameOverlay(float partialTicks) {
 		res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 		eventParent = new RenderGameOverlayEvent(partialTicks, res);
-		HudItem.Anchor.updateRes(res);
+		HudItemManager.updateRes(res);
 
 		if (pre(ALL)) return;
 
@@ -63,10 +63,12 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		
 		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
-		for (HudItem hudItem : hudManager.hudItems.values()) {
-			GL11.glPushMatrix();
-			if(hudItem != null) hudItem.renderHUDItem(res, eventParent);
-			GL11.glPopMatrix();
+		if(renderHUD) {
+			for (HudItem hudItem : HudItemManager.getHudItems()) {
+				GL11.glPushMatrix();
+				if(hudItem != null)	hudItem.renderHUDItem();
+				GL11.glPopMatrix();
+			}
 		}
 		
         renderChat(res.getScaledWidth(), res.getScaledHeight());
@@ -92,7 +94,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	public ScaledResolution getResolution() {
 		return res;
 	}
-
+	
 	private void renderHelmet(ScaledResolution res, float partialTicks) {
 		if (pre(HELMET))
 			return;
@@ -137,5 +139,4 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 	private ScaledResolution res = null;
 	private RenderGameOverlayEvent eventParent;
-	private HudItemManager hudManager = null;
 }

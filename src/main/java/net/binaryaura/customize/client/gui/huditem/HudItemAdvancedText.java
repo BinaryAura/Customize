@@ -2,9 +2,9 @@ package net.binaryaura.customize.client.gui.huditem;
 
 public abstract class HudItemAdvancedText extends HudItem{
 
+	//	TODO: Set up Advanced Text Class
 	public HudItemAdvancedText(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	protected abstract int getBGColor(int line);
@@ -17,7 +17,6 @@ public abstract class HudItemAdvancedText extends HudItem{
 
 	@Override
 	protected void init() {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -4,21 +4,17 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
-import net.binaryaura.customize.client.gui.Color;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
+import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItem implements Color{
 	
 	public static enum Anchor {
 		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
-		
-		private static ScaledResolution res;
 		
 		public int getX() {
 			switch(this) {
@@ -29,11 +25,11 @@ public abstract class HudItem implements Color{
 				case TOP:
 				case CENTER:
 				case BOTTOM:
-					return res.getScaledWidth() / 2;
+					return HudItemManager.getRes().getScaledWidth() / 2;
 				case TOPRIGHT:
 				case RIGHT:
 				case BOTTOMRIGHT:
-					return res.getScaledWidth();
+					return HudItemManager.getRes().getScaledWidth();
 				default:
 					return 0;
 			}
@@ -48,20 +44,15 @@ public abstract class HudItem implements Color{
 				case LEFT:
 				case CENTER:
 				case RIGHT:
-					return res.getScaledHeight() / 2;
+					return HudItemManager.getRes().getScaledHeight() / 2;
 				case BOTTOMLEFT:
 				case BOTTOM:
 				case BOTTOMRIGHT:
-					return res.getScaledHeight();
+					return HudItemManager.getRes().getScaledHeight();
 				default:
 					return 0;
 			}
-		}
-		
-		public static void updateRes(ScaledResolution newRes) {
-			res = newRes;
-		}
-		
+		}		
 	}
 	
 	public static enum Orientation {
@@ -101,10 +92,12 @@ public abstract class HudItem implements Color{
 	protected static final Random rand = new Random();
 	
 	public HudItem(String name){
-		this.name = name;
+		this.name = name.toLowerCase();
 		mc = Minecraft.getMinecraft();
 		guiRenderer = new Gui();
 	}
+	
+	protected abstract void setHeightAndWidth();
 	
 	public String getName() {
 		return name;
@@ -122,14 +115,22 @@ public abstract class HudItem implements Color{
 	
 	public void rotateLeft() {
 		orientation = orientation.left();
+		setHeightAndWidth();
 	}
 	
 	public void rotateRight() {
 		orientation = orientation.right();
+		setHeightAndWidth();
 	}
 	
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
-		Anchor.updateRes(res);
+	public void renderHUDItem() {
+		renderHUDItem(getX(), getY());
+	}
+	
+	public abstract void renderHUDItem(int x, int y);
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void updateTick() {
@@ -157,6 +158,10 @@ public abstract class HudItem implements Color{
 		}
 	}
 	
+	public void setAnchor(Anchor anchor) {
+		this.anchor = anchor;
+	}
+	
 	public int getY() {
 		int pxlY = anchor.getY() + y;
 		switch(anchor) {
@@ -176,7 +181,84 @@ public abstract class HudItem implements Color{
 				return pxlY;
 		}
 	}
+	
+	public Orientation getOrientation() {
+		return orientation;
+	}
+	
+	//	TODO: Set up Border Collision
+	public void setPos(int x, int y) {
+		log.info(this.x + " : " + this.y);
+		log.info("anchorPos: " + anchor.getX() + " : " + anchor.getY());
+		
+		switch(anchor) {
+			case TOPLEFT:
+				break;
+			case TOP:
+				x += width / 2;
+				break;
+			case TOPRIGHT:
+				x += width;
+				break;
+				
+			case LEFT:
+				y += height / 2;
+				break;
+			case CENTER:
+				x += width / 2;
+				y += height / 2;
+				break;
+			case RIGHT:
+				x += width;
+				y += height / 2;
+				break;
+				
+			case BOTTOMLEFT:
+				y += height;
+				break;
+			case BOTTOM:
+				x += width / 2;
+				y += height;
+				break;
+			case BOTTOMRIGHT:
+				x += width;
+				y += height;
+				break;
+		}
+		
+		this.x = x - anchor.getX();
+		this.y = y - anchor.getY();
+		log.info("Saved: " + anchor + ": (" + this.x + ":" + this.y + ")");
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public boolean guiBackground() {
+		return guiBackground;
+	}
 
+	public boolean canMove() {
+		return canMove;
+	}
+	
+	public boolean canFlip() {
+		return canFlip;
+	}
+	
+	public boolean canRotate() {
+		return canRotate;
+	}
+	
 	@Override
 	public String toString() {
 		return "HUDItem " + getName();
@@ -186,14 +268,16 @@ public abstract class HudItem implements Color{
 		mc.getTextureManager().bindTexture(res);
 	}
 	
+	protected boolean guiBackground = false;
+	protected boolean canMove = true;
 	protected boolean canFlip = false;
 	protected boolean canRotate = false;
 	protected boolean flip = false;
-	protected boolean render = true;
 	protected int x;
 	protected int y;
 	protected int height;
 	protected int width;
+	protected int id;
 	protected int updateCounter = 0;
 	protected long lastSystemTime;
 	protected String name;

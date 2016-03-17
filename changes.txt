@@ -1,0 +1,11 @@
+Customize (1A0-0)
+16MAR16
+
++Added Bar to HudItem API
++Added IconGuage to HudItem API
++Added Text to HudItem API
++Added Default Health
++Added Default Experience
++Added Default Tooltip
++Added HudItem Adjustment Screen
++Added Border Collision

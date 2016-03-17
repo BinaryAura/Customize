@@ -4,23 +4,21 @@ import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class HudItemExperience extends HudItemBar {
 
 	public HudItemExperience(String name) {
 		super(name);
-		orientation = Orientation.UP;
+		orientation = Orientation.RIGHT;
 		init();
 	}
 
 	@Override
 	protected void init() {
-		anchor = Anchor.BOTTOM;
+		anchor = Anchor.TOPLEFT;
 		x = 0;
-		y = -29;
+		y = 0;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 182, 5, 0, 64)));
 		layers.addLayer(new SpriteSet("experience", new Sprite(Gui.icons, 182, 5, 0, 69)));
 	}
@@ -35,10 +33,10 @@ public class HudItemExperience extends HudItemBar {
 	}
 
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+	public void renderHUDItem(int x, int y) {
 		player = (EntityPlayer)this.mc.getRenderViewEntity();
-		render = mc.playerController.gameIsSurvivalOrAdventure() && player != null;
-		super.renderHUDItem(res, eventParent);
+		if(mc.playerController.gameIsSurvivalOrAdventure() && player != null)
+			super.renderHUDItem(x, y);
 	}
 	
 	private EntityPlayer player;

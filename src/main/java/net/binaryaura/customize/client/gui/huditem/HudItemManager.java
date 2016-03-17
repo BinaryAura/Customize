@@ -3,9 +3,11 @@ package net.binaryaura.customize.client.gui.huditem;
 import java.util.HashMap;
 
 import net.binaryaura.customize.common.Customize;
+import net.minecraft.client.gui.ScaledResolution;
 
 public class HudItemManager {
 	
+	// What about future(modded-in) types?
 	public static enum HudItemType {
 		BAR(),
 		ICON(),
@@ -15,6 +17,36 @@ public class HudItemManager {
 		
 		HudItemType() {}
 	}
+	
+	private static int nextId = 0;
+	
+	private static ScaledResolution res;
+	private static HashMap<String, HudItem> hudItems;
+	
+	public static void updateRes(ScaledResolution res) {
+		HudItemManager.res = res;
+	}
+	
+	public static ScaledResolution getRes() {
+		return res;
+	}
+	
+	public static Iterable<HudItem> getHudItems() {
+		return hudItems.values();
+	}
+	
+	public static HudItem getHudItem(String name) {
+		return hudItems.get(name);
+	}
+	
+	public static HudItem getHudItem(int id) {
+		for(HudItem hudItem : hudItems.values()) {
+			if(hudItem.getId() == id)
+				return hudItem;
+		}
+		Customize.log.warn("ID " + id + " doesn't relate to a HudItem.");
+		return null;
+	}
 
 	public HudItemManager() {
 		hudItems = new HashMap<String, HudItem>();
@@ -23,9 +55,10 @@ public class HudItemManager {
 	public void registerHudItem(HudItem hudItem) {
 		if(hudItem != null) {			
 			hudItems.put(hudItem.getName(), hudItem);
-			Customize.log.info("Registered " + hudItem);
+			hudItem.setId(nextId++);
+			Customize.log.info("Registered " + hudItem + " (" + hudItem.getId() + ")");
 		} else {
-			Customize.log.warn("Null HudItem. Skipping");
+			Customize.log.warn("Null HudItem. Skipping.");
 		}
 	}
 	
@@ -36,7 +69,5 @@ public class HudItemManager {
 		} else {
 			Customize.log.warn("HudItem " + name + " isn't registered. Skipping.");
 		}
-	}
-	
-	public HashMap<String, HudItem> hudItems;
+	}	
 }

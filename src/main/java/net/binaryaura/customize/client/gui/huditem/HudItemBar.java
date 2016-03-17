@@ -5,9 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public abstract class HudItemBar extends HudItem {
 
@@ -18,6 +16,7 @@ public abstract class HudItemBar extends HudItem {
 		canRotate = true;
 	}
 	
+	@Override
 	protected void setHeightAndWidth() {
 		switch(orientation) {
 			case DOWN:
@@ -34,30 +33,15 @@ public abstract class HudItemBar extends HudItem {
 	}
 	
 	@Override
-	public void renderHUDItem(ScaledResolution res, RenderGameOverlayEvent eventParent) {
+	public void renderHUDItem(int x, int y) {
 		mc.mcProfiler.startSection(name);
 		
 		SpriteSet sprites = getLayers();
 		setHeightAndWidth();
-		int x = getX();
-		int y = getY();
 		
-		switch(orientation) {
-			case RIGHT:
-				break;
-			case DOWN:
-				GL11.glTranslated(x + y + layers.getHeight(), y - x, 0.0F);
-				GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
-				break;
-			case LEFT:
-				GL11.glTranslatef(2*x + layers.getHeight(), 2*y + layers.getHeight(), 0.0F);
-				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-				break;
-			case UP:
-				GL11.glTranslatef(x - y, y + x + layers.getHeight(), 0.0F);
-				GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
-				break;
-		}
+		GL11.glTranslated(getTranslateX(x, y), getTranslateY(x, y), 0.0F);
+		GL11.glRotatef(getRotation(), 0.0F, 0.0F, 1.0F);
+		
 		bind(sprites.getLocation());
 		for(int i = 0; i < layers.getAmount() + 1; i++) {
 			int fill = MathHelper.ceiling_float_int(getAmount(i)*layers.getWidth());
@@ -66,6 +50,45 @@ public abstract class HudItemBar extends HudItem {
 		mc.mcProfiler.endSection();
 	}
 	
+	private int getTranslateX(int x, int y) {
+		switch(orientation) {
+			case DOWN:
+				return x + y + layers.getHeight();
+			case LEFT:
+				return 2*x + layers.getWidth();
+			case UP:
+				return x - y;
+			default:
+				return 0;
+		}
+	}
+	
+	private int getTranslateY(int x, int y) {
+		switch(orientation) {
+			case DOWN:
+				return y - x;
+			case LEFT:
+				return 2*y + layers.getHeight();
+			case UP:
+				return x + y + layers.getWidth();
+			default:
+				return 0;
+		}
+	}
+	
+	private float getRotation() {
+		switch(orientation) {
+			case DOWN:
+				return 90.0F;
+			case LEFT:
+				return 180.0F;
+			case UP:
+				return -90.0F;
+			default:
+				return 0.0F;
+		}
+	}
+
 	protected abstract float getAmount(int layer);
 	protected abstract SpriteSet getLayers();
 	protected abstract SpriteSet getDefaultSpriteSet();
