@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
+import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.gui.GuiButton;

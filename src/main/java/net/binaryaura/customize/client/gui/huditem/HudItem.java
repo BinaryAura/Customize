@@ -4,8 +4,8 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
-import net.binaryaura.customize.client.gui.Color;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
+import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -97,9 +97,7 @@ public abstract class HudItem implements Color{
 		guiRenderer = new Gui();
 	}
 	
-	protected void setHeightAndWidth() {
-		log.info("HUDITEM");
-	}
+	protected abstract void setHeightAndWidth();
 	
 	public String getName() {
 		return name;
@@ -129,7 +127,7 @@ public abstract class HudItem implements Color{
 		renderHUDItem(getX(), getY());
 	}
 	
-	public void renderHUDItem(int x, int y) {}
+	public abstract void renderHUDItem(int x, int y);
 	
 	public void setId(int id) {
 		this.id = id;

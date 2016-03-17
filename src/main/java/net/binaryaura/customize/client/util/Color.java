@@ -1,4 +1,4 @@
-package net.binaryaura.customize.client.gui;
+package net.binaryaura.customize.client.util;
 
 public interface Color {
 	static int BLACK        = 0x000000;
