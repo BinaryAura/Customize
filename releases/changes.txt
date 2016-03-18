@@ -1,6 +1,9 @@
 Customize (1A0-0) "Alpha Release"
 16MAR16
 
+Minecraft 1.8
+Forge 1.8-11.14.3.1535
+
 +Added Bar to HudItem API
 +Added IconGuage to HudItem API
 +Added Text to HudItem API
@@ -12,6 +15,9 @@ Customize (1A0-0) "Alpha Release"
 
 Customize (1A1-0) "1.8.9 Update"
 18MAR16
+
+Minecraft 1.8.9
+Forge 1.8.9-11.15.1.1722
 
 +Updated Forge to 1.8.9-11.15.1.1722
 +Updated Mod code for Forge 1.8.9-11.15.1.1722
