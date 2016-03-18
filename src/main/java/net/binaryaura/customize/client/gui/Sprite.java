@@ -14,14 +14,14 @@ public class Sprite {
 		private int y;
 	}
 	
-	public Sprite(ResourceLocation location, int width, int height, Coordinate coord) {
+	public Sprite(ResourceLocation location, Coordinate coord, int width, int height) {
 		this.location = location;
 		this.width = width;
 		this.height = height;
 		this.coord = coord;
 	}
 
-	public Sprite(ResourceLocation location, int width, int height, int x, int y) {
+	public Sprite(ResourceLocation location, int x, int y, int width, int height) {
 		this.location = location;
 		this.width = width;
 		this.height = height;

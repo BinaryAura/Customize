@@ -129,7 +129,13 @@ public abstract class HudItemIconGauge extends HudItem {
 	
 	protected abstract float getAmount();
 	
-	protected int shake(int icon) {
+	protected abstract float getDefaultAmount();
+	
+	protected int bidirectionalShake() {
+		return rand.nextInt(3) - 1;
+	}
+	
+	protected int shake() {
 		return 2*rand.nextInt(2);
 	}
 	
