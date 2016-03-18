@@ -16,7 +16,8 @@ mod takes care of the rest.
 
 ###Development
 
-  Fork this repository then, clone the fork to your computer. Download forge for development. Copy and replace the eclipse file and then, open up the command prompt at the mod directory. Type the command "gradlew setupDecompWorkspace --refresh-dependencies". Allow for the program to finish and then, type "gradlew eclipse". If you wish to use IntelliJ import the project using the build.gradle file. After IntelliJ finishes, type "gradlew genIntellijRuns".
+  Fork this repository then, clone the fork to your computer. Download forge for development. Copy and replace the eclipse file and then, open up the command prompt at the mod directory.
+  Type the command "gradlew setupDecompWorkspace --refresh-dependencies". Allow for the program to finish and then, type "gradlew eclipse". If you wish to use IntelliJ import the project using the build.gradle file. After IntelliJ finishes, type "gradlew genIntellijRuns".
   
   This setup has a built in workspace however, if you would like to have it elsewhere you can change these settings in the run configurations. You can also have git build into eclipse for more steamlined workflow. For eclipse do as follows: If you wish to import it into a different eclipse workspace or want to use eclipse's egit, open up that workspace in eclipse, goto to File > Import. Select Existing Project and click Next. Navigate to the mod directory and click OK. Make sure "Search for nested projects" is checked to get git.
   
