@@ -42,7 +42,7 @@ public class HudItemToolTip extends HudItemText {
 			//	Unfortunately the Spectator Menu is stuck where it is. Thank you protected fields.
 		} else if(this.mc.thePlayer.isSpectator()) {
 			GuiInGameCustomize guiInGame = (GuiInGameCustomize) mc.ingameGUI;
-			guiInGame.func_175187_g().func_175263_a(HudItemManager.getRes());
+			guiInGame.getSpectatorGui().func_175263_a(HudItemManager.getRes());
 		}
 	}
 	    

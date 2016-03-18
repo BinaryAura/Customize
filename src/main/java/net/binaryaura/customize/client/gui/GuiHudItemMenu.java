@@ -13,7 +13,6 @@ public class GuiHudItemMenu extends GuiScreen {
 		setWorldAndResolution(parentScreen.mc, parentScreen.width, parentScreen.height);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		buttonList.clear();
