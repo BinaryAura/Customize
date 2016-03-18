@@ -2,7 +2,7 @@
 
 ###Description
 
-  The HUD in Minecraft can be invasive, especially when you have move than 20 health. This mod: "Customize," allows for the player
+  The HUD in Minecraft can be invasive, especially when you have more than 20 health. This mod: "Customize," allows for the player
 to adjust the many aspects that makes up the HUD, including moving and rotating the bars.
   This mod is made for the developer in mind with an easy to implement API. Simply make and register a HUDItem class and the
 mod takes care of the rest. 
