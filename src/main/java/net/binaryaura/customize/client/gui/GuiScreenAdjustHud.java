@@ -20,7 +20,6 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		GuiInGameCustomize.renderHUD = false;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		buttonList.clear();

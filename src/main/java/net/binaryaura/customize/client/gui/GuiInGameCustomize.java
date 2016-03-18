@@ -39,7 +39,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 	@Override
 	public void renderGameOverlay(float partialTicks) {
-		res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		res = new ScaledResolution(mc);
 		eventParent = new RenderGameOverlayEvent(partialTicks, res);
 		HudItemManager.updateRes(res);
 
@@ -49,7 +49,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		GlStateManager.enableBlend();
 
 		if (Minecraft.isFancyGraphicsEnabled()) {
-			func_180480_a(mc.thePlayer.getBrightness(partialTicks), res);
+			renderVignette(mc.thePlayer.getBrightness(partialTicks), res);
 		} else {
 			GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 		}
@@ -84,7 +84,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
         if (f1 > 0.0F)
         {
-            func_180474_b(f1, res);
+            renderPortal(f1, res);
         }
 
         post(PORTAL);
@@ -103,7 +103,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 		if (this.mc.gameSettings.thirdPersonView == 0 && itemstack != null && itemstack.getItem() != null) {
 			if (itemstack.getItem() == Item.getItemFromBlock(Blocks.pumpkin)) {
-				func_180476_e(res);
+				renderPumpkinOverlay(res);
 			} else {
 				itemstack.getItem().renderHelmetOverlay(itemstack, mc.thePlayer, res, partialTicks);
 			}
