@@ -9,12 +9,11 @@ mod takes care of the rest.
 
 ###Installation
 
-  To install this mod install Forge for Minecraft 1.8.X. and move the zip file to mods directory in the .minecraft file in %AppData%. 
+  To install this mod, first install Forge for Minecraft 1.8.9. For the best results use the same Forge as the mod. Then, download the master branch  and move the zip file to mods directory in the .minecraft file in %AppData%. 
 
 ###Development
 
-  To set up this mod for development, download forge for development. Copy and replace the eclipse file and then, open up the
-command prompt at the mod directory. Type the command "gradlew setupdecompworkspace --refresh-dependencies". Allow for the
+  Fork this repo then, clone the fork to your computer. Download forge for development. Copy and replace the eclipse file and then, open up the command prompt at the mod directory. Type the command "gradlew setupdecompworkspace --refresh-dependencies". Allow for the
 program to finish and then, type "gradlew eclipse". If you wish to use IntelliJ import the project using the build.gradle file.
 After IntelliJ finishes, type "gradlew genIntellijRuns".
   This setup has a built in workspace however, if you would like to have it elsewhere you can change these settings in the run
