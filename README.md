@@ -20,4 +20,4 @@ program to finish and then, type "gradlew eclipse". If you wish to use IntelliJ 
 
 ###Disclaimer
 
-  If you plan to use this mod please take in mind that this mod is currently in Alpha. This means that there are sure to be problems. As alpha, the mod is NOT is full operation. Only the bare minumum to test the functions of the mod without changing code. Additionally, this is first and foremost an API. This means this operates at a lower level than other mods. If I get enough requests for a particular mod I may make a class to accomadate it however, I would NOT be responsible for that class's upkeep.
+  If you plan to use this mod please take in mind that this mod is currently in Alpha. This means that there are sure to be problems. As Alpha, the mod is NOT is full operation. Only the bare minumum to test the functions of the mod without changing code. Additionally, this is first and foremost an API. This means this operates at a lower level than other mods. If I get enough requests for a particular mod I may make a class to accomadate it however, I would NOT be responsible for that class's upkeep.
