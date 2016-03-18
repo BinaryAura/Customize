@@ -186,10 +186,7 @@ public abstract class HudItem implements Color{
 		return orientation;
 	}
 	
-	//	TODO: Set up Border Collision
 	public void setPos(int x, int y) {
-		log.info(this.x + " : " + this.y);
-		log.info("anchorPos: " + anchor.getX() + " : " + anchor.getY());
 		
 		switch(anchor) {
 			case TOPLEFT:
@@ -228,7 +225,6 @@ public abstract class HudItem implements Color{
 		
 		this.x = x - anchor.getX();
 		this.y = y - anchor.getY();
-		log.info("Saved: " + anchor + ": (" + this.x + ":" + this.y + ")");
 	}
 	
 	public int getWidth() {

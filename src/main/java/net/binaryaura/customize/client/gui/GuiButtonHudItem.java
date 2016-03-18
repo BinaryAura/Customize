@@ -21,10 +21,6 @@ public class GuiButtonHudItem extends GuiButton {
 	public GuiButtonHudItem(int buttonId, int x, int y, int width, int height, String name) {
 		super(buttonId, x, y, width, height, name);
 		hudItem = HudItemManager.getHudItem(name);
-//		hudItemX = x;
-//		hudItemY = y;
-//		xPosition = hudItem.getButtonX();
-//		yPosition = hudItem.getButtonY();	
 	}
 
 	@Override
@@ -47,7 +43,6 @@ public class GuiButtonHudItem extends GuiButton {
 			if(hovered && deltaX == 0 && deltaY == 0) {
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0, 0, 200F);
-//				this.drawCenteredString(fontrenderer, displayString.toUpperCase(), xPosition + width / 2, yPosition + (height - 8) / 2 + 1, Color.WHITE);
 				this.drawCenteredString(fontrenderer, displayString.toUpperCase(), mouseX, mouseY - fontrenderer.FONT_HEIGHT, Color.WHITE);
 				GL11.glPopMatrix();
 			}

@@ -46,7 +46,6 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		if(button instanceof GuiButtonHudItem) {
-			Customize.log.info(button == selected);
 			if(menu == null || button != selected){
 				menu = new GuiHudItemMenu(this, (GuiButtonHudItem) button);
 				selectButton((GuiButtonHudItem) button);
@@ -167,7 +166,6 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		//	LEFT -- HUDITEM MENU (HOVERED) / CLOSE HUDITEM MENU
 		//	RIGHT -- ROTATE HUDITEM
-		Customize.log.info("CLICK");
 		if(menu != null) {
 			menu.mouseClicked(mouseX, mouseY, mouseButton);
 		}
@@ -205,12 +203,10 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		Customize.log.info("RELEASE");
 		if(selected != null && mouseHeld) {
 			mouseHeld = false;
 			selected.savePosition();
 			deselectButton();
-			Customize.log.info("MOUSE: (" + mouseX + ":" + mouseY + ")");
 			initGui();
 		}
 		super.mouseReleased(mouseX, mouseY, state);
@@ -228,17 +224,14 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	}
 	
 	protected void deselectButton() {
-		Customize.log.info("Deselected Button");
 		selected = null;
 	}
 	
 	protected void selectButton(GuiButtonHudItem button) {
-		Customize.log.info("Selected Button");
 		selected = button;
 	}
 	
 	protected void onMenuClosed() {
-		Customize.log.info("Closing Menu");
 		menu.onGuiClosed();
 		menu = null;
 	}
