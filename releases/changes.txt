@@ -5,7 +5,7 @@ Minecraft 1.8
 Forge 1.8-11.14.3.1535
 
 +Added Bar to HudItem API
-+Added IconGuage to HudItem API
++Added IconGauge to HudItem API
 +Added Text to HudItem API
 +Added Default Health
 +Added Default Experience
