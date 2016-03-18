@@ -1,4 +1,4 @@
-# Customize
+#Customize
 
 ###Description
 
@@ -9,7 +9,8 @@ mod takes care of the rest.
 
 ###Installation
 
-  To install this mod, first install Forge for Minecraft 1.8.9. For the best results use the same Forge as the mod. Then, download the master branch  and move the zip file to mods directory in the .minecraft file in %AppData%. 
+  Download the customize###-#.jar file for the release you wish from the releases tab on github. Download install-win/install for the version listed on the release from files.minecraftforge.net.
+  To install this mod, first you must run the minecraft listed, to do this click "New Profile" or "Edit Profile". In "Use version" Click on the minecraft version listed then, "Save Profile". Click "Play". This will download the version you need to install Forge. Now, run the install program for forge and install for client. Move the customize###-#.jar to the mods directory in the .minecraft file in %AppData%. 
 
 ###Development
 
