@@ -1,6 +1,8 @@
 # eclipse
 bin
+*.launch
 .settings
+.metadata
 .classpath
 .project
 
@@ -16,4 +18,5 @@ build
 .gradle
 
 # other
+eclipse
 run
