@@ -10,9 +10,9 @@ mod takes care of the rest.
 
 ###Installation
 
-  Download the customizexxx-x.jar file, where xxx-x is the mod version, for the release you wish from the releases tab on github. Download install-win/install for the version listed on the release from files.minecraftforge.net.
+  Download the customizeabc-d.jar file, where abc-d is the mod version, for the release you wish from the releases tab on github. Download install-win/install for the version listed on the release from files.minecraftforge.net.
   
-  To install this mod, first you must run the minecraft listed, to do this click "New Profile" or "Edit Profile". In "Use version" Click on the minecraft version listed then, "Save Profile". Click "Play". This will download the version you need to install Forge. Now, run the install program for forge and install for client. Move the customize###-#.jar to the mods directory in the .minecraft file in %AppData%. 
+  To install this mod, first you must run the minecraft listed, to do this click "New Profile" or "Edit Profile". In "Use version" Click on the minecraft version listed then, "Save Profile". Click "Play". This will download the version you need to install Forge. Now, run the install program for forge and install for client. Move the customizeabc-d.jar to the mods directory in the .minecraft file in %AppData%. 
 
 ###Development
 
