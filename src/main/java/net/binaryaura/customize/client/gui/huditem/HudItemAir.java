@@ -30,12 +30,12 @@ public class HudItemAir extends HudItemIconGauge {
 		int full = MathHelper.ceiling_double_int((air - 2) * 10.0 / 300.0);
 		int partial = MathHelper.ceiling_double_int(air * 10.0 / 300.0) - full;
 		
+		int index = 0;
 		if(icon < full)
-			iconLayers.addSprite(layers.getLayer("air").getSprite(2));
+			index = 2;
 		else if(icon < full + partial)
-			iconLayers.addSprite(layers.getLayer("air").getSprite(1));
-		else
-			iconLayers.addSprite(layers.getLayer("air").getSprite(0));
+			index = 1;
+		iconLayers.addSprite(layers.getLayer("air").getSprite(index));
 		return iconLayers;
 	}
 

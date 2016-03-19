@@ -8,6 +8,8 @@ import net.minecraft.util.MathHelper;
 
 public abstract class HudItemIconGauge extends HudItem {
 
+	//	TODO: Fix Button when Rotating with IconGauge Stacks
+	//	TODO: Fix Border Collision with IconGauge
 	public HudItemIconGauge(String name) {
 		super(name);
 		type = HudItemType.ICON_GUAGE;
@@ -118,7 +120,17 @@ public abstract class HudItemIconGauge extends HudItem {
 		}
 		mc.mcProfiler.endSection();
 	}
-	
+
+	@Override
+	public int getButtonX() {
+		return super.getButtonX();
+	}
+
+	@Override
+	public int getButtonY() {
+		return super.getButtonY();
+	}
+
 	protected abstract SpriteSet getIconSpriteSet(int icon);
 	
 	protected abstract SpriteSet getDefaultSpriteSet();

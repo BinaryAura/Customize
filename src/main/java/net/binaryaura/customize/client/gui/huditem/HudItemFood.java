@@ -16,7 +16,6 @@ public class HudItemFood extends HudItemIconGauge {
 		init();
 	}
 
-	//	TODO: Fix Incorrect Sprite Order when Hunger is Active
 	@Override
 	protected SpriteSet getIconSpriteSet(int icon) {
 		SpriteSet iconLayers = new SpriteSet();
@@ -88,7 +87,7 @@ public class HudItemFood extends HudItemIconGauge {
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 16, 27, 9, 9), new Sprite(Gui.icons, 25, 27, 9, 9)));
 		layers.addLayer(new SpriteSet("default", null, new Sprite(Gui.icons, 61, 27, 9, 9), new Sprite(Gui.icons, 52, 27, 9, 9)));
 		layers.addLayer(new SpriteSet("defaultPrev", null, new Sprite(Gui.icons, 79, 27, 9, 9), new Sprite(Gui.icons, 52, 27, 9, 9)));
-		layers.addLayer(new SpriteSet("hunger", new Sprite(Gui.icons, 133, 27, 9, 9), new Sprite(Gui.icons, 97, 27, 9, 9), new Sprite(Gui.icons, 106, 27, 9, 9)));
+		layers.addLayer(new SpriteSet("hunger", new Sprite(Gui.icons, 133, 27, 9, 9), new Sprite(Gui.icons, 97, 27, 9, 9), new Sprite(Gui.icons, 88, 27, 9, 9)));
 		layers.addLayer(new SpriteSet("hungerPrev", null, new Sprite(Gui.icons, 115, 27, 9, 9), new Sprite(Gui.icons, 106, 27, 9, 9)));		
 	}
 

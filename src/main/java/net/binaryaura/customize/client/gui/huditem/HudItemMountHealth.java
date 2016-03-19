@@ -41,7 +41,6 @@ public class HudItemMountHealth extends HudItemIconGauge {
 
 	@Override
 	protected float getDefaultAmount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

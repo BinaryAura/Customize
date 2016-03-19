@@ -1,5 +1,6 @@
 package net.binaryaura.customize.client.gui.huditem;
 
+import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
@@ -25,6 +26,11 @@ public class HudItemHealth extends HudItemIconGauge {
 		int health = MathHelper.ceiling_float_int(player.getHealth());
 		float healthMax = player.getMaxHealth();
 		float absorb = player.getAbsorptionAmount();
+		log.info(isInPreview());
+		if(isInPreview()) {
+			healthMax = getDefaultAmount();
+			health = MathHelper.ceiling_float_int(getDefaultAmount());
+		}
 		
 		String hc = mc.theWorld.getWorldInfo().isHardcoreModeEnabled() ? "HC" : "";
 		boolean highlight = hlTime > (long)updateCounter && (hlTime - (long)updateCounter) / 3L % 2L == 1L;
@@ -105,13 +111,15 @@ public class HudItemHealth extends HudItemIconGauge {
 
 	@Override
 	protected float getAmount() {
+		if(isInPreview()) 
+			return getDefaultAmount();
 		// Total amount of icons
 		return player.getMaxHealth() + player.getAbsorptionAmount();
 	}
 	
 	@Override
 	protected float getDefaultAmount() {
-		return 30;
+		return 24;
 	}
 
 	@Override
