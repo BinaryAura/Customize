@@ -53,7 +53,7 @@ public class HudItemHealth extends HudItemIconGauge {
 			}
 		} else {
 			if(MathHelper.ceiling_float_int(healthMax + absorb) / layers.getAmount() > icon) {
-				index = layers.getAmount();
+				index = layers.getAmount() - 1;
 			} else if(MathHelper.ceiling_float_int(healthMax + absorb) / layers.getAmount() == icon) {
 				index = MathHelper.ceiling_float_int(healthMax + absorb) % (layers.getAmount() - 1);
 			}

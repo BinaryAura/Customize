@@ -1,5 +1,6 @@
 package net.binaryaura.customize.client;
 
+import net.binaryaura.customize.client.gui.huditem.HudItemAir;
 import net.binaryaura.customize.client.gui.huditem.HudItemExperience;
 import net.binaryaura.customize.client.gui.huditem.HudItemFood;
 import net.binaryaura.customize.client.gui.huditem.HudItemHealth;
@@ -32,6 +33,7 @@ public class ClientProxy extends CommonProxy {
 		Customize.hudManager.registerHudItem(new HudItemHealth("health"));
 		Customize.hudManager.registerHudItem(new HudItemExperience("experience"));
 		Customize.hudManager.registerHudItem(new HudItemFood("food"));
+		Customize.hudManager.registerHudItem(new HudItemAir("air"));
 		Customize.hudManager.registerHudItem(new HudItemToolTip("tooltip"));
 	}
 	

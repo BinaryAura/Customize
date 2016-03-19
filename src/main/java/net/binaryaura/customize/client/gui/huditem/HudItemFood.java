@@ -10,13 +10,13 @@ import net.minecraft.util.FoodStats;
 
 public class HudItemFood extends HudItemIconGauge {
 
-	//	TODO: Make Food Gauge HudItem
 	public HudItemFood(String name) {
 		super(name);
 		orientation = Orientation.RIGHT;
 		init();
 	}
 
+	//	TODO: Fix Incorrect Sprite Order when Hunger is Active
 	@Override
 	protected SpriteSet getIconSpriteSet(int icon) {
 		SpriteSet iconLayers = new SpriteSet();
@@ -82,9 +82,6 @@ public class HudItemFood extends HudItemIconGauge {
 
 	@Override
 	protected void init() {
-		maxStackSpace = 11;
-		minStackSpace = 3;
-		space = 8;
 		anchor = Anchor.BOTTOM;
 		x = 91;
 		y = -39;
