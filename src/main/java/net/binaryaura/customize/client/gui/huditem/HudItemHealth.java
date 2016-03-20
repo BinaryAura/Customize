@@ -1,6 +1,5 @@
 package net.binaryaura.customize.client.gui.huditem;
 
-import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
@@ -26,7 +25,6 @@ public class HudItemHealth extends HudItemIconGauge {
 		int health = MathHelper.ceiling_float_int(player.getHealth());
 		float healthMax = player.getMaxHealth();
 		float absorb = player.getAbsorptionAmount();
-		log.info(isInPreview());
 		if(isInPreview()) {
 			healthMax = getDefaultAmount();
 			health = MathHelper.ceiling_float_int(getDefaultAmount());
