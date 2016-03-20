@@ -38,4 +38,9 @@ public class HudItemMountHealth extends HudItemIconGauge {
 	protected void init() {
 		
 	}
+
+	@Override
+	protected float getDefaultAmount() {
+		return 0;
+	}
 }

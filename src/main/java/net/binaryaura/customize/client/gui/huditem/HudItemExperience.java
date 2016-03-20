@@ -19,8 +19,8 @@ public class HudItemExperience extends HudItemBar {
 		anchor = Anchor.TOPLEFT;
 		x = 0;
 		y = 0;
-		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 182, 5, 0, 64)));
-		layers.addLayer(new SpriteSet("experience", new Sprite(Gui.icons, 182, 5, 0, 69)));
+		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 0, 64, 182, 5)));
+		layers.addLayer(new SpriteSet("experience", new Sprite(Gui.icons, 0, 69, 182, 5)));
 	}
 
 	@Override

@@ -4,11 +4,13 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
+import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class HudItem implements Color{
@@ -88,7 +90,8 @@ public abstract class HudItem implements Color{
 			}
 		}
 	}
-	
+
+	private static boolean inPreview = false;
 	protected static final Random rand = new Random();
 	
 	public HudItem(String name){
@@ -136,6 +139,7 @@ public abstract class HudItem implements Color{
 	public void updateTick() {
 		++updateCounter;
 		rand.setSeed((long)(updateCounter * 312871));
+		if(inPreview) inPreview = false;
 	}
 	
 	public int getX() {
@@ -156,6 +160,14 @@ public abstract class HudItem implements Color{
 			default:
 				return pxlX;
 		}
+	}
+	
+	public int getButtonX() {
+		return getX();
+	}
+	
+	public int getButtonY() {
+		return getY();
 	}
 	
 	public void setAnchor(Anchor anchor) {
@@ -258,6 +270,14 @@ public abstract class HudItem implements Color{
 	@Override
 	public String toString() {
 		return "HUDItem " + getName();
+	}
+	
+	public static void setInPreview() {
+		inPreview = true;
+	}
+	
+	protected boolean isInPreview() {
+		return inPreview;
 	}
 	
 	protected void bind(ResourceLocation res) {

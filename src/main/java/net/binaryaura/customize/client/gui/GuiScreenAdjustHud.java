@@ -18,6 +18,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	
 	public GuiScreenAdjustHud() {
 		GuiInGameCustomize.renderHUD = false;
+		HudItem.setInPreview();
 	}
 
 	@Override
@@ -162,6 +163,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		}
 	}
 	//	TODO: Fix Draging Dual Click Bug
+	//		Should Rotate the HudItem without dropping it
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		//	LEFT -- HUDITEM MENU (HOVERED) / CLOSE HUDITEM MENU

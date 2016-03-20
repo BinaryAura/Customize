@@ -23,6 +23,8 @@ public class GuiButtonHudItem extends GuiButton {
 		hudItem = HudItemManager.getHudItem(name);
 	}
 
+	
+	//	Button needs to be adjusted to extend in the direction of the button 
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if(visible) {
@@ -54,7 +56,7 @@ public class GuiButtonHudItem extends GuiButton {
 		savePosition();
 	}
 	
-	//	TODO: Fix Graphical Rotate Bug with Bar HudItems
+	//	TODO: Fix Rotate Bug with Bar HudItems
 	public void rotate() {
 		if(hudItem.canRotate()) {
 			hudItem.rotateLeft();

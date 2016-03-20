@@ -8,6 +8,7 @@ import net.minecraft.client.gui.ScaledResolution;
 public class HudItemManager {
 	
 	// What about future(modded-in) types?
+	@Deprecated
 	public static enum HudItemType {
 		BAR(),
 		ICON(),
