@@ -4,32 +4,14 @@ import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
-import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.minecraft.util.MathHelper;
 
 public abstract class HudItemBar extends HudItem {
 
 	public HudItemBar(String name) {
 		super(name);
-		type = HudItemType.BAR;
-		canFlip = true;
 		canRotate = true;
-	}
-	
-	@Override
-	protected void setHeightAndWidth() {
-		switch(orientation) {
-			case DOWN:
-			case UP:
-				width = layers.getHeight();
-				height = layers.getWidth();
-				break;
-			case RIGHT:
-			case LEFT:
-				width = layers.getWidth();
-				height = layers.getHeight();
-				break;
-		}
+		
 	}
 	
 	@Override
@@ -48,6 +30,35 @@ public abstract class HudItemBar extends HudItem {
 			guiRenderer.drawTexturedModalRect(x, y, sprites.getSprite(i).getX(), sprites.getSprite(i).getY(), fill, layers.getHeight());
 		}
 		mc.mcProfiler.endSection();
+	}
+	
+	@Override
+	protected void setHeightAndWidth() {
+		switch(orientation) {
+			case DOWN:
+			case UP:
+				width = layers.getHeight();
+				height = layers.getWidth();
+				break;
+			case RIGHT:
+			case LEFT:
+				width = layers.getWidth();
+				height = layers.getHeight();
+				break;
+		}
+	}
+	
+	private float getRotation() {
+		switch(orientation) {
+			case DOWN:
+				return 90.0F;
+			case LEFT:
+				return 180.0F;
+			case UP:
+				return -90.0F;
+			default:
+				return 0.0F;
+		}
 	}
 	
 	private int getTranslateX(int x, int y) {
@@ -73,19 +84,6 @@ public abstract class HudItemBar extends HudItem {
 				return x + y + layers.getWidth();
 			default:
 				return 0;
-		}
-	}
-	
-	private float getRotation() {
-		switch(orientation) {
-			case DOWN:
-				return 90.0F;
-			case LEFT:
-				return 180.0F;
-			case UP:
-				return -90.0F;
-			default:
-				return 0.0F;
 		}
 	}
 

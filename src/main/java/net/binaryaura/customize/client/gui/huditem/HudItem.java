@@ -4,16 +4,19 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
-import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
-import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class HudItem implements Color{
+	
+	protected static final boolean DFLT_FLIP = false;
+	protected static final int DFLT_X = 0;
+	protected static final int DFLT_Y = 0;
+	protected static final Anchor DFLT_ANCH = Anchor.TOPLEFT;
+	protected static final Orientation DFLT_ORIEN = Orientation.RIGHT;
 	
 	public static enum Anchor {
 		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
@@ -27,11 +30,11 @@ public abstract class HudItem implements Color{
 				case TOP:
 				case CENTER:
 				case BOTTOM:
-					return HudItemManager.getRes().getScaledWidth() / 2;
+					return hudManager.getRes().getScaledWidth() / 2;
 				case TOPRIGHT:
 				case RIGHT:
 				case BOTTOMRIGHT:
-					return HudItemManager.getRes().getScaledWidth();
+					return hudManager.getRes().getScaledWidth();
 				default:
 					return 0;
 			}
@@ -46,11 +49,11 @@ public abstract class HudItem implements Color{
 				case LEFT:
 				case CENTER:
 				case RIGHT:
-					return HudItemManager.getRes().getScaledHeight() / 2;
+					return hudManager.getRes().getScaledHeight() / 2;
 				case BOTTOMLEFT:
 				case BOTTOM:
 				case BOTTOMRIGHT:
-					return HudItemManager.getRes().getScaledHeight();
+					return hudManager.getRes().getScaledHeight();
 				default:
 					return 0;
 			}
@@ -59,21 +62,6 @@ public abstract class HudItem implements Color{
 	
 	public static enum Orientation {
 		UP, RIGHT, DOWN, LEFT;
-		
-		public Orientation right() {
-			switch(this) {
-				case RIGHT:
-					return DOWN;
-				case DOWN:
-					return LEFT;
-				case LEFT:
-					return UP;
-				case UP:
-					return RIGHT;
-				default:
-					return null;
-			}
-		}
 		
 		public Orientation left() {
 			switch(this) {
@@ -89,116 +77,75 @@ public abstract class HudItem implements Color{
 					return null;
 			}
 		}
+		
+		public Orientation right() {
+			switch(this) {
+				case RIGHT:
+					return DOWN;
+				case DOWN:
+					return LEFT;
+				case LEFT:
+					return UP;
+				case UP:
+					return RIGHT;
+				default:
+					return null;
+			}
+		}
 	}
-
-	private static boolean inPreview = false;
+	
+	protected static HudItemManager hudManager = Customize.hudManager;
 	protected static final Random rand = new Random();
+	
+	private static boolean inPreview = false;
+	
+	public static void setInPreview() {
+		inPreview = true;
+	}
 	
 	public HudItem(String name){
 		this.name = name.toLowerCase();
 		mc = Minecraft.getMinecraft();
 		guiRenderer = new Gui();
+		anchor = DFLT_ANCH;
+		orientation = DFLT_ORIEN;
+		flip = DFLT_FLIP;
+		x = DFLT_X;
+		y = DFLT_Y;
+		init();
 	}
-	
-	protected abstract void setHeightAndWidth();
-	
-	public String getName() {
-		return name;
-	}
-	
-	public HudItemType getType() {
-		return type;
-	}
-	
-	protected abstract void init();
 	
 	public void flip() {
 		flip = !flip;
-	}
-	
-	public void rotateLeft() {
-		orientation = orientation.left();
-		setHeightAndWidth();
-	}
-	
-	public void rotateRight() {
-		orientation = orientation.right();
-		setHeightAndWidth();
 	}
 	
 	public void renderHUDItem() {
 		renderHUDItem(getX(), getY());
 	}
 	
-	public abstract void renderHUDItem(int x, int y);
+	public void rotateLeft() {
+		if(!canRotate) return;
+		orientation = orientation.left();
+		setHeightAndWidth();
+	}
+	
+	public void rotateRight() {
+		if(!canRotate) return;
+		orientation = orientation.right();
+		setHeightAndWidth();
+	}	
+	
+	public void setAnchor(Anchor anchor) {
+		if(!canMove) return;
+		this.anchor = anchor;
+	}
 	
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public void updateTick() {
-		++updateCounter;
-		rand.setSeed((long)(updateCounter * 312871));
-		if(inPreview) inPreview = false;
-	}
-	
-	public int getX() {
-		int pxlX = anchor.getX() + x;
-		switch(anchor) {
-			case TOPLEFT:
-			case LEFT:
-			case BOTTOMLEFT:
-				return pxlX;
-			case TOP:
-			case CENTER:
-			case BOTTOM:
-				return pxlX -= width / 2;
-			case TOPRIGHT:
-			case RIGHT:
-			case BOTTOMRIGHT:
-				return pxlX -= width;
-			default:
-				return pxlX;
-		}
-	}
-	
-	public int getButtonX() {
-		return getX();
-	}
-	
-	public int getButtonY() {
-		return getY();
-	}
-	
-	public void setAnchor(Anchor anchor) {
-		this.anchor = anchor;
-	}
-	
-	public int getY() {
-		int pxlY = anchor.getY() + y;
-		switch(anchor) {
-			case TOPLEFT:
-			case TOP:
-			case TOPRIGHT:
-				return pxlY;
-			case LEFT:
-			case CENTER:
-			case RIGHT:
-				return pxlY -= height / 2;
-			case BOTTOMLEFT:
-			case BOTTOM:
-			case BOTTOMRIGHT:
-				return pxlY -= height;
-			default:
-				return pxlY;
-		}
-	}
-	
-	public Orientation getOrientation() {
-		return orientation;
-	}
-	
+
 	public void setPos(int x, int y) {
+		if(!canMove) return;
 		
 		switch(anchor) {
 			case TOPLEFT:
@@ -239,8 +186,36 @@ public abstract class HudItem implements Color{
 		this.y = y - anchor.getY();
 	}
 	
-	public int getWidth() {
-		return width;
+	public void updateTick() {
+		++updateCounter;
+		rand.setSeed((long)(updateCounter * 312871));
+		if(inPreview) inPreview = false;
+	}
+	
+	public boolean canFlip() {
+		return canFlip;
+	}
+	
+	public boolean canMove() {
+		return canMove;
+	}
+	
+	public boolean canRotate() {
+		return canRotate;
+	}
+	
+	public boolean guiBackground() {
+		return guiBackground;
+	}
+	
+	@Deprecated
+	public int getButtonX() {
+		return getX();
+	}
+	
+	@Deprecated
+	public int getButtonY() {
+		return getY();
 	}
 	
 	public int getHeight() {
@@ -251,20 +226,52 @@ public abstract class HudItem implements Color{
 		return id;
 	}
 	
-	public boolean guiBackground() {
-		return guiBackground;
-	}
-
-	public boolean canMove() {
-		return canMove;
+	public int getWidth() {
+		return width;
 	}
 	
-	public boolean canFlip() {
-		return canFlip;
+	public int getX() {
+		int pxlX = anchor.getX() + x;
+		switch(anchor) {
+			case TOPLEFT:
+			case LEFT:
+			case BOTTOMLEFT:
+				return pxlX;
+			case TOP:
+			case CENTER:
+			case BOTTOM:
+				return pxlX -= width / 2;
+			case TOPRIGHT:
+			case RIGHT:
+			case BOTTOMRIGHT:
+				return pxlX -= width;
+			default:
+				return pxlX;
+		}
 	}
 	
-	public boolean canRotate() {
-		return canRotate;
+	public int getY() {
+		int pxlY = anchor.getY() + y;
+		switch(anchor) {
+			case TOPLEFT:
+			case TOP:
+			case TOPRIGHT:
+				return pxlY;
+			case LEFT:
+			case CENTER:
+			case RIGHT:
+				return pxlY -= height / 2;
+			case BOTTOMLEFT:
+			case BOTTOM:
+			case BOTTOMRIGHT:
+				return pxlY -= height;
+			default:
+				return pxlY;
+		}
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	@Override
@@ -272,35 +279,38 @@ public abstract class HudItem implements Color{
 		return "HUDItem " + getName();
 	}
 	
-	public static void setInPreview() {
-		inPreview = true;
-	}
-	
-	protected boolean isInPreview() {
-		return inPreview;
+	public Orientation getOrientation() {
+		return orientation;
 	}
 	
 	protected void bind(ResourceLocation res) {
 		mc.getTextureManager().bindTexture(res);
 	}
 	
-	protected boolean guiBackground = false;
+	protected boolean isInPreview() {
+		return inPreview;
+	}
+	
+	public abstract void renderHUDItem(int x, int y);
+	protected abstract void init();	
+	protected abstract void setHeightAndWidth();
+	
 	protected boolean canMove = true;
 	protected boolean canFlip = false;
 	protected boolean canRotate = false;
-	protected boolean flip = false;
-	protected int x;
-	protected int y;
+	protected boolean flip;
+	protected boolean guiBackground = false;
 	protected int height;
-	protected int width;
 	protected int id;
 	protected int updateCounter = 0;
+	protected int width;
+	protected int x;
+	protected int y;
 	protected long lastSystemTime;
-	protected String name;
-	protected HudItemType type;
-	protected Minecraft mc;
 	protected Anchor anchor;
-	protected Orientation orientation;
 	protected Gui guiRenderer;
 	protected Logger log = Customize.log;
+	protected Minecraft mc;
+	protected Orientation orientation;
+	protected String name;
 }

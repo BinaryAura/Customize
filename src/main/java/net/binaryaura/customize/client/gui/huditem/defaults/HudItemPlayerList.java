@@ -1,10 +1,18 @@
-package net.binaryaura.customize.client.gui.huditem;
+package net.binaryaura.customize.client.gui.huditem.defaults;
 
-public class HudItemDebug extends HudItemText {
+import net.binaryaura.customize.client.gui.huditem.HudItemText;
 
-	//	TODO: Make Debug Text Screen 
-	//		HudItem or otherwise
-	public HudItemDebug(String name) {
+public class HudItemPlayerList extends HudItemText {
+	
+	private static final int DFLT_X = 0;
+	private static final int DFLT_Y = 0;
+	private static final Anchor DFLT_ANCH = Anchor.TOPLEFT;	
+
+	//	TODO: Make Player List HudItem
+	//		Icon/IconList for player heads
+	//		IconGauge for Signal
+	//		Text for names
+	public HudItemPlayerList(String name) {
 		super(name);
 	}
 

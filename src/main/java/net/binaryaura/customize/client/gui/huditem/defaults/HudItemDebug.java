@@ -1,10 +1,18 @@
-package net.binaryaura.customize.client.gui.huditem;
+package net.binaryaura.customize.client.gui.huditem.defaults;
 
-public class HudItemObjective extends HudItemText {
+import net.binaryaura.customize.client.gui.huditem.HudItemText;
 
-	//	TODO: Make Objective HudItem
-	public HudItemObjective(String name) {
+public class HudItemDebug extends HudItemText {
+
+	//	TODO: Make Debug Text Screen 
+	//		HudItem or otherwise
+	public HudItemDebug(String name) {
 		super(name);
+	}
+
+	@Override
+	protected void init() {
+		
 	}
 
 	@Override
@@ -37,13 +45,8 @@ public class HudItemObjective extends HudItemText {
 		return 0;
 	}
 
-	@Override
-	protected void init() {
-		
-	}
-
 	protected void setHeightAndWidth() {
 		
 	}
-	
+
 }

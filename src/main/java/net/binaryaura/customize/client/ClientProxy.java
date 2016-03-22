@@ -1,11 +1,12 @@
 package net.binaryaura.customize.client;
 
-import net.binaryaura.customize.client.gui.huditem.HudItemAir;
-import net.binaryaura.customize.client.gui.huditem.HudItemArmor;
-import net.binaryaura.customize.client.gui.huditem.HudItemExperience;
-import net.binaryaura.customize.client.gui.huditem.HudItemFood;
-import net.binaryaura.customize.client.gui.huditem.HudItemHealth;
-import net.binaryaura.customize.client.gui.huditem.HudItemToolTip;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemAir;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemArmor;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemCrosshairs;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemExperience;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemFood;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemHealth;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemToolTip;
 import net.binaryaura.customize.common.CommonProxy;
 import net.binaryaura.customize.common.Customize;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -53,6 +54,7 @@ public class ClientProxy extends CommonProxy {
 		Customize.hudManager.registerHudItem(new HudItemFood(FOOD));
 		Customize.hudManager.registerHudItem(new HudItemAir(AIR));
 		Customize.hudManager.registerHudItem(new HudItemArmor(ARMOR));
+		Customize.hudManager.registerHudItem(new HudItemCrosshairs(CROSSHAIRS));
 		Customize.hudManager.registerHudItem(new HudItemToolTip(TOOLTIP));
 	}
 	

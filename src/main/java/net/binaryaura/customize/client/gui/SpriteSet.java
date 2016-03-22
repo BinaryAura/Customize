@@ -48,6 +48,12 @@ public class SpriteSet {
 		}
 	}
 	
+	public void addSprites(SpriteSet sprites) {
+		for(int i = 0; i < sprites.getAmount(); i++) {
+			addSprite(sprites.getSprite(i));
+		}
+	}
+	
 	public int getAmount() {
 		return amount;
 	}

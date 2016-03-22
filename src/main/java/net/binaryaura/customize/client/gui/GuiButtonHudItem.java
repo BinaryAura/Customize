@@ -5,7 +5,6 @@ import org.lwjgl.opengl.GL11;
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
 import net.binaryaura.customize.client.util.Color;
-import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -20,7 +19,7 @@ public class GuiButtonHudItem extends GuiButton {
 	
 	public GuiButtonHudItem(int buttonId, int x, int y, int width, int height, String name) {
 		super(buttonId, x, y, width, height, name);
-		hudItem = HudItemManager.getHudItem(name);
+		hudItem = Customize.hudManager.getHudItem(name);
 	}
 
 	
@@ -69,8 +68,8 @@ public class GuiButtonHudItem extends GuiButton {
 	
 	@Deprecated
 	public void recover() {
-		int screenHeight = HudItemManager.getRes().getScaledHeight();
-		int screenWidth = HudItemManager.getRes().getScaledWidth();
+		int screenHeight = Customize.hudManager.getRes().getScaledHeight();
+		int screenWidth = Customize.hudManager.getRes().getScaledWidth();
 		int deltaX = 0;
 		int deltaY = 0;
 		if(xPosition < 5)
@@ -86,7 +85,6 @@ public class GuiButtonHudItem extends GuiButton {
 	}
 	
 	public void savePosition() {
-		Customize.log.info("SAVE");
 		xPosition += deltaX;
 		yPosition += deltaY;
 		editPosition(0, 0);
@@ -94,8 +92,8 @@ public class GuiButtonHudItem extends GuiButton {
 	}
 	
 	public void editPosition(int deltaX, int deltaY) {
-		int screenHeight = HudItemManager.getRes().getScaledHeight();
-		int screenWidth = HudItemManager.getRes().getScaledWidth();
+		int screenHeight = Customize.hudManager.getRes().getScaledHeight();
+		int screenWidth = Customize.hudManager.getRes().getScaledWidth();
 		deltaX = MathHelper.clamp_int(deltaX, -xPosition, screenWidth - width - xPosition);
 		deltaY = MathHelper.clamp_int(deltaY, -yPosition, screenHeight - height - yPosition);
 		this.deltaX = deltaX;

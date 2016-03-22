@@ -1,26 +1,30 @@
-package net.binaryaura.customize.client.gui.huditem;
+package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.GuiInGameCustomize;
+import net.binaryaura.customize.client.gui.huditem.HudItemText;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 public class HudItemToolTip extends HudItemText {
+	
+	private static final int DFLT_X = 0;
+	private static final int DFLT_Y = -59;
+	private static final Anchor DFLT_ANCH = Anchor.BOTTOM;
+	private static final Style DFLT_STY = Style.SHADOWED;
 
 	public HudItemToolTip(String name) {
 		super(name);
-		canRotate = false;
-		init();
 	}
 
 	@Override
 	protected void init() {
-		anchor = Anchor.BOTTOM;
-		x = 0;
-		y = 0;
-		style = Style.SHADOWED;
+		anchor = DFLT_ANCH;
+		x = DFLT_X;
+		y = DFLT_Y;
+		style = DFLT_STY;
 	}
 	
 	@Override
@@ -42,7 +46,7 @@ public class HudItemToolTip extends HudItemText {
 			//	Unfortunately the Spectator Menu is stuck where it is. Thank you protected fields.
 		} else if(this.mc.thePlayer.isSpectator()) {
 			GuiInGameCustomize guiInGame = (GuiInGameCustomize) mc.ingameGUI;
-			guiInGame.getSpectatorGui().func_175263_a(HudItemManager.getRes());
+			guiInGame.getSpectatorGui().func_175263_a(hudManager.getRes());
 		}
 	}
 	    
