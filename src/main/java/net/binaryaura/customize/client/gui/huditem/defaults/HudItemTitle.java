@@ -1,6 +1,12 @@
-package net.binaryaura.customize.client.gui.huditem;
+package net.binaryaura.customize.client.gui.huditem.defaults;
+
+import net.binaryaura.customize.client.gui.huditem.HudItemText;
 
 public class HudItemTitle extends HudItemText {
+	
+	private static final int DFLT_X = 0;
+	private static final int DFLT_Y = 0;
+	private static final Anchor DFLT_ANCH = Anchor.TOPLEFT;	
 
 	//	TODO: Make Title HudItem
 	public HudItemTitle(String name) {

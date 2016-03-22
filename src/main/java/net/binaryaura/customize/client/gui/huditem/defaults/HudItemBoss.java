@@ -1,8 +1,14 @@
-package net.binaryaura.customize.client.gui.huditem;
+package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import net.binaryaura.customize.client.gui.SpriteSet;
+import net.binaryaura.customize.client.gui.huditem.HudItemBar;
 
 public class HudItemBoss extends HudItemBar {
+	
+	private static final int DFLT_X = 0;
+	private static final int DFLT_Y = 0;
+	private static final Anchor DFLT_ANCH = Anchor.TOPLEFT;
+	private static final Orientation DFLT_ORIEN = Orientation.RIGHT;
 
 	//	TODO: Make Boss Health Bar HudItem
 	//		Bar for health
@@ -27,12 +33,12 @@ public class HudItemBoss extends HudItemBar {
 	}
 
 	@Override
-	protected SpriteSet getLayers() {
+	protected SpriteSet getDefaultSpriteSet() {
 		return null;
 	}
 
 	@Override
-	protected SpriteSet getDefaultSpriteSet() {
+	protected SpriteSet getLayers() {
 		return null;
 	}
 

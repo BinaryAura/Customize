@@ -19,28 +19,28 @@ public class HudItemManager {
 		HudItemType() {}
 	}
 	
-	private static int nextId = 0;
+	private int nextId = 0;
 	
-	private static ScaledResolution res;
-	private static HashMap<String, HudItem> hudItems;
+	private ScaledResolution res;
+	private HashMap<String, HudItem> hudItems;
 	
-	public static void updateRes(ScaledResolution res) {
-		HudItemManager.res = res;
+	public void updateRes(ScaledResolution res) {
+		this.res = res;
 	}
 	
-	public static ScaledResolution getRes() {
+	public ScaledResolution getRes() {
 		return res;
 	}
 	
-	public static Iterable<HudItem> getHudItems() {
+	public Iterable<HudItem> getHudItems() {
 		return hudItems.values();
 	}
 	
-	public static HudItem getHudItem(String name) {
+	public HudItem getHudItem(String name) {
 		return hudItems.get(name);
 	}
 	
-	public static HudItem getHudItem(int id) {
+	public HudItem getHudItem(int id) {
 		for(HudItem hudItem : hudItems.values()) {
 			if(hudItem.getId() == id)
 				return hudItem;

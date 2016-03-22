@@ -1,21 +1,19 @@
 package net.binaryaura.customize.client.gui.huditem;
 
-import net.binaryaura.customize.client.gui.huditem.HudItemManager.HudItemType;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 
 public abstract class HudItemText extends HudItem {
-
+	
+	protected static final Style DFLT_STY = Style.NORMAL;
+	
 	protected enum Style {
 		NORMAL, SHADOWED, OUTLINED;
 	}
 	
 	public HudItemText(String name) {
 		super(name);
-		orientation = Orientation.RIGHT;
 		guiBackground = true;
-		canRotate = false;
-		type = HudItemType.TEXT;
 		fontRenderer = mc.fontRendererObj;
 	}
 

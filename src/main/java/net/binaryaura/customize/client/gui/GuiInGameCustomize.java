@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
+import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -32,7 +33,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	@Override
 	public void updateTick() {
 		super.updateTick();
-		for (HudItem hudItem : HudItemManager.getHudItems()) {
+		for (HudItem hudItem : hudManager.getHudItems()) {
 			if(hudItem != null) hudItem.updateTick();
 		}
 	}
@@ -41,7 +42,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 	public void renderGameOverlay(float partialTicks) {
 		res = new ScaledResolution(mc);
 		eventParent = new RenderGameOverlayEvent(partialTicks, res);
-		HudItemManager.updateRes(res);
+		hudManager.updateRes(res);
 
 		if (pre(ALL)) return;
 
@@ -64,7 +65,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
 		if(renderHUD) {
-			for (HudItem hudItem : HudItemManager.getHudItems()) {
+			for (HudItem hudItem : hudManager.getHudItems()) {
 				GL11.glPushMatrix();
 				if(hudItem != null)	hudItem.renderHUDItem();
 				GL11.glPopMatrix();
@@ -139,4 +140,5 @@ public class GuiInGameCustomize extends GuiIngameForge {
 
 	private ScaledResolution res = null;
 	private RenderGameOverlayEvent eventParent;
+	private HudItemManager hudManager = Customize.hudManager;
 }

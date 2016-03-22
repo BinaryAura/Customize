@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 
-import net.binaryaura.customize.client.gui.huditem.HudItem;
-import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
 import net.binaryaura.customize.client.util.Color;
+import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
+import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -24,7 +24,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	@Override
 	public void initGui() {
 		buttonList.clear();
-        for (HudItem hudItem : HudItemManager.getHudItems()) {
+        for (HudItem hudItem : Customize.hudManager.getHudItems()) {
                 if(hudItem != null)	buttonList.add(new GuiButtonHudItem(hudItem));
 		}
 	}
@@ -88,6 +88,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 			Customize.log.info("CONFIGURATION " + typedChar);
 		}
 		//	TODO: Create config class
+		
 		switch(keyCode) {
 			case Keyboard.KEY_LEFT:
 				Customize.log.info("PREVIOUS CONFIGURATION");
@@ -162,7 +163,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 				break;
 		}
 	}
-	//	TODO: Fix Draging Dual Click Bug
+	//	TODO: Fix Dragging Dual Click Bug
 	//		Should Rotate the HudItem without dropping it
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
