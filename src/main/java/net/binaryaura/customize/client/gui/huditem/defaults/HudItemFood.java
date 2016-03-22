@@ -11,7 +11,7 @@ import net.minecraft.util.FoodStats;
 
 public class HudItemFood extends HudItemIconGauge {
 	
-	private static final int DFLT_X = 91;
+	private static final int DFLT_X = 45;
 	private static final int DFLT_Y = -39;
 	private static final Anchor DFLT_ANCH = Anchor.BOTTOM;
 
@@ -23,7 +23,7 @@ public class HudItemFood extends HudItemIconGauge {
 	public void renderHUDItem(int x, int y) {
 		player = (EntityPlayer)this.mc.getRenderViewEntity();
 		stats = player.getFoodStats();
-		if(this.mc.playerController.shouldDrawHUD() && player != null)
+		if(this.mc.playerController.shouldDrawHUD() && player != null || isInPreview())
 			super.renderHUDItem(x, y);
 	}
 

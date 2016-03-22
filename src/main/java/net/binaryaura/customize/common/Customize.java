@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Customize {
     public static final String MODID = "customize";
 	public static final String NAME = "Customize";
-    public static final String VERSION = "1A1-4";
+    public static final String VERSION = "1A1-5";
     public static final String CLIENTPROXY = "net.binaryaura.customize.client.";
     public static final String COMMONPROXY = "net.binaryaura.customize.common.";
     
