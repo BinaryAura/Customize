@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 public class HudItemExperience extends HudItemBar {
 
 	private static final int DFLT_X = 0;
-	private static final int DFLT_Y = 0;
+	private static final int DFLT_Y = -29;
 	private static final Anchor DFLT_ANCH = Anchor.BOTTOM;
 	private static final Orientation DFLT_ORIEN = Orientation.RIGHT;
 	

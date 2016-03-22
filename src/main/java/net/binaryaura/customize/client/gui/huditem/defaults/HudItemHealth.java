@@ -24,7 +24,7 @@ public class HudItemHealth extends HudItemIconGauge {
 	@Override
 	public void renderHUDItem(int x, int y) {
 		player = (EntityPlayer)this.mc.getRenderViewEntity();
-		if(this.mc.playerController.shouldDrawHUD() && player != null)
+		if(this.mc.playerController.shouldDrawHUD() && player != null || isInPreview())
 			super.renderHUDItem(x, y);
 	}
 

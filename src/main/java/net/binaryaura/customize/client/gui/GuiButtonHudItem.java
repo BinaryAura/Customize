@@ -30,6 +30,8 @@ public class GuiButtonHudItem extends GuiButton {
 			
 			hovered = mouseX >= xPosition + deltaX && mouseY >= yPosition + deltaY && mouseX < xPosition + deltaX + width && mouseY < yPosition + deltaY + height;
 			FontRenderer fontrenderer = mc.fontRendererObj;
+			
+			//	TODO: Fix Name Rendering so only one name shows
 			if(hudItem != null) {
 				GL11.glPushMatrix();
 				if(isMouseOver() || hudItem.guiBackground())
@@ -55,13 +57,12 @@ public class GuiButtonHudItem extends GuiButton {
 		savePosition();
 	}
 	
-	//	TODO: Fix Rotate Bug with Bar HudItems
 	public void rotate() {
 		if(hudItem.canRotate()) {
 			hudItem.rotateLeft();
-			editPosition((width - height) / 2, (height - width) / 2);
 			width = hudItem.getWidth();
 			height = hudItem.getHeight();
+			editPosition((height - width) / 2, (width - height) / 2);
 			savePosition();
 		}
 	}	

@@ -11,7 +11,7 @@ import net.minecraft.util.MathHelper;
 
 public class HudItemAir extends HudItemIconGauge {
 
-	private static final int DFLT_X = 91;
+	private static final int DFLT_X = 45;
 	private static final int DFLT_Y = -49;
 	private static final Anchor DFLT_ANCH = Anchor.BOTTOM;
 	private static final Orientation DFLT_ORIEN = Orientation.LEFT;
@@ -23,7 +23,7 @@ public class HudItemAir extends HudItemIconGauge {
 	@Override
 	public void renderHUDItem(int x, int y) {
 		player = (EntityPlayer)mc.getRenderViewEntity();
-		if(mc.playerController.shouldDrawHUD() && player != null && player.isInsideOfMaterial(Material.water))
+		if(mc.playerController.shouldDrawHUD() && player != null && player.isInsideOfMaterial(Material.water) || isInPreview())
 			super.renderHUDItem(x, y);
 	}
 
@@ -64,18 +64,18 @@ public class HudItemAir extends HudItemIconGauge {
 	@Override
 	protected SpriteSet getIconSpriteSet(int icon) {
 		SpriteSet iconLayers = new SpriteSet();
-		int air = player.getAir();
-		int full = MathHelper.ceiling_double_int((air - 2) * 10.0 / 300.0);
-		int partial = MathHelper.ceiling_double_int(air * 10.0 / 300.0) - full;
-		
-		int index = 0;
-		if(icon < full)
-			index = 2;
-		else if(icon < full + partial)
-			index = 1;
-		if(!isInPreview())
+		if(!isInPreview()) {
+			int air = player.getAir();
+			int full = MathHelper.ceiling_double_int((air - 2) * 10.0 / 300.0);
+			int partial = MathHelper.ceiling_double_int(air * 10.0 / 300.0) - full;
+			
+			int index = 0;
+			if(icon < full)
+				index = 2;
+			else if(icon < full + partial)
+				index = 1;
 			iconLayers.addSprite(layers.getLayer("air").getSprite(index));
-		else
+		} else
 			iconLayers.addSprites(getDemoSpriteSet());
 		return iconLayers;
 	}

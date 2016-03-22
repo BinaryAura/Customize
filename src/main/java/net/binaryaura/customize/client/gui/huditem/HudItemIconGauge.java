@@ -14,7 +14,6 @@ public abstract class HudItemIconGauge extends HudItem {
 	protected static final int DFLT_SPC = 8;
 	
 	//	TODO: Fix Button when Rotating with IconGauge Stacks
-	//	TODO: Fix Border Collision with IconGauge
 	public HudItemIconGauge(String name) {
 		super(name);
 		canFlip = true;
@@ -65,7 +64,6 @@ public abstract class HudItemIconGauge extends HudItem {
 				break;
 			case LEFT:
 				x += width - layers.getWidth();
-				space = layers.getWidth();
 				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
 					iconLayers = getIconSpriteSet(i);
 					for(int j = 0; j < iconLayers.getAmount(); j++) {

@@ -84,6 +84,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		//		HOLD CTRL -- SHOW ANCHORS
 		//		F1 -- HELP
 		
+		//	TODO: Add Pages for different situations
 		if(keyCode >= Keyboard.KEY_1 && keyCode <= Keyboard.KEY_0) {
 			Customize.log.info("CONFIGURATION " + typedChar);
 		}

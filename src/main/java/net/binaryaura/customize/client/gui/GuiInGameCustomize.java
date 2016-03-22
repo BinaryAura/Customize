@@ -64,6 +64,7 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		
 		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
+		//	TODO: Sync HUD rendering
 		if(renderHUD) {
 			for (HudItem hudItem : hudManager.getHudItems()) {
 				GL11.glPushMatrix();
