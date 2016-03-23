@@ -24,4 +24,4 @@ mod takes care of the rest.
 
 ###Disclaimer
 
-  If you plan to use this mod please take in mind that this mod is currently in Alpha. This means that there are sure to be problems. As Alpha, the mod is NOT is full operation. Only the bare minimum to test the functions of the mod without changing code. Additionally, this is first and foremost an API. This means this operates at a lower level than other mods. If I get enough requests for a particular mod I may make a class to accomadate it however, I would NOT be responsible for that class's upkeep.
+  If you plan to use this mod please take in mind that this mod is currently in Alpha. This means that there are sure to be problems. As Alpha, the mod is NOT is full operation. Only the bare minimum to test the functions of the mod without changing code. Additionally, this is first and foremost an API. This means this operates at a lower level than other mods. This mod will not be updated to operate will other mods. It is the other modder's resposibility to adhere to this class. This being said I may make an additional child mod to accomendate other mods.
