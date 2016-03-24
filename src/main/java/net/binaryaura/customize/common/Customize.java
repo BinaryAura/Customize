@@ -9,13 +9,14 @@ import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.ModContainer.Disableable;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLModDisabledEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Customize.MODID, name = Customize.NAME, version = Customize.VERSION)
+@Mod(modid = Customize.MODID, name = Customize.NAME, version = Customize.VERSION , canBeDeactivated = true)
 public class Customize {
     public static final String MODID = "customize";
 	public static final String NAME = "Customize";

@@ -45,7 +45,7 @@ public class HudItemHealth extends HudItemIconGauge {
 		layers.addLayer(new SpriteSet("defaultHCHL", null, new Sprite(Gui.icons, 79, 45, 9, 9), new Sprite(Gui.icons, 70, 45, 9, 9)));
 		layers.addLayer(new SpriteSet("absorbHC", null, new Sprite(Gui.icons, 169, 45, 9, 9), new Sprite(Gui.icons, 160, 45, 9, 9)));
 		layers.addLayer(new SpriteSet("poisonHC", null, new Sprite(Gui.icons, 97, 45, 9, 9), new Sprite(Gui.icons, 88, 45, 9, 9)));
-		layers.addLayer(new SpriteSet("poisonHCHL", null, new Sprite(Gui.icons, 115, 45, 9, 9), new Sprite(Gui.icons, 106, 4, 9, 95)));
+		layers.addLayer(new SpriteSet("poisonHCHL", null, new Sprite(Gui.icons, 115, 45, 9, 9), new Sprite(Gui.icons, 106, 4, 9, 9)));
 		layers.addLayer(new SpriteSet("witherHC", null, new Sprite(Gui.icons, 133, 45, 9, 9), new Sprite(Gui.icons, 124, 45, 9, 9)));
 		layers.addLayer(new SpriteSet("witherHCHL", null, new Sprite(Gui.icons, 151, 45, 9, 9), new Sprite(Gui.icons, 142, 45, 9, 9)));
 	}

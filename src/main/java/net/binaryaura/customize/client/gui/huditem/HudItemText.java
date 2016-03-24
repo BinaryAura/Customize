@@ -13,6 +13,7 @@ public abstract class HudItemText extends HudItem {
 	
 	public HudItemText(String name) {
 		super(name);
+		style = DFLT_STY;
 		guiBackground = true;
 		fontRenderer = mc.fontRendererObj;
 	}
