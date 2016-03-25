@@ -1,9 +1,9 @@
 package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import net.binaryaura.customize.client.gui.SpriteSet;
-import net.binaryaura.customize.client.gui.huditem.HudItemBar;
+import net.binaryaura.customize.client.gui.huditem.HudItemTexturedBar;
 
-public class HudItemJump extends HudItemBar {
+public class HudItemJump extends HudItemTexturedBar {
 	
 	private static final int DFLT_X = 0;
 	private static final int DFLT_Y = 0;

@@ -3,13 +3,11 @@ package net.binaryaura.customize.client.gui.huditem.defaults;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
-import net.binaryaura.customize.client.gui.huditem.HudItemBar;
-import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
-import net.binaryaura.customize.client.gui.huditem.HudItem.Orientation;
+import net.binaryaura.customize.client.gui.huditem.HudItemTexturedBar;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class HudItemExperience extends HudItemBar {
+public class HudItemExperience extends HudItemTexturedBar {
 
 	private static final int DFLT_X = 0;
 	private static final int DFLT_Y = -29;
@@ -60,5 +58,6 @@ public class HudItemExperience extends HudItemBar {
 	}
 	
 	private EntityPlayer player;
-
 }
+
+
