@@ -26,7 +26,6 @@ public class HudItemCrosshairs extends HudItemIcon {
 		canMove = false;
 	}
 	
-	@Override
 	public void changeIcon(int index) {
 		if(index == 61) {
 			x = -3;
@@ -41,7 +40,10 @@ public class HudItemCrosshairs extends HudItemIcon {
 			x = DFLT_X;
 			y = DFLT_Y;
 		}
-		super.changeIcon(index);
+		if(index >= 0 && index < icons.getAmount())
+			changeIcon(icons.getSprite(index));
+		else
+			log.warn("No icon with index of " + index + "for " + name);
 	}
 
 	@Override
@@ -65,6 +67,10 @@ public class HudItemCrosshairs extends HudItemIcon {
 			}
 		}
 		icon = icons.getSprite(DFLT_ICO);
+	}
+	
+	private void changeIcon(Sprite icon) {
+		this.icon = icon;
 	}
 	
 	private boolean showCrosshairs() {

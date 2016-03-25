@@ -9,13 +9,6 @@ public abstract class HudItemIcon extends HudItem{
 		super(name);
 	}
 	
-	public void changeIcon(int index) {
-		if(index >= 0 && index < icons.getAmount())
-			changeIcon(icons.getSprite(index));
-		else
-			log.warn("No icon with index of " + index + "for " + name);
-	}
-	
 	@Override
 	public void renderHUDItem(int x, int y) {
 		mc.mcProfiler.startSection(name);
@@ -31,10 +24,6 @@ public abstract class HudItemIcon extends HudItem{
 	protected void setHeightAndWidth() {
 		width = icons.getWidth();
 		height = icons.getHeight();
-	}
-	
-	private void changeIcon(Sprite icon) {
-		this.icon = icon;
 	}
 	
 	protected Sprite icon;
