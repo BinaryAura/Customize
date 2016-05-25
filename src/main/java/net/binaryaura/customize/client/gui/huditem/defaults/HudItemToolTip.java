@@ -8,13 +8,54 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+/**
+ * Text designating information, usually regarding the
+ * active HOTBAR item. TOOLTIP is a {@link HudItemText}
+ * and uses its constructor and renderer.
+ * 
+ * @author	BinaryAura
+ * @see		HudItem
+ * @see 	HudItemText
+ */
 public class HudItemToolTip extends HudItemText {
 	
+	/**
+	 * Relative x-value where the text will be rendered if no save
+	 * entry is found.
+	 * 
+	 * @see HudItem.Anchor
+	 */
 	private static final int DFLT_X = 0;
+	
+	/**
+	 * Relative y-value where the text will be rendered if no save
+	 * entry is found.
+	 * 
+	 * @see HudItem.Anchor
+	 */
 	private static final int DFLT_Y = -59;
+	
+	/**
+	 * The reference point for the x and y values when no save entry
+	 * is found.
+	 * 
+	 * @see HudItem.Anchor
+	 */
 	private static final Anchor DFLT_ANCH = Anchor.BOTTOM;
+	
+	/**
+	 * Text style for the object to be rendered.
+	 * 
+	 * @see HudItemText.Style
+	 */
 	private static final Style DFLT_STY = Style.SHADOWED;
 
+	/**
+	 * Constructs an instance of the TOOLTIP object with the specified
+	 * <code>name</code>. This includes setting initial location values,
+	 * orientation, and fetching the textures for the text.
+	 * @param name
+	 */
 	public HudItemToolTip(String name) {
 		super(name);
 	}
@@ -43,7 +84,7 @@ public class HudItemToolTip extends HudItemText {
 			    
 				GlStateManager.disableBlend();
 			}
-			//	Unfortunately the Spectator Menu is stuck where it is. Thank you protected fields.
+		//	Unfortunately the Spectator Menu is stuck where it is. Thank you protected fields.
 		} else if(this.mc.thePlayer.isSpectator()) {
 			GuiInGameCustomize guiInGame = (GuiInGameCustomize) mc.ingameGUI;
 			guiInGame.getSpectatorGui().func_175263_a(hudManager.getRes());
@@ -114,7 +155,14 @@ public class HudItemToolTip extends HudItemText {
 		super.updateTick();
 	}
 	
+	/**
+	 * Remaining ticks that the text is visible.
+	 */
 	private int remainingHighlightTicks;
+	
+	/**
+	 * ItemStack of the active item in the HOTBAR.
+	 */
 	private ItemStack highlightingItemStack;
 
 }
