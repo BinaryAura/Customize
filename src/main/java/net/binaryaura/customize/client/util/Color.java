@@ -1,5 +1,12 @@
 package net.binaryaura.customize.client.util;
 
+/**
+ * This is an interface of all the compatable colors for
+ * Minecraft.
+ * 
+ * @author	BinaryAura
+ *
+ */
 public interface Color {
 	static int BLACK        = 0x000000;
 	static int DARK_BLUE    = 0x0000AA;
