@@ -13,24 +13,48 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+/**
+ * The Client Proxy is the mod's handler for the Minecraft
+ * Client. It handles renderer registration.
+ * 
+ * Here all the HudItems are registered. If a mod wants to add a HudItem
+ * they would type the following:
+ * 
+ * <code>HudItemManager.getInstance().registerHudItem(new HudItemHealth(HEALTH));</code>
+ * 
+ * If one wished to remove an already existing HudItem:
+ * 
+ * <code>HudItemManager.getInstance().unregisterHudItem(ClientProxy.HEALTH);
+ * 
+ * Of coarse it isn't necessary to string all of this into one command. However, the
+ * "ClientProxy.HEALTH" is referring to the field in this class. "HEALTH" would be in the
+ * would be in the modder's class.
+ * 
+ * @author	BinaryAura
+ * @see 	HudItemManager
+ * @see 	HudItem
+ */
 public class ClientProxy extends CommonProxy {
 
-	public static final String AIR = "air";
-	public static final String ARMOR = "armor";
-	public static final String BOSSHEALTH = "bosshealth";
-	public static final String CROSSHAIRS = "crosshairs";
-	public static final String DEBUG = "debug";
-	public static final String EXPERIENCE = "experience";
-	public static final String FOOD = "food";
-	public static final String HEALTH = "health";
-	public static final String HOTBAR = "hotbar";
-	public static final String JUMP = "jump";
-	public static final String MOUNTHEALTH = "mounthealth";
-	public static final String OBJECTIVE = "objective";
-	public static final String PLAYERLIST = "playerlist";
-	public static final String SUBTITLE = "subtitle";
-	public static final String TITLE = "title";	
-	public static final String TOOLTIP = "tooltip";
+	/**
+	 * Reference Name for the default HudItem.
+	 */
+	public static final String AIR = "air",
+							   ARMOR = "armor",
+							   BOSSHEALTH = "bosshealth",
+							   CROSSHAIRS = "crosshairs",
+							   DEBUG = "debug",
+							   EXPERIENCE = "experience",
+							   FOOD = "food",
+							   HEALTH = "health",
+							   HOTBAR = "hotbar",
+							   JUMP = "jump",
+							   MOUNTHEALTH = "mounthealth",
+							   OBJECTIVE = "objective",
+							   PLAYERLIST = "playerlist",
+							   SUBTITLE = "subtitle",
+							   TITLE = "title",
+							   TOOLTIP = "tooltip";
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -48,6 +72,9 @@ public class ClientProxy extends CommonProxy {
 		super.postInit(event);
 	}
 	
+	/**
+	 * Registers all HudItems with the HudItemManager.
+	 */
 	private void registerHudItems() {
 		Customize.hudManager.registerHudItem(new HudItemHealth(HEALTH));
 		Customize.hudManager.registerHudItem(new HudItemExperience(EXPERIENCE));
@@ -58,6 +85,9 @@ public class ClientProxy extends CommonProxy {
 		Customize.hudManager.registerHudItem(new HudItemToolTip(TOOLTIP));
 	}
 	
+	/**
+	 * Registers all Renderers, including the HudItems.
+	 */
 	private void registerRenderers() {
 		registerHudItems();
 	}

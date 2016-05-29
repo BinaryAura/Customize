@@ -2,8 +2,10 @@ package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import org.lwjgl.opengl.GL11;
 
+import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
+import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemIcon;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,38 +14,108 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * Icon denoting where a block will be placed (right click) or
+ * which block will be hit/destroyed. The CROSSHAIRS are placed
+ * in the center of the screen and cannot be moved. There are
+ * multiple textures for the CROSSHAIRS that can be selected in
+ * the {@link GuiScreenAdjustHud}. CROSSHAIRS is a {@link HudItemIcon}
+ * and uses its constructor and renderer.
+ * 
+ * @author	BinaryAura
+ * @see		HudItem
+ * @see		HudItemIcon
+ */
 public class HudItemCrosshairs extends HudItemIcon {
 	
+	/**
+	 * The location of the the CROSSHAIRS textures.
+	 */
 	public static final ResourceLocation crosshairs = new ResourceLocation(Customize.MODID, "textures/gui/crosshairs.png");
 
+	/**
+	 * Relative x-value where the icon will be rendered. This value
+	 * is -8 to center the image on the center of the screen. This
+	 * value cannot be changed.
+	 * 
+	 * @see	HudItem.Anchor
+	 */
 	private static final int DFLT_X = -8;
+	
+	/**
+	 * Relative y-value where the icon will be rendered. This value
+	 * is -8 to center the image on the center of the screen. This
+	 * value cannot be changed.
+	 * 
+	 * @see HudItem.Anchor
+	 */
 	private static final int DFLT_Y = -8;
+	
+	/**
+	 * CROSSHAIRS texture that is used to render the image when no
+	 * save entry is found.
+	 */
 	private static final int DFLT_ICO = 9;
+	
+	/**
+	 * The reference point for the x and y values. CROSSHAIRS uses
+	 * the Center Anchor. This cannot be changed.
+	 * 
+	 * @see HudItem.Anchor
+	 */
 	private static final Anchor DFLT_ANCH = Anchor.CENTER;
 	
+	/**
+	 * Constructs an instance of the CROSSHAIRS icon with the specified
+	 * <code>name</code>. This includes setting initial location values,
+	 * orientation, and fetching the textures for the bar.
+	 * 
+	 * @param name		The name of the HUDItem.
+	 */
 	public HudItemCrosshairs(String name) {
 		super(name);
 		canMove = false;
 	}
 	
-	@Override
+	/**
+	 * Changes the texture used for rendering the CROSSHAIRS to <code>index</code>
+	 * texture. 
+	 * 
+	 * @param			Index of the icon.
+	 */
 	public void changeIcon(int index) {
-		if(index == 61) {
-			x = -3;
-			y = 1;
-		} else if(index == 62) {
-			x = -6;
-			y = 1;
-		} else if(index == 63) {
-			x = 1;
-			y = 1;
-		} else {
-			x = DFLT_X;
-			y = DFLT_Y;
-		}
-		super.changeIcon(index);
+		switch(index) {
+			case 61:
+				x = -3;
+				y = 1;
+				break;
+			case 62:
+				x = -6;
+				y = 1;
+				break;
+			case 63:
+				x = 1;
+				y = 1;
+				break;
+			default:
+				x = DFLT_X;
+				y = DFLT_Y;
+				break;
+		}	
+
+		if(index >= 0 && index < icons.getAmount())
+			icon = icons.getSprite(index);
+		else
+			log.warn("No icon with index of " + index + "for " + name);
 	}
 
+	/**
+	 * Redefines anything that is used for rendering and decides
+	 * whether the HUDItem should be rendered.
+	 * 
+	 * @param x			The relative x-value of the upper left corner.
+	 * @param y			The relative y-value of the upper left corner.
+	 */
 	@Override
 	public void renderHUDItem(int x, int y) {
 		if(showCrosshairs()) {
@@ -53,6 +125,10 @@ public class HudItemCrosshairs extends HudItemIcon {
 		}
 	}
 	
+	/**
+	 * Initializes class specific fields such as location,
+	 * orientation, and textures.
+	 */
 	@Override
 	protected void init() {
 		anchor = DFLT_ANCH;
@@ -67,6 +143,11 @@ public class HudItemCrosshairs extends HudItemIcon {
 		icon = icons.getSprite(DFLT_ICO);
 	}
 	
+	/**
+	 * Determines whether the CROSSHAIRS should be rendered.
+	 * 
+	 * @return whether the CROSSHAIRS should be rendered.
+	 */
 	private boolean showCrosshairs() {
 		if (mc.gameSettings.showDebugInfo && !mc.thePlayer.hasReducedDebug() && !mc.gameSettings.reducedDebugInfo) {
             return false;

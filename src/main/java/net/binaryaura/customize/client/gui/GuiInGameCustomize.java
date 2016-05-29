@@ -22,10 +22,26 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 
+/**
+ * Replacement InGameGui for Minecraft to display the HUD.
+ * Instead of locally displaying HudItems. GuiInGameCustomize
+ * refers to HudItemManager.
+ * 
+ * @author	BinaryAura
+ * @see 	HudItemManager
+ */
 public class GuiInGameCustomize extends GuiIngameForge {
 	
+	/**
+	 * Flag to render the HUD
+	 */
 	public static boolean renderHUD = true;
 
+	/**
+	 * Constructs an instance of the GUI
+	 * 
+	 * @param mc		Instance of Minecraft
+	 */
 	public GuiInGameCustomize(Minecraft mc) {
 		super(mc);
 	}
@@ -65,6 +81,8 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
 		
 		//	TODO: Sync HUD rendering
+		
+		// Iterates through all HudItems
 		if(renderHUD) {
 			for (HudItem hudItem : hudManager.getHudItems()) {
 				GL11.glPushMatrix();
@@ -77,7 +95,9 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		
 		post(ALL);
 	}
-	
+	/**
+	 * Renders the Portal Effect. This effect is not part of the HUD.
+	 */
 	protected void renderPortal(ScaledResolution res, float partialTicks)
     {
         if (pre(PORTAL)) return;
@@ -97,6 +117,12 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		return res;
 	}
 	
+	/**
+	 * Renders the Helmet (e.g. Pumpkin). This is not part of the HUD.
+	 * 
+	 * @param res				Resolution of the Minecraft Window
+	 * @param partialTicks		
+	 */
 	private void renderHelmet(ScaledResolution res, float partialTicks) {
 		if (pre(HELMET))
 			return;
@@ -114,6 +140,9 @@ public class GuiInGameCustomize extends GuiIngameForge {
 		post(HELMET);
 	}
 	
+	/**
+	 * Renders the Chat Screen. Chat is rendered as a screen and as a result, chat is not part of the HUD.
+	 */
 	protected void renderChat(int width, int height)
     {
         mc.mcProfiler.startSection("chat");
@@ -131,15 +160,34 @@ public class GuiInGameCustomize extends GuiIngameForge {
         mc.mcProfiler.endSection();
     }
 
+	/**
+	 * Checks for an event of <code>type</code> has occurred.
+	 * 
+	 * @param type		Type of render event.
+	 * @return			Whether the event has occurred.
+	 */
 	private boolean pre(ElementType type) {
 		return MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Pre(eventParent, type));
 	}
 
+	/**
+	 * Creates an event of <code>type</code>.
+	 * 
+	 * @param type		Type of render event.
+	 */
 	private void post(ElementType type) {
 		MinecraftForge.EVENT_BUS.post(new RenderGameOverlayEvent.Post(eventParent, type));
 	}
 
+	/**
+	 * Resolution of the Minecraft Window.
+	 */
 	private ScaledResolution res = null;
+	
 	private RenderGameOverlayEvent eventParent;
+	
+	/**
+	 * Instance of the HudItemManager for <b><i>ALL</i></b> HudItems.
+	 */
 	private HudItemManager hudManager = Customize.hudManager;
 }

@@ -11,12 +11,33 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.MathHelper;
 
+/**
+ * Representation of the HudItem in the Adjustment screen.
+ * 
+ * @author	BinaryAura
+ *
+ */
 public class GuiButtonHudItem extends GuiButton {
 
+	/**
+	 * Constructs a HUDItem Button using the given HudItem.
+	 * 
+	 * @param hudItem		HudItem for the button.
+	 */
 	public GuiButtonHudItem(HudItem hudItem) {
 		this(hudItem.getId(), hudItem.getX(), hudItem.getY(), hudItem.getWidth(), hudItem.getHeight(), hudItem.getName());
 	}
 	
+	/**
+	 * Constructs a HUDItem Button using the Button Constructor.
+	 * 
+	 * @param buttonId		The HudItem ID
+	 * @param x				X-value of the upper left corner
+	 * @param y				Y-value of the upper left corner
+	 * @param width			Width of the HudItem
+	 * @param height		Height of the HudItem
+	 * @param name			Name of the HudItem
+	 */
 	public GuiButtonHudItem(int buttonId, int x, int y, int width, int height, String name) {
 		super(buttonId, x, y, width, height, name);
 		hudItem = Customize.hudManager.getHudItem(name);
@@ -24,6 +45,7 @@ public class GuiButtonHudItem extends GuiButton {
 
 	
 	//	Button needs to be adjusted to extend in the direction of the button 
+	
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if(visible) {
@@ -52,11 +74,19 @@ public class GuiButtonHudItem extends GuiButton {
 		}
 	}
 
+	/**
+	 * Resets the HudItem's Anchor to <code>anchor</code>.
+	 * 
+	 * @param anchor		New anchor for the HudItem.
+	 */
 	public void setAnchor(Anchor anchor) {
 		hudItem.setAnchor(anchor);
 		savePosition();
 	}
 	
+	/**
+	 * Rotates the HudItem.
+	 */
 	public void rotate() {
 		if(hudItem.canRotate()) {
 			hudItem.rotateLeft();
@@ -85,6 +115,9 @@ public class GuiButtonHudItem extends GuiButton {
 		savePosition();
 	}
 	
+	/**
+	 * Saves the new position and orientation to the HUDItem.
+	 */
 	public void savePosition() {
 		xPosition += deltaX;
 		yPosition += deltaY;
@@ -92,6 +125,13 @@ public class GuiButtonHudItem extends GuiButton {
 		hudItem.setPos(xPosition, yPosition);
 	}
 	
+	/**
+	 * Edits the position of the HUDItem in the preview screen. This is done
+	 * by recording the distance from the starting location.
+	 * 
+	 * @param deltaX		Horizontal change of position of the HUDItem.
+	 * @param deltaY		Vertical change of position of the HUDItem.
+	 */
 	public void editPosition(int deltaX, int deltaY) {
 		int screenHeight = Customize.hudManager.getRes().getScaledHeight();
 		int screenWidth = Customize.hudManager.getRes().getScaledWidth();
@@ -101,7 +141,18 @@ public class GuiButtonHudItem extends GuiButton {
 		this.deltaY = deltaY;
 	}
 	
+	/**
+	 * Horizontal change of position of the HUDItem.
+	 */
 	private int deltaX;
+	
+	/**
+	 * Vertical change of position of the HUDItem.
+	 */
 	private int deltaY;
+	
+	/**
+	 * HUDItem that this button represents.
+	 */
 	private HudItem hudItem;
 }
