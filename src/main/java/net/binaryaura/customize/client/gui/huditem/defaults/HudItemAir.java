@@ -1,6 +1,5 @@
 package net.binaryaura.customize.client.gui.huditem.defaults;
 
-import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
