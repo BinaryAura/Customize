@@ -14,8 +14,22 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent;
 import net.minecraftforge.common.MinecraftForge;
 
+/**
+ * Screen for adjusting the appearance and location of HudItems. Each
+ * of the HudItems have there own {@link GuiButtonHudItem} that govern
+ * its display. When an HudItem is selected the menu screen is activated
+ * using the selected HudItem's menu. 
+ *  
+ * @author	BinaryAura
+ * @see 	GuiButtonHudItem
+ * @see 	GuiHudItemMenu
+ *
+ */
 public class GuiScreenAdjustHud extends GuiScreen {
 	
+	/**
+	 * Constructs the Preview Screen
+	 */
 	public GuiScreenAdjustHud() {
 		GuiInGameCustomize.renderHUD = false;
 		HudItem.setInPreview();
@@ -44,6 +58,11 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		
 	}
 
+	/**
+	 * Called when the left mouse button is clicked
+	 * 
+	 * @param button 		Button clicked, null when no button is clicked.
+	 */
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		if(button instanceof GuiButtonHudItem) {
@@ -56,6 +75,12 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		super.actionPerformed(button);
 	}
 	
+	/**
+	 * Called when the right mouse button is clicked.
+	 * 
+	 * @param button			Button clicked, null when no button is clicked.
+	 * @throws IOException
+	 */
 	protected void secondaryActionPerformed(GuiButton button) throws IOException {
 		if(button instanceof GuiButtonHudItem) {
 			
@@ -227,22 +252,51 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
 	}
 	
+	/**
+	 * Deselects the HudItem.
+	 */
 	protected void deselectButton() {
 		selected = null;
 	}
 	
+	/**
+	 * Selects the HudItem.
+	 * @param button		HudItem to be selected.
+	 */
 	protected void selectButton(GuiButtonHudItem button) {
 		selected = button;
 	}
 	
+	/**
+	 * Called when the Menu screen is closed.
+	 */
 	protected void onMenuClosed() {
 		menu.onGuiClosed();
 		menu = null;
 	}
 	
+	/**
+	 * Flag for when the mouse is being held.
+	 */
 	private boolean mouseHeld = false;
+	
+	/**
+	 * X-value at the start of the mouse drag.
+	 */
 	private int mouseStartX;
+	
+	/**
+	 * Y-value at the start of the mouse drag.
+	 */
 	private int mouseStartY;
+	
+	/**
+	 * The selected HudItem.
+	 */
 	protected GuiButtonHudItem selected;
+	
+	/**
+	 * The Menu to be displayed.
+	 */
 	protected GuiHudItemMenu menu;
 }
