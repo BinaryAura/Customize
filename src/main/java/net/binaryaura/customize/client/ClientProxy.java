@@ -37,7 +37,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class ClientProxy extends CommonProxy {
 
 	/**
-	 * Reference Name for the default AIR HudItem.
+	 * Reference Name for the default HudItem.
 	 */
 	public static final String AIR = "air",
 							   ARMOR = "armor",
