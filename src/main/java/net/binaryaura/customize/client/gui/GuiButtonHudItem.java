@@ -40,7 +40,7 @@ public class GuiButtonHudItem extends GuiButton {
 	 */
 	public GuiButtonHudItem(int buttonId, int x, int y, int width, int height, String name) {
 		super(buttonId, x, y, width, height, name);
-		hudItem = Customize.hudManager.getHudItem(name);
+		hudItem = Customize.hudManager.get(name);
 	}
 
 	

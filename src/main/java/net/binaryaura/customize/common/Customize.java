@@ -36,7 +36,7 @@ public class Customize {
 	/**
 	 * Version string for the mod.
 	 */
-    public static final String VERSION = "1A1-7";
+    public static final String VERSION = "1A1-8";
     
     /**
      * Client proxy class directory.
@@ -110,7 +110,7 @@ public class Customize {
      * Called after FMLInitializationEvent has been dispatched on every mod.
      * This is the third and last commonly called event during mod initialization.
      * Recommended activities: interact with other mods to establish cross-mod
-     * behaviours.
+     * behaviors.
      * 
      * @param event			PostInitialization Event
      */

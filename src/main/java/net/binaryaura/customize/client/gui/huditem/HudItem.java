@@ -497,7 +497,7 @@ public abstract class HudItem implements Color{
 	 */
 	@Override
 	public String toString() {
-		return "HUDItem " + getName();
+		return "HUDItem " + getName() + (id == -1 ? "" : (" (" + getId() + ")"));
 	}
 	
 	/**
@@ -581,7 +581,7 @@ public abstract class HudItem implements Color{
 	/**
 	 * HUDItem identification for {@link GuiScreenAdjustHud}
 	 */
-	protected int id;
+	protected int id = -1;
 	
 	/**
 	 * Update counter for synchronized actions.

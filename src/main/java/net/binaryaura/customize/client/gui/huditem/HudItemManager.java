@@ -1,7 +1,6 @@
 package net.binaryaura.customize.client.gui.huditem;
 
-import java.util.HashMap;
-
+import java.util.ArrayList;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.gui.ScaledResolution;
 
@@ -17,17 +16,11 @@ import net.minecraft.client.gui.ScaledResolution;
  */
 public class HudItemManager {
 	
-	// What about future(modded-in) types?
-	@Deprecated
-	public static enum HudItemType {
-		BAR(),
-		ICON(),
-		ICON_GUAGE(),
-		ICON_SET(),
-		TEXT();
-		
-		HudItemType() {}
-	}
+	/**
+	 * Instance of the HudItemManager.
+	 * There should only be one instance for all mods.
+	 */
+	private static HudItemManager instance = new HudItemManager();	
 	
 	/**
 	 * Gets the global instance of the HudItemManager.
@@ -37,12 +30,13 @@ public class HudItemManager {
 	public static HudItemManager getInstance() {
 		return instance;
 	}
-	
+
 	/**
-	 * Instance of the HudItemManager.
-	 * There should only be one instance for all mods.
+	 * Constructs an instance of the manager
 	 */
-	private static HudItemManager instance = new HudItemManager();
+	private HudItemManager() {
+		hudItems = new ArrayList<HudItem>();
+	}
 	
 	/**
 	 * Updates the <code>res</code> of the Minecraft Window.
@@ -64,10 +58,11 @@ public class HudItemManager {
 	
 	/**
 	 * Get all HudItems.
+	 * 
 	 * @return		Collection of all the assigned HUDItems.
 	 */
 	public Iterable<HudItem> getHudItems() {
-		return hudItems.values();
+		return hudItems;
 	}
 	
 	/**
@@ -76,8 +71,13 @@ public class HudItemManager {
 	 * @param name		The name of the HUDItem to be retrieved.
 	 * @return			HudItem with the given name.
 	 */
-	public HudItem getHudItem(String name) {
-		return hudItems.get(name);
+	public HudItem get(String name) {
+		for(HudItem hudItem : hudItems.toArray(new HudItem[hudItems.size()])) {
+			if(name.equals(hudItem.name))
+				return hudItem;
+		}
+		Customize.log.warn("HUDItem "+ name + " isn't in the registry. Skipping");
+		return null;
 	}
 	
 	/**
@@ -86,49 +86,221 @@ public class HudItemManager {
 	 * @param id		The ID of the HUDItem to be retrieved.
 	 * @return			HudItem with the given ID.
 	 */
-	public HudItem getHudItem(int id) {
-		for(HudItem hudItem : hudItems.values()) {
+	public HudItem get(int id) {
+		for(HudItem hudItem : hudItems.toArray(new HudItem[hudItems.size()])) {
 			if(hudItem.getId() == id)
 				return hudItem;
 		}
-		Customize.log.warn("ID " + id + " doesn't relate to a HudItem.");
+		Customize.log.warn("ID " + id + " doesn't relate to a HudItem. Skipping");
 		return null;
 	}
 	
 	/**
-	 * Registers a HudItem to the Manager.
+	 * Move the HudItem with the assigned <code>id</code> down one. This means that the
+	 * hudItem will be printed sooner, and thus under subsequent hudItems.
 	 * 
-	 * @param hudItem		The HUDItem to be writen to the registry.
+	 * @param name		The name of the HUDItem to be moved.
+	 */	
+	public void moveDown(int id) {
+		for(HudItem item : hudItems) {
+			int idx = hudItems.indexOf(item);
+			hudItems.remove(item);
+			HudItem temp = hudItems.get(idx--);
+			hudItems.add(idx, temp);
+			Customize.log.info("Moved " + item + " down");
+		}
+		Customize.log.warn("ID " + id + " doesn't relate to a hudItem. Skipping");
+	}
+	
+	/**
+	 * Move the HudItem with the assigned <code>name</code> down one. This means that the
+	 * hudItem will be printed sooner, and thus under subsequent hudItems.
+	 * 
+	 * @param name		The name of the HUDItem to be moved.
 	 */
-	public void registerHudItem(HudItem hudItem) {
+	public void moveDown(String name) {
+		for(HudItem item : hudItems) {
+			int idx = hudItems.indexOf(item);
+			hudItems.remove(item);
+			HudItem temp = hudItems.get(idx--);
+			hudItems.add(idx, temp);
+			Customize.log.info("Moved " + item + " down");
+		}
+		Customize.log.warn("HUDItem " + name + " isn't in the registry. Skipping");
+	}
+	
+	/**
+	 * Move the HudItem with the assigned <code>id</code> up one. This means that the
+	 * hudItem will be printed later, and thus on top of preceding hudItems.
+	 * 
+	 * @param name		The name of the HUDItem to be moved.
+	 */	
+	public void moveUp(int id) {
+		for(HudItem item : hudItems) {
+			int idx = hudItems.indexOf(item);
+			hudItems.remove(item);
+			HudItem temp = hudItems.get(idx++);
+			hudItems.add(idx, temp);
+			Customize.log.info("Moved " + item + " up");
+		}
+		Customize.log.warn("ID " + id + " doesn't relate to a hudItem. Skipping");
+	}
+	
+	/**
+	 * Move the HudItem with the assigned <code>name</code> up one. This means that the
+	 * hudItem will be printed later, and thus on top of preceding hudItems.
+	 * 
+	 * @param name		The name of the HUDItem to be moved.
+	 */
+	public void moveUp(String name) {
+		for(HudItem item : hudItems) {
+			if(name.equals(item.name)) {
+				int idx = hudItems.indexOf(item);
+				hudItems.remove(item);
+				HudItem temp = hudItems.get(idx++);
+				hudItems.add(idx, temp);
+				Customize.log.info("Moved HudItem " + item + " up");
+			}
+		}
+		Customize.log.warn("HUDItem " + name + " isn't in the registry. Skipping");
+	}
+	
+	/**
+	 * Registers the <code>hudItem</code> to the Manager.
+	 * 
+	 * @param hudItem		The HUDItem to be written to the registry.
+	 */
+	public void register(HudItem hudItem) {
 		if(hudItem != null) {			
-			hudItems.put(hudItem.getName(), hudItem);
+			hudItems.add(hudItem);
 			hudItem.setId(nextId++);
-			Customize.log.info("Registered " + hudItem + " (" + hudItem.getId() + ")");
+			Customize.log.info("Registered " + hudItem);
 		} else {
-			Customize.log.warn("Null HudItem. Skipping.");
+			Customize.log.warn("Null HudItem. Skipping");
 		}
 	}
 	
 	/**
-	 * Unregisters a HudItem from the Manager.
+	 * Registers <code>hudItem</code> to the Manager.
 	 * 
-	 * @param name			The HUDItem to be stricken from the registry.
+	 * @param hudItem		The HUDItem to be written to the registry.
+	 * @param above			The name of the HudItem to be written above.
 	 */
-	public void unregisterHudItem(String name) {
-		if(hudItems.containsKey(name)) {
-			hudItems.remove(name);
-			Customize.log.info("Unregisterd HudItem " + name);
+	public void register(HudItem hudItem, int ref) {
+		if(hudItem != null) {
+			for(HudItem item : hudItems)
+			{
+				if(ref == item.getId())
+				{					
+					hudItems.add(hudItems.indexOf(item), hudItem);
+					hudItem.setId(nextId++);
+					Customize.log.info("Registered " + hudItem + " above " + item);
+					return;
+				}
+			}
+			Customize.log.warn("Reference ID " + ref + " doesn't relate to a hudItem. Adding HudItem " + hudItem + " to top");
+			register(hudItem);
 		} else {
-			Customize.log.warn("HudItem " + name + " isn't registered. Skipping.");
+			Customize.log.warn("Null HudItem. Skipping");
 		}
-	}	
-
+	}
+	
 	/**
-	 * Constructs an instance of the manager
+	 * Registers <code>hudItem</code> to the Manager above the hudItem with the assigned name
+	 * <code>ref</code>.
+	 * 
+	 * @param hudItem		The HUDItem to be written to the registry.
+	 * @param ref			The name of the HudItem to be written above.
 	 */
-	private HudItemManager() {
-		hudItems = new HashMap<String, HudItem>();
+	public void register(HudItem hudItem, String ref) {
+		if(hudItem != null) {
+			for(HudItem item : hudItems)
+			{
+				if(ref.equals(item.name))
+				{
+					hudItems.add(hudItems.indexOf(item), hudItem);
+					hudItem.setId(nextId++);
+					Customize.log.info("Registered " + hudItem + " above " + item);
+					return;
+				}
+			}
+			Customize.log.warn("HudItem reference " + ref + " isn't in the registry. Adding " + hudItem + " to top");
+			register(hudItem);
+		} else {
+			Customize.log.warn("Null HudItem. Skipping");
+		}
+	}
+	
+	/**
+	 * Registers <code>hudItem</code> to the Manager above the hudItem <code>ref</code>.
+	 * 
+	 * @param hudItem		The HUDItem to be written to the registry.
+	 * @param ref			The HudItem to be written above.
+	 */
+	public void register(HudItem hudItem, HudItem ref) {
+		if(hudItem != null) {
+			if(ref != null && hudItems.contains(ref)) {
+				hudItems.add(hudItems.indexOf(ref), hudItem);
+				hudItem.setId(nextId++);
+				Customize.log.info("Registered " + hudItem + " above " + hudItem);
+			} else {
+				if(ref == null) {
+					Customize.log.warn("Null HudItem Reference. Adding " + hudItem + " to top");
+					register(hudItem);
+				} else {
+					Customize.log.warn("Reference " + ref + " isn't in the registry. Adding " + hudItem + " to top");
+					register(hudItem);
+				}
+			}
+		} else {
+			Customize.log.warn("Null HudItem. Skipping");
+		}
+	}
+	
+	/**
+	 * Unregisters the HudItem with the assigned <code>id</code> from the Manager.
+	 * 
+	 * @param id		The id of the HUDItem to be stricken from the registry.
+	 */
+	public void unregister(int id) {
+		for(HudItem hudItem : new HudItem[hudItems.size()]) {
+			if(id == hudItem.getId()) {
+				hudItems.remove(hudItem);
+				Customize.log.info("Unregistered HudItem " + hudItem);
+				return;
+			}
+		}
+		Customize.log.warn("ID " + id + " doesn't relate to a HudItem. Skipping");
+	}
+	
+	/**
+	 * Unregisters a HudItem with the assigned <code>name</code> from the Manager.
+	 * 
+	 * @param name		The name of the HUDItem to be stricken from the registry.
+	 */
+	public void unregister(String name) {
+		for(HudItem hudItem : new HudItem[hudItems.size()]) {
+			if(name.equals(hudItem.name)) {
+				hudItems.remove(hudItem);
+				Customize.log.info("Unregisterd HudItem " + hudItem);
+				return;
+			}
+		}
+		Customize.log.warn("HUDItem " + name + " isn't in the registery. Skipping");
+	}
+	
+	/**
+	 * Unregisters the <code>hudItem</code> from the Manager.
+	 * 
+	 * @param hudItem	The HUDItem to be stricken from the registry.
+	 */
+	public void unregister(HudItem hudItem) {
+		if(hudItems.contains(hudItem)) {
+			hudItems.remove(hudItem);
+			Customize.log.info("Unregistered HudItem " + hudItem);
+		} else {
+			Customize.log.warn(hudItem + " isn't in the registry. Skipping");
+		}
 	}
 	
 	/**
@@ -144,5 +316,5 @@ public class HudItemManager {
 	/**
 	 * Registry of all the assigned HUDItems.
 	 */
-	private HashMap<String, HudItem> hudItems;	
+	private ArrayList<HudItem> hudItems;
 }

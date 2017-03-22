@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * Here all the HudItems are registered. If a mod wants to add a HudItem
  * they would type the following:
  * 
- * <code>HudItemManager.getInstance().registerHudItem(new HudItemHealth(HEALTH));</code>
+ * <code>HudItemManager.getInstance().register(new HudItemHealth(HEALTH));</code>
  * 
  * If one wished to remove an already existing HudItem:
  * 
@@ -76,13 +76,13 @@ public class ClientProxy extends CommonProxy {
 	 * Registers all HudItems with the HudItemManager.
 	 */
 	private void registerHudItems() {
-		Customize.hudManager.registerHudItem(new HudItemHealth(HEALTH));
-		Customize.hudManager.registerHudItem(new HudItemExperience(EXPERIENCE));
-		Customize.hudManager.registerHudItem(new HudItemFood(FOOD));
-		Customize.hudManager.registerHudItem(new HudItemAir(AIR));
-		Customize.hudManager.registerHudItem(new HudItemArmor(ARMOR));
-		Customize.hudManager.registerHudItem(new HudItemCrosshairs(CROSSHAIRS));
-		Customize.hudManager.registerHudItem(new HudItemToolTip(TOOLTIP));
+		Customize.hudManager.register(new HudItemHealth(HEALTH));
+		Customize.hudManager.register(new HudItemExperience(EXPERIENCE));
+		Customize.hudManager.register(new HudItemFood(FOOD));
+		Customize.hudManager.register(new HudItemAir(AIR));
+		Customize.hudManager.register(new HudItemArmor(ARMOR));
+		Customize.hudManager.register(new HudItemCrosshairs(CROSSHAIRS));
+		Customize.hudManager.register(new HudItemToolTip(TOOLTIP));
 	}
 	
 	/**
