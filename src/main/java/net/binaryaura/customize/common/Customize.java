@@ -3,6 +3,7 @@ package net.binaryaura.customize.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.binaryaura.customize.client.gui.GuiInGameCustomize;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.GuiIngameForge;
@@ -11,9 +12,15 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLModDisabledEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 
 /**
  * Main mod file for Customize. This file directs FML how to register this mod.
@@ -36,7 +43,7 @@ public class Customize {
 	/**
 	 * Version string for the mod.
 	 */
-    public static final String VERSION = "1A1-8";
+    public static final String VERSION = "1A4-10";
     
     /**
      * Client proxy class directory.
@@ -57,11 +64,6 @@ public class Customize {
      * Logger for the mod.
      */
     public static final Logger log = LogManager.getLogger("CUSTOMIZE");
-    
-    /**
-     * Instance of the HudItemManager.
-     */
-    public static final HudItemManager hudManager = HudItemManager.getInstance();
     
     /**
      * A single global instance for this mod.
@@ -120,6 +122,22 @@ public class Customize {
     	log.info("Successfully loaded " + NAME);
     }
     
+    // This Event is only called on the server
+//    /**
+//     * Called during the starting of the server. This is the Second of Three events called
+//     * during the Starting of the server. It is used here to change Minecraft variables,
+//     * namely the ingameGUI.
+//     * 
+//     * @param event			ServerStarting Event
+//     */
+////    @EventHandler
+//    public void enableIngameGUIClient(FMLServerStartingEvent event) {
+//    	if(!(mc.ingameGUI instanceof GuiInGameCustomize)) {
+//	    	mc.ingameGUI = new GuiInGameCustomize(mc);
+//	    	log.info("Successfully enabled " + NAME + " ingameGUI");
+//    	}
+//    }
+    
     /**
      * This event is define but is currently never called.
      * It is supposed to be called when a game is disabled in
@@ -132,5 +150,4 @@ public class Customize {
     	mc.ingameGUI = new GuiIngameForge(mc);
     	log.info("Successfully unloaded " + NAME);
     }
-    
 }

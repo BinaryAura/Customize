@@ -3,6 +3,7 @@ package net.binaryaura.customize.client.gui;
 import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
 import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
@@ -40,7 +41,7 @@ public class GuiButtonHudItem extends GuiButton {
 	 */
 	public GuiButtonHudItem(int buttonId, int x, int y, int width, int height, String name) {
 		super(buttonId, x, y, width, height, name);
-		hudItem = Customize.hudManager.get(name);
+		hudItem = HudItemManager.REGISTRY.get(name);
 	}
 
 	
@@ -99,8 +100,8 @@ public class GuiButtonHudItem extends GuiButton {
 	
 	@Deprecated
 	public void recover() {
-		int screenHeight = Customize.hudManager.getRes().getScaledHeight();
-		int screenWidth = Customize.hudManager.getRes().getScaledWidth();
+		int screenHeight = HudItemManager.getRes().getScaledHeight();
+		int screenWidth = HudItemManager.getRes().getScaledWidth();
 		int deltaX = 0;
 		int deltaY = 0;
 		if(xPosition < 5)
@@ -133,8 +134,8 @@ public class GuiButtonHudItem extends GuiButton {
 	 * @param deltaY		Vertical change of position of the HUDItem.
 	 */
 	public void editPosition(int deltaX, int deltaY) {
-		int screenHeight = Customize.hudManager.getRes().getScaledHeight();
-		int screenWidth = Customize.hudManager.getRes().getScaledWidth();
+		int screenHeight = HudItemManager.getRes().getScaledHeight();
+		int screenWidth = HudItemManager.getRes().getScaledWidth();
 		deltaX = MathHelper.clamp_int(deltaX, -xPosition, screenWidth - width - xPosition);
 		deltaY = MathHelper.clamp_int(deltaY, -yPosition, screenHeight - height - yPosition);
 		this.deltaX = deltaX;

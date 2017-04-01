@@ -1,5 +1,6 @@
 package net.binaryaura.customize.client;
 
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemAir;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemArmor;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemCrosshairs;
@@ -76,13 +77,13 @@ public class ClientProxy extends CommonProxy {
 	 * Registers all HudItems with the HudItemManager.
 	 */
 	private void registerHudItems() {
-		Customize.hudManager.register(new HudItemHealth(HEALTH));
-		Customize.hudManager.register(new HudItemExperience(EXPERIENCE));
-		Customize.hudManager.register(new HudItemFood(FOOD));
-		Customize.hudManager.register(new HudItemAir(AIR));
-		Customize.hudManager.register(new HudItemArmor(ARMOR));
-		Customize.hudManager.register(new HudItemCrosshairs(CROSSHAIRS));
-		Customize.hudManager.register(new HudItemToolTip(TOOLTIP));
+		HudItemManager.REGISTRY.register(new HudItemHealth(HEALTH));
+		HudItemManager.REGISTRY.register(new HudItemExperience(EXPERIENCE));
+		HudItemManager.REGISTRY.register(new HudItemFood(FOOD));
+		HudItemManager.REGISTRY.register(new HudItemAir(AIR));
+		HudItemManager.REGISTRY.register(new HudItemArmor(ARMOR));
+		HudItemManager.REGISTRY.register(new HudItemCrosshairs(CROSSHAIRS));
+		HudItemManager.REGISTRY.register(new HudItemToolTip(TOOLTIP));
 	}
 	
 	/**

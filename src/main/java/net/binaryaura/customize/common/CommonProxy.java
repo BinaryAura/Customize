@@ -1,5 +1,6 @@
 package net.binaryaura.customize.common;
 
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.util.KeyRegister;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -31,8 +32,8 @@ public class CommonProxy {
 	 * @param event			Initialization Event
 	 */
 	public void init(FMLInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(new TickHandler());
 		MinecraftForge.EVENT_BUS.register(new KeyRegister());
+		MinecraftForge.EVENT_BUS.register(new HudItemManager());
 	}
 	
 	/**
