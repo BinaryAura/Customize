@@ -2,6 +2,7 @@ package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import org.lwjgl.opengl.GL11;
 
+import javafx.scene.layout.BorderRepeat;
 import net.binaryaura.customize.client.gui.GuiInGameCustomize;
 import net.binaryaura.customize.client.gui.huditem.HudItemText;
 import net.minecraft.client.renderer.GlStateManager;

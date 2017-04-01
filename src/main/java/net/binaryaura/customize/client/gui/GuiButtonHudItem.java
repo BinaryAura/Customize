@@ -100,8 +100,8 @@ public class GuiButtonHudItem extends GuiButton {
 	
 	@Deprecated
 	public void recover() {
-		int screenHeight = HudItemManager.getRes().getScaledHeight();
-		int screenWidth = HudItemManager.getRes().getScaledWidth();
+		int screenHeight = HudItemManager.getInstance().getRes().getScaledHeight();
+		int screenWidth = HudItemManager.getInstance().getRes().getScaledWidth();
 		int deltaX = 0;
 		int deltaY = 0;
 		if(xPosition < 5)
@@ -134,8 +134,8 @@ public class GuiButtonHudItem extends GuiButton {
 	 * @param deltaY		Vertical change of position of the HUDItem.
 	 */
 	public void editPosition(int deltaX, int deltaY) {
-		int screenHeight = HudItemManager.getRes().getScaledHeight();
-		int screenWidth = HudItemManager.getRes().getScaledWidth();
+		int screenHeight = HudItemManager.getInstance().getRes().getScaledHeight();
+		int screenWidth = HudItemManager.getInstance().getRes().getScaledWidth();
 		deltaX = MathHelper.clamp_int(deltaX, -xPosition, screenWidth - width - xPosition);
 		deltaY = MathHelper.clamp_int(deltaY, -yPosition, screenHeight - height - yPosition);
 		this.deltaX = deltaX;

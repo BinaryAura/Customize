@@ -43,6 +43,7 @@ public abstract class HudItemText extends HudItem {
 		super(name);
 		guiBackground = true;
 		fontRenderer = mc.fontRendererObj;
+		style = DFLT_STY;
 	}
 
 	/**

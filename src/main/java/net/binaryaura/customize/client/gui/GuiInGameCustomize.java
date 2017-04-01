@@ -61,9 +61,9 @@ public class GuiInGameCustomize {
 	/**
 	 * Render the Game HUD overlay
 	 */
-	public void renderGameOverlay(RenderGameOverlayEvent eventParent, float partialTicks, ScaledResolution res) {
-		this.res = res;
+	public void renderGameOverlay(RenderGameOverlayEvent eventParent) {
 		this.eventParent = eventParent;
+		HudItem.setEvent(eventParent);
 
 		mc.entityRenderer.setupOverlayRendering();
 		GlStateManager.enableBlend();
@@ -71,16 +71,16 @@ public class GuiInGameCustomize {
 		// PRE
 		
 		if (Minecraft.isFancyGraphicsEnabled()) {
-			renderVignette(mc.thePlayer.getBrightness(partialTicks), res);
+			renderVignette(mc.thePlayer.getBrightness(eventParent.partialTicks), eventParent.resolution);
 		} else {
 			GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 		}
 
 		if (GuiIngameForge.renderHelmet)
-			renderHelmet(res, partialTicks);
+			renderHelmet(eventParent.resolution, eventParent.partialTicks);
 
 		if (GuiIngameForge.renderPortal && !mc.thePlayer.isPotionActive(Potion.confusion)) {
-			renderPortal(res, partialTicks);
+			renderPortal(eventParent.resolution, eventParent.partialTicks);
 		}
 		
 		// Iterates through all Pre HudItems
@@ -108,9 +108,9 @@ public class GuiInGameCustomize {
 			GL11.glPopMatrix();
 		}
 		
-		renderSleepFade(res.getScaledWidth(), res.getScaledHeight());
+		renderSleepFade(eventParent.resolution.getScaledWidth(), eventParent.resolution.getScaledHeight());
 		
-        renderChat(res.getScaledWidth(), res.getScaledHeight());
+        renderChat(eventParent.resolution.getScaledWidth(), eventParent.resolution.getScaledHeight());
 	}
 
     /**
@@ -315,9 +315,4 @@ public class GuiInGameCustomize {
 	 * RenderEvent that called the renderGameOverlay method
 	 */
 	private RenderGameOverlayEvent eventParent;
-
-	/**
-	 * Resolution of the Minecraft Window.
-	 */
-	private ScaledResolution res = null;
 }

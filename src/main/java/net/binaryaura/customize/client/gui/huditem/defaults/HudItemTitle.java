@@ -1,7 +1,9 @@
 package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.HudItemText;
+import net.binaryaura.customize.client.gui.huditem.HudItem.RenderPriority;
 
 /**
  * Primary Title Text. TITLE fades in then, fades out
@@ -36,7 +38,14 @@ public class HudItemTitle extends HudItemText {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final Anchor DFLT_ANCH = Anchor.TOPLEFT;	
+	private static final Anchor DFLT_ANCH = Anchor.TOPLEFT;
+	
+	/**
+	 * The priority of the HUDItem during the rendering process.
+	 * 
+	 * @see HudItem.RenderPriority
+	 */
+	private static final RenderPriority DFLT_PRIO = RenderPriority.POST;
 
 	//	TODO: Make Title HudItem
 	
@@ -58,13 +67,32 @@ public class HudItemTitle extends HudItemText {
 	
 	@Override
 	protected void init() {
-		
+		x = DFLT_X;
+		y = DFLT_Y;
+		anchor = DFLT_ANCH;
+		style = DFLT_STY;
+		priority = DFLT_PRIO;		
 	}
 	
 	@Override
-	public void updateTick() {
-		
+	public void updateTick() {		
 		super.updateTick();
+		// Typical Update for Title is done through Minecraft.inGameGui
+		
+		// Update Title vars
+		title = HudItemManager.getTitleText();
+		subtitle = HudItemManager.getSubtitleText();
+		fadeInTime = HudItemManager.getTitleFadeInTime();
+		displayTime = HudItemManager.getTitleDisplayTime();
+		fadeOutTime = HudItemManager.getTitleFadeOutTime();
+		
+		if(ticksRemaining > 0) {
+			--ticksRemaining;
+			if(ticksRemaining <= 0) {
+				title = "";
+				subtitle = "";
+			}
+		}
 	}
 
 	@Override
@@ -100,5 +128,12 @@ public class HudItemTitle extends HudItemText {
 	protected void setHeightAndWidth() {
 		
 	}
+	
+	protected int ticksRemaining;
+	protected String title;
+	protected String subtitle;
+	protected int fadeOutTime;
+	protected int fadeInTime;
+	protected int displayTime;
 
 }

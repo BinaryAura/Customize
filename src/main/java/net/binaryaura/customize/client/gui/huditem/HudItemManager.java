@@ -28,11 +28,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class HudItemManager {
 	
 	/**
-	 * Partial Ticks for this RenderTick
-	 */
-	public static float partialTicks;  // NO static
-	
-	/**
 	 * Render Engine for the HUD.
 	 */
 	public static GuiInGameCustomize ingameGui;  // NO static
@@ -57,9 +52,8 @@ public class HudItemManager {
 	{
 		if(event.type == ElementType.ALL) {
 			event.setCanceled(true);
-			partialTicks = event.partialTicks;
-			res = new ScaledResolution(mc);
-			ingameGui.renderGameOverlay(event, partialTicks, res);
+			eventParent = event;
+			ingameGui.renderGameOverlay(event);
 		}
 	}
 	
@@ -75,8 +69,8 @@ public class HudItemManager {
 	 * 
 	 * @return		Resolution of Minecraft Window.
 	 */
-	public static ScaledResolution getRes() {  // NO static
-		return res;
+	public ScaledResolution getRes() {
+		return eventParent.resolution;
 	}
 	
 	public static String getTitleText() {
@@ -152,17 +146,16 @@ public class HudItemManager {
 	                            RECORD_PLAYING = "recordPlaying",
 	                            RECORD_PLAYING_UP_FOR = "recordPlayingUpFor",
 	                            RECORD_IS_PLAYING = "recordIsPlaying";
-		
-	/**
-	 * The resolution for Minecraft Window.
-	 */
-	private static ScaledResolution res;		// Passed     // NO static
 	
 	/**
 	 * Minecraft gameController
 	 */
-	private static Minecraft mc = Minecraft.getMinecraft();		// Passed
+	private static Minecraft mc = Minecraft.getMinecraft();
 	
+	/**
+	 * Event that governs the HudItems for this renderTick
+	 */
+	private RenderGameOverlayEvent eventParent;
 	@Deprecated
 	public static int updateCounter = 0;
 }

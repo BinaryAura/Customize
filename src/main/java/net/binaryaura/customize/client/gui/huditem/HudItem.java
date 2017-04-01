@@ -9,7 +9,9 @@ import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 /**
  * An object making up the Heads UP Display. There are several
@@ -104,11 +106,11 @@ public abstract class HudItem implements Color{
 				case TOP:
 				case CENTER:
 				case BOTTOM:
-					return HudItemManager.getRes().getScaledWidth() / 2;
+					return res.getScaledWidth() / 2;
 				case TOPRIGHT:
 				case RIGHT:
 				case BOTTOMRIGHT:
-					return HudItemManager.getRes().getScaledWidth();
+					return res.getScaledWidth();
 				default:
 					return 0;
 			}
@@ -128,11 +130,11 @@ public abstract class HudItem implements Color{
 				case LEFT:
 				case CENTER:
 				case RIGHT:
-					return HudItemManager.getRes().getScaledHeight() / 2;
+					return res.getScaledHeight() / 2;
 				case BOTTOMLEFT:
 				case BOTTOM:
 				case BOTTOMRIGHT:
-					return HudItemManager.getRes().getScaledHeight();
+					return res.getScaledHeight();
 				default:
 					return 0;
 			}
@@ -222,6 +224,21 @@ public abstract class HudItem implements Color{
 	protected static final Random rand = new Random();
 	
 	/**
+	 * Partial Ticks passed by the event
+	 */
+	protected static float partialTicks;
+	
+	/**
+	 * Event that governs this render.
+	 */
+	protected static RenderGameOverlayEvent eventParent;
+	
+	/**
+	 * Resolution of the Minecraft Window
+	 */
+	protected static ScaledResolution res;
+	
+	/**
 	 * Flag whether the game is <code>inPreview</code>.
 	 */
 	private static boolean inPreview = false;
@@ -279,6 +296,17 @@ public abstract class HudItem implements Color{
 	 */
 	public void renderHUDItem() {
 		renderHUDItem(getX(), getY());
+	}
+	
+	/**
+	 * Sets the event for the HudItems for this renderTick.
+	 * 
+	 * @param eventParent		The event to use as the eventParent
+	 */
+	public static void setEvent(RenderGameOverlayEvent eventParent) {
+		HudItem.eventParent = eventParent;
+		res = eventParent.resolution;
+		partialTicks = eventParent.partialTicks;
 	}
 	
 	/**
