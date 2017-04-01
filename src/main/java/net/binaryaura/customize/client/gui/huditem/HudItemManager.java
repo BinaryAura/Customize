@@ -35,8 +35,18 @@ public class HudItemManager {
 	/**
 	 * Render Engine for the HUD.
 	 */
-	public static GuiInGameCustomize ingameGui = new GuiInGameCustomize(Customize.mc);  // NO static
+	public static GuiInGameCustomize ingameGui;  // NO static
+	
+	private static final HudItemManager instance = new HudItemManager();
+	
+	private HudItemManager() {
+		ingameGui = new GuiInGameCustomize(mc);
+	}
 
+	public static HudItemManager getInstance() {
+		return instance;
+	}
+	
 	/**
 	 * The collection of hudItems.
 	 */
@@ -103,7 +113,7 @@ public class HudItemManager {
 	
 	@SuppressWarnings("unchecked")
 	private static <T> T getGUIField(String fieldName) {
-		GuiIngame instance = mc.ingameGUI;
+		GuiIngame instance = Minecraft.getMinecraft().ingameGUI;
 		Class<?> ingameGui = instance.getClass();
 		try {
 			Field field = getField(ingameGui, fieldName);
@@ -151,7 +161,7 @@ public class HudItemManager {
 	/**
 	 * Minecraft gameController
 	 */
-	private static Minecraft mc = Minecraft.getMinecraft();		// Passed   // NO static
+	private static Minecraft mc = Minecraft.getMinecraft();		// Passed
 	
 	@Deprecated
 	public static int updateCounter = 0;

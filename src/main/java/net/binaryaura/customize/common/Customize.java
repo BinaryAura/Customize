@@ -43,7 +43,7 @@ public class Customize {
 	/**
 	 * Version string for the mod.
 	 */
-    public static final String VERSION = "1A4-10";
+    public static final String VERSION = "1A4-11";
     
     /**
      * Client proxy class directory.

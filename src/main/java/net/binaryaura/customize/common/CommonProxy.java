@@ -33,7 +33,7 @@ public class CommonProxy {
 	 */
 	public void init(FMLInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new KeyRegister());
-		MinecraftForge.EVENT_BUS.register(new HudItemManager());
+		MinecraftForge.EVENT_BUS.register(HudItemManager.getInstance());
 	}
 	
 	/**
