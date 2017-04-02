@@ -1,56 +1,139 @@
 package net.binaryaura.customize.client.gui.huditem;
 
-import java.util.HashMap;
+import java.lang.reflect.Field;
 
+import net.binaryaura.customize.client.gui.GuiInGameCustomize;
 import net.binaryaura.customize.common.Customize;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import scala.collection.generic.BitOperations.Int;
 
 /**
- * Manager for all HUDItems. HudItemManager keeps track of all
- * HudItems and has methods to add and remove HudItems. It also
- * holds global values that all HudItems may use.
+ * <p>Manager for all HUDItems. HudItemManager keeps track of all
+ * HudItems with a <code>HudItemRegistry</code> and has methods
+ * to add and remove HudItems. It also holds values that
+ * all HudItems may use.
  * 
- * There is strictly one instance of the HudItemManager which can be
+ * <p>There is strictly one instance of the HudItemManager which can be
  * obtained by <code>HudItemManager.getInstance()</code>.
+ * 
+ * @see HudItemRegistry
+ * 
  * @author	BinaryAura
- *
  */
 public class HudItemManager {
 	
-	// What about future(modded-in) types?
-	@Deprecated
-	public static enum HudItemType {
-		BAR(),
-		ICON(),
-		ICON_GUAGE(),
-		ICON_SET(),
-		TEXT();
-		
-		HudItemType() {}
-	}
+	/**
+	 * Render Engine for the HUD.
+	 */
+	public static GuiInGameCustomize ingameGui;  // NO static
+	
+	private static final HudItemManager instance = new HudItemManager();
 	
 	/**
-	 * Gets the global instance of the HudItemManager.
-	 * 
-	 * @return		Global instance of this class.
+	 * The collection of hudItems.
 	 */
+	public static final HudItemRegistry REGISTRY = new HudItemRegistry();
+
+	private static final String TITLE_TEXT = "field_175201_x",
+	                            SUBTITLE_TEXT = "field_175200_y",
+	                            TITLE_TICKS_REMAINING = "field_175195_w",
+	                            TITLE_FADE_IN_TIME = "field_175199_z",
+							    TITLE_DISPLAY_TIME = "field_175192_A",
+	                            TITLE_FADE_OUT_TIME = "field_175193_B",
+	                            RECORD_PLAYING = "recordPlaying",
+	                            RECORD_PLAYING_UP_FOR = "recordPlayingUpFor",
+	                            RECORD_IS_PLAYING = "recordIsPlaying";
+	
+	/**
+	 * Minecraft gameController
+	 */
+	protected Minecraft mc;;
+	
+	@Deprecated
+	public static int updateCounter = 0;
+	
 	public static HudItemManager getInstance() {
 		return instance;
 	}
 	
-	/**
-	 * Instance of the HudItemManager.
-	 * There should only be one instance for all mods.
-	 */
-	private static HudItemManager instance = new HudItemManager();
+	public static boolean getRecordIsPlaying() {
+		return HudItemManager.<Boolean>getGUIField(RECORD_IS_PLAYING);		
+	}
 	
-	/**
-	 * Updates the <code>res</code> of the Minecraft Window.
-	 * 
-	 * @param res 		The resolution for the Minecraft Window.
-	 */
-	public void updateRes(ScaledResolution res) {
-		this.res = res;
+	public static String getRecordPlaying() {
+		return HudItemManager.<String>getGUIField(RECORD_PLAYING);
+	}
+	
+	public static int getRecordRemainingPlayTime() {
+		return HudItemManager.<Integer>getGUIField(RECORD_PLAYING_UP_FOR);
+	}
+	
+	public static String getSubtitleText() {
+		return HudItemManager.<String>getGUIField(SUBTITLE_TEXT);
+	}
+	
+	public static int getTitleDisplayTime() {
+		return HudItemManager.<Integer>getGUIField(TITLE_DISPLAY_TIME);
+	}
+	
+	public static int getTitleFadeInTime() {
+		return HudItemManager.<Integer>getGUIField(TITLE_FADE_IN_TIME);
+	}
+	
+	public static int getTitleFadeOutTime() {
+		return HudItemManager.<Integer>getGUIField(TITLE_FADE_OUT_TIME);
+	}
+	
+	public static String getTitleText() {
+		return HudItemManager.<String>getGUIField(TITLE_TEXT);
+	}
+	
+	public static int getTitleTicksRemaining() {
+		return HudItemManager.<Integer>getGUIField(TITLE_TICKS_REMAINING);
+	}
+	
+	private static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
+		try {
+			return clazz.getDeclaredField(fieldName);
+		} catch (NoSuchFieldException e) {
+			Class<?> superClass = clazz.getSuperclass();
+			if (superClass == null) {
+				throw e;
+			} else {
+				return getField(superClass, fieldName);
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static <T> T getGUIField(String fieldName) {
+		GuiIngame instance = Minecraft.getMinecraft().ingameGUI;
+		Class<?> ingameGui = instance.getClass();
+		try {
+			Field field = getField(ingameGui, fieldName);
+			field.setAccessible(true);
+			return (T) field.get(instance);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private HudItemManager() {
+		mc = Minecraft.getMinecraft();
+		ingameGui = new GuiInGameCustomize(mc);
 	}
 	
 	/**
@@ -59,90 +142,26 @@ public class HudItemManager {
 	 * @return		Resolution of Minecraft Window.
 	 */
 	public ScaledResolution getRes() {
-		return res;
+		return eventParent.resolution;
 	}
 	
-	/**
-	 * Get all HudItems.
-	 * @return		Collection of all the assigned HUDItems.
-	 */
-	public Iterable<HudItem> getHudItems() {
-		return hudItems.values();
+	@SubscribeEvent
+	public void onTick(TickEvent event)
+	{
+		ingameGui.updateTick();
 	}
 	
-	/**
-	 * Get the HudItem with the assigned <code>name</code>.
-	 * 
-	 * @param name		The name of the HUDItem to be retrieved.
-	 * @return			HudItem with the given name.
-	 */
-	public HudItem getHudItem(String name) {
-		return hudItems.get(name);
-	}
-	
-	/**
-	 * Get the HudItem with the assigned <code>id</code>.
-	 * 
-	 * @param id		The ID of the HUDItem to be retrieved.
-	 * @return			HudItem with the given ID.
-	 */
-	public HudItem getHudItem(int id) {
-		for(HudItem hudItem : hudItems.values()) {
-			if(hudItem.getId() == id)
-				return hudItem;
-		}
-		Customize.log.warn("ID " + id + " doesn't relate to a HudItem.");
-		return null;
-	}
-	
-	/**
-	 * Registers a HudItem to the Manager.
-	 * 
-	 * @param hudItem		The HUDItem to be writen to the registry.
-	 */
-	public void registerHudItem(HudItem hudItem) {
-		if(hudItem != null) {			
-			hudItems.put(hudItem.getName(), hudItem);
-			hudItem.setId(nextId++);
-			Customize.log.info("Registered " + hudItem + " (" + hudItem.getId() + ")");
-		} else {
-			Customize.log.warn("Null HudItem. Skipping.");
+	@SubscribeEvent
+	public void renderGameOverlay(RenderGameOverlayEvent.Pre event)
+	{
+		if(event.type == ElementType.ALL) {
+			event.setCanceled(true);
+			eventParent = event;
+			ingameGui.renderGameOverlay(event);
 		}
 	}
-	
 	/**
-	 * Unregisters a HudItem from the Manager.
-	 * 
-	 * @param name			The HUDItem to be stricken from the registry.
+	 * Event that governs the HudItems for this renderTick
 	 */
-	public void unregisterHudItem(String name) {
-		if(hudItems.containsKey(name)) {
-			hudItems.remove(name);
-			Customize.log.info("Unregisterd HudItem " + name);
-		} else {
-			Customize.log.warn("HudItem " + name + " isn't registered. Skipping.");
-		}
-	}	
-
-	/**
-	 * Constructs an instance of the manager
-	 */
-	private HudItemManager() {
-		hudItems = new HashMap<String, HudItem>();
-	}
-	
-	/**
-	 * The ID for the next HUDItem assigned.
-	 */
-	private int nextId = 0;
-	
-	/**
-	 * The resolution for Minecraft Window.
-	 */
-	private ScaledResolution res;
-	
-	/**
-	 * Registry of all the assigned HUDItems.
-	 */
-	private HashMap<String, HudItem> hudItems;	
+	private RenderGameOverlayEvent eventParent;
 }

@@ -50,7 +50,6 @@ public abstract class HudItemBar extends HudItem {
 		mc.mcProfiler.startSection(name);
 		
 		SpriteSet sprites = getLayers();
-		setHeightAndWidth();
 		
 		GL11.glTranslated(getTranslateX(x, y), getTranslateY(x, y), 0.0F);
 		GL11.glRotatef(getRotation(), 0.0F, 0.0F, 1.0F);

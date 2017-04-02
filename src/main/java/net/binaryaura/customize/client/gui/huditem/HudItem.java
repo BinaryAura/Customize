@@ -9,7 +9,9 @@ import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 /**
  * An object making up the Heads UP Display. There are several
@@ -59,24 +61,33 @@ public abstract class HudItem implements Color{
 	protected static final Orientation DFLT_ORIEN = Orientation.RIGHT;
 	
 	/**
+	 * The priority of the HUDItem during the rendering process.
+	 * 
+	 * @see HudItem.RenderPriority
+	 */
+	protected static final RenderPriority DFLT_PRIO = RenderPriority.NORMAL;
+	
+	/**
 	 * Reference Points for the x and y values for all HUDItems.
 	 * 
-	 *  TOPLEFT: Upper Left corner of the screen. (0, 0)
-	 *  TOP: Middle of the Upper edge of the screen. (width/2, 0)
-	 *  TOPRIGHT: Upper Right corner of the screen. (width, 0)
-	 *  LEFT: Middle of the Left edge of the screen. (0, height/2)
-	 *  CENTER: Center of the screen. (width/2, height/2)
-	 *  RIGHT: Middle of the Right edge of the screen. (width, height/2)
-	 *  BOTTOMLEFT: Lower Left corner of the screen. (0, height)
-	 *  BOTTOM: Middle of the Lower edge of the screen. (width/2, height)
-	 *  BOTTOMRIGHT: Lower Right corner of the screen. (width, height)
+	 *  <p><b><code>TOPLEFT</code>:</b> Upper Left corner of the screen. (0, 0)
+	 *  <br><b><code>TOP</code>:</b> Middle of the Upper edge of the screen. (width/2, 0)
+	 *  <br><b><code>TOPRIGHT</code>:</b> Upper Right corner of the screen. (width, 0)
+	 *  <br><b><code>LEFT</code>:</b> Middle of the Left edge of the screen. (0, height/2)
+	 *  <br><b><code>CENTER</code>:</b> Center of the screen. (width/2, height/2)
+	 *  <br><b><code>RIGHT</code>:</b> Middle of the Right edge of the screen. (width, height/2)
+	 *  <br><b><code>BOTTOMLEFT</code>:</b> Lower Left corner of the screen. (0, height)
+	 *  <br><b><code>BOTTOM</code>:</b> Middle of the Lower edge of the screen. (width/2, height)
+	 *  <br><b><code>BOTTOMRIGHT</code>:</b> Lower Right corner of the screen. (width, height)
+	 *  <!--
+	 *  ___________________________
+	 *  |X           X           X|
+	 *  |                         |
+	 *  |X           X           X|
+	 *  |                         |
+	 *  |X___________X___________X|
 	 *  
-	 *     __________________________
-	 *    |X			X			X|
-	 *    |                          |
-	 *    |X			X			X|
-	 *    |                          |
-	 *    |X____________X___________X|
+	 *  -->
 	 */
 	public static enum Anchor {
 		TOPLEFT, TOP, TOPRIGHT, LEFT, CENTER, RIGHT, BOTTOMLEFT, BOTTOM, BOTTOMRIGHT;
@@ -95,11 +106,11 @@ public abstract class HudItem implements Color{
 				case TOP:
 				case CENTER:
 				case BOTTOM:
-					return hudManager.getRes().getScaledWidth() / 2;
+					return res.getScaledWidth() / 2;
 				case TOPRIGHT:
 				case RIGHT:
 				case BOTTOMRIGHT:
-					return hudManager.getRes().getScaledWidth();
+					return res.getScaledWidth();
 				default:
 					return 0;
 			}
@@ -119,11 +130,11 @@ public abstract class HudItem implements Color{
 				case LEFT:
 				case CENTER:
 				case RIGHT:
-					return hudManager.getRes().getScaledHeight() / 2;
+					return res.getScaledHeight() / 2;
 				case BOTTOMLEFT:
 				case BOTTOM:
 				case BOTTOMRIGHT:
-					return hudManager.getRes().getScaledHeight();
+					return res.getScaledHeight();
 				default:
 					return 0;
 			}
@@ -131,12 +142,12 @@ public abstract class HudItem implements Color{
 	}
 	
 	/**
-	 * Directions of orientation for all applicable HUDItems.
+	 * <p>Directions of orientation for all applicable HUDItems.
 	 * 
-	 * 	UP: Filling or stacking toward the upper edge of the screen.
-	 *  RIGHT: Filling or stacking toward the right edge of the screen.
-	 *  DOWN: Filling or stacking toward the lower edge of the screen.
-	 *  LEFT: Filling or stacking toward the left edge of the screen.  
+	 * <p><b><code>UP</code>:</b> Filling or stacking toward the upper edge of the screen.
+	 * <br><b><code>RIGHT</code>:</b> Filling or stacking toward the right edge of the screen.
+	 * <br><b><code>DOWN</code>:</b> Filling or stacking toward the lower edge of the screen.
+	 * <br><b><code>LEFT</code>:</b> Filling or stacking toward the left edge of the screen.  
 	 */
 	public static enum Orientation {
 		UP, RIGHT, DOWN, LEFT;
@@ -183,11 +194,29 @@ public abstract class HudItem implements Color{
 	}
 	
 	/**
-	 * HUD Manager from the Mod class.
+	 * <p>States when the HudItem should be rendered. The player still have
+	 * control over each hudItem with the <code>NORMAL</code> priority to
+	 * move up and down in the foreground. But, <code>PRE</code> and
+	 * <code>POST</code> render orders are set in code.
 	 * 
-	 * @see		Customize
+	 * <p><b><code>PRE</code>:</b> Marks the HudItem to be rendered prior to normal
+	 * HudItems. These are HudItems that should be rendered beneath data
+	 * oriented HudItems. These are graphics that do not block the data
+	 * oriented HudItems (e.g. Vignette, Portal, Helmet).
+	 * 
+	 * <p><b><code>NORMAL</code>:</b> Marks the HudItem to be rendered normally.
+	 * These are HudItems that show data to the player
+	 * (e.g. Health, Armor, Air).
+	 * 
+	 * <p><b><code>POST</code>:</b> Marks the HudItems to be rendered after normal
+	 * HudItems. These are HudItems that should be rendered beneath data
+	 * oriented HudItems. These are graphics that block data oriented HudItems.
+	 * These are typically event based graphics
+	 * (e.g. Chat, Sleep Fade, PlayerList).
 	 */
-	protected static HudItemManager hudManager = Customize.hudManager;
+	public static enum RenderPriority {
+		PRE, NORMAL, POST;
+	}
 	
 	/**
 	 * Random number generator for all HUDItems.
@@ -195,16 +224,36 @@ public abstract class HudItem implements Color{
 	protected static final Random rand = new Random();
 	
 	/**
+	 * Partial Ticks passed by the event
+	 */
+	protected static float partialTicks;
+	
+	/**
+	 * Event that governs this render.
+	 */
+	protected static RenderGameOverlayEvent eventParent;
+	
+	/**
+	 * Resolution of the Minecraft Window
+	 */
+	protected static ScaledResolution res = new ScaledResolution(HudItemManager.getInstance().mc);
+	
+	/**
 	 * Flag whether the game is <code>inPreview</code>.
 	 */
 	private static boolean inPreview = false;
 	
 	/**
-	 * Set {@link #isInPreview()} to true.
+	 * Set {@link #inPreview} to true.
 	 */
 	public static void setInPreview() {
 		inPreview = true;
 	}
+	
+	/**
+	 * Update counter for synchronized actions.
+	 */
+	protected static int updateCounter = 0;
 	
 	/**
 	 * Constructs an instance of the HUDItem with the specified
@@ -216,14 +265,14 @@ public abstract class HudItem implements Color{
 	 */
 	public HudItem(String name){
 		this.name = name.toLowerCase();
-		mc = Minecraft.getMinecraft();
-		guiRenderer = new Gui();
 		anchor = DFLT_ANCH;
 		orientation = DFLT_ORIEN;
+		priority = DFLT_PRIO;
 		flip = DFLT_FLIP;
 		x = DFLT_X;
 		y = DFLT_Y;
 		init();
+		setHeightAndWidth();
 	}
 	
 	/**
@@ -234,18 +283,29 @@ public abstract class HudItem implements Color{
 	}
 	
 	/**
-	 * Renders the HUDItem in the saved location.
+	 * <p>Renders the HUDItem in the saved location.
 	 * 
-	 * Amount is reset each time {@link #getAmount()} changes. If the game
+	 * <p>Amount is reset each time {@link #getAmount()} changes. If the game
 	 * {@link #isInPreview()} then, <code>demoAmount</code> is used instead.
 	 * Height and Width is reset as well.
 	 * 
-	 * How the gauge is rendered depends on the orientation of the gauge.
+	 * <p>How the gauge is rendered depends on the orientation of the gauge.
 	 * The texture and specific attributes are obtained from the subclass.
 	 * From the information retrieved the subclass is rendered icon by icon.
 	 */
 	public void renderHUDItem() {
 		renderHUDItem(getX(), getY());
+	}
+	
+	/**
+	 * Sets the event for the HudItems for this renderTick.
+	 * 
+	 * @param eventParent		The event to use as the eventParent
+	 */
+	public static void setEvent(RenderGameOverlayEvent eventParent) {
+		HudItem.eventParent = eventParent;
+		res = eventParent.resolution;
+		partialTicks = eventParent.partialTicks;
 	}
 	
 	/**
@@ -497,16 +557,39 @@ public abstract class HudItem implements Color{
 	 */
 	@Override
 	public String toString() {
-		return "HUDItem " + getName();
+		return "HUDItem " + getName() + (id == -1 ? "" : (" (" + getId() + ")"));
 	}
 	
 	/**
 	 * Direction the HUDItem will fill or stack when rendered.
 	 * 
+	 * @see Orientation
+	 * 
 	 * @return direction the HUDItem will fill or stack when rendered.
 	 */
 	public Orientation getOrientation() {
 		return orientation;
+	}
+	
+	/**
+	 * Priority of the HUDItem during rendering.
+	 * 
+	 * @see RenderPriority
+	 * 
+	 * @return priority of the HUDItem.
+	 */
+	public RenderPriority getPriority() {
+		return priority;
+	}
+	
+	/**
+	 * Getter for {@link #graphic}
+	 * @return 
+	 * 
+	 * @return flag for whether the HUDItem is a graphics object
+	 */
+	public boolean isGraphic() {
+		return graphic;
 	}
 	
 	/**
@@ -569,6 +652,11 @@ public abstract class HudItem implements Color{
 	protected boolean flip;
 	
 	/**
+	 * Flag for whether the HUDItem is a graphics object and should not be rendered for adjustment
+	 */
+	protected boolean graphic = false;
+	
+	/**
 	 * Flag for whether the HUDItem should have a background on {@link GuiScreenAdjustHud}.
 	 */
 	protected boolean guiBackground = false;
@@ -581,12 +669,7 @@ public abstract class HudItem implements Color{
 	/**
 	 * HUDItem identification for {@link GuiScreenAdjustHud}
 	 */
-	protected int id;
-	
-	/**
-	 * Update counter for synchronized actions.
-	 */
-	protected int updateCounter = 0;
+	protected int id = -1;
 	
 	/**
 	 * Width of the HUDItem.
@@ -606,7 +689,7 @@ public abstract class HudItem implements Color{
 	/**
 	 * Last system time checked.
 	 */
-	protected long lastSystemTime;
+	protected static long lastSystemTime;
 	
 	/**
 	 * The reference point for the x and y values.
@@ -616,22 +699,27 @@ public abstract class HudItem implements Color{
 	/**
 	 * Renderer for the HUDItem.
 	 */
-	protected Gui guiRenderer;
+	protected static Gui guiRenderer = new Gui();
 	
 	/**
 	 * Logger for the Mod.
 	 */
-	protected Logger log = Customize.log;
+	protected static Logger log = Customize.log;
 	
 	/**
 	 * Main loop for the game. This has many fields needed for HUDItems.
 	 */
-	protected Minecraft mc;
+	protected static Minecraft mc = HudItemManager.getInstance().mc;
 	
 	/**
 	 * Direction the HUDItem will fill when rendered.
 	 */
 	protected Orientation orientation;
+	
+	/**
+	 * Priority for the HudItem.
+	 */
+	protected RenderPriority priority;
 	
 	/**
 	 * Name of the HUDItem.

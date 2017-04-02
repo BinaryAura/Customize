@@ -38,8 +38,9 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	@Override
 	public void initGui() {
 		buttonList.clear();
-        for (HudItem hudItem : Customize.hudManager.getHudItems()) {
-                if(hudItem != null)	buttonList.add(new GuiButtonHudItem(hudItem));
+        for (HudItem hudItem : HudItemManager.REGISTRY.getAll()) {
+        		
+                if(hudItem != null && !hudItem.isGraphic())	buttonList.add(new GuiButtonHudItem(hudItem));
 		}
 	}
 

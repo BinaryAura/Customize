@@ -94,4 +94,12 @@ public class HudItemObjective extends HudItemText {
 	protected int getDeltaY() {
 		return 0;
 	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItemText#getSize()
+	 */
+	@Override
+	protected float getSize() {
+		return 0;
+	}
 }

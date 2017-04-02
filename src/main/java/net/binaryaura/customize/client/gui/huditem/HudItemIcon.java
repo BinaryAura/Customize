@@ -34,8 +34,6 @@ public abstract class HudItemIcon extends HudItem{
 	public void renderHUDItem(int x, int y) {
 		mc.mcProfiler.startSection(name);
 		
-		setHeightAndWidth();
-		
 		bind(icon.getLocation());
 		guiRenderer.drawTexturedModalRect(x, y, icon.getX(), icon.getY(), width, height);
 		mc.mcProfiler.endSection();
@@ -43,7 +41,6 @@ public abstract class HudItemIcon extends HudItem{
 	
 	/**
 	 * Sets Height and Width of the gauge based on the orientation.
-	 * Also, sets Icon Gauge specific settings.
 	 */
 	@Override
 	protected void setHeightAndWidth() {

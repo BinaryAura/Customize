@@ -2,6 +2,7 @@ package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import org.lwjgl.opengl.GL11;
 
+import javafx.scene.layout.BorderRepeat;
 import net.binaryaura.customize.client.gui.GuiInGameCustomize;
 import net.binaryaura.customize.client.gui.huditem.HudItemText;
 import net.minecraft.client.renderer.GlStateManager;
@@ -86,8 +87,8 @@ public class HudItemToolTip extends HudItemText {
 			}
 		//	Unfortunately the Spectator Menu is stuck where it is. Thank you protected fields.
 		} else if(this.mc.thePlayer.isSpectator()) {
-			GuiInGameCustomize guiInGame = (GuiInGameCustomize) mc.ingameGUI;
-			guiInGame.getSpectatorGui().func_175263_a(hudManager.getRes());
+//			GuiInGameCustomize guiInGame = (GuiInGameCustomize) mc.ingameGUI;
+//			guiInGame.getSpectatorGui().func_175263_a(hudManager.getRes());
 		}
 	}
 	    
@@ -164,5 +165,13 @@ public class HudItemToolTip extends HudItemText {
 	 * ItemStack of the active item in the HOTBAR.
 	 */
 	private ItemStack highlightingItemStack;
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItemText#getSize()
+	 */
+	@Override
+	protected float getSize() {
+		return 0;
+	}
 
 }

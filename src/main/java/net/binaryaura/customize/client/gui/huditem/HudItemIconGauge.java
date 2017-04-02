@@ -105,7 +105,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	 * @param y			The relative y-value of the upper left corner.
 	 */
 	@Override
-	public void renderHUDItem( int x, int y) {
+	public void renderHUDItem(int x, int y) {
 		mc.mcProfiler.startSection(name);
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
@@ -184,10 +184,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	 */
 	public void setMaxPerRow(int max) {
 		maxPerRow = max;
-		width = (maxPerRow - 1)*space + layers.getWidth();
-		int stacks = MathHelper.ceiling_float_int(getAmount() / ((layers.getAmount() - 1) / maxPerRow));
-		int stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
-		height = (stacks - 1)*stackSpace + layers.getHeight();
+		setHeightAndWidth();
 	}
 	
 	/**
@@ -218,24 +215,18 @@ public abstract class HudItemIconGauge extends HudItem {
 	 */
 	@Override
 	protected void setHeightAndWidth() {
-				stacks = MathHelper.ceiling_float_int(amount / (layers.getAmount() - 1) / maxPerRow);
-				stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
+		stacks = MathHelper.ceiling_float_int(amount / (layers.getAmount() - 1) / maxPerRow);
+		stackSpace = Math.max(maxStackSpace - (stacks - 1), minStackSpace);
 		switch(orientation) {
 			case RIGHT:
-				height = (stacks - 1)*stackSpace + layers.getHeight();
-				width = space*maxPerRow;
+			case LEFT:
+				height = (stacks - 1)*stackSpace + layers.getHeight()*stacks;
+				width = space*(maxPerRow - 1) + layers.getWidth()*maxPerRow;
 				break;
 			case DOWN:
-				height = space*maxPerRow;
-				width = (stacks - 1)*stackSpace + layers.getWidth();
-				break;
-			case LEFT:
-				height = (stacks - 1)*stackSpace + layers.getHeight();
-				width = space*maxPerRow;
-				break;
 			case UP:
-				height = space*maxPerRow;
-				width = (stacks - 1)*stackSpace + layers.getWidth();
+				height = space*(maxPerRow - 1) + layers.getHeight()*maxPerRow;
+				width = (stacks - 1)*stackSpace + layers.getWidth()*stacks;
 				break;
 		}
 	}

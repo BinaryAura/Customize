@@ -100,4 +100,12 @@ public class HudItemPlayerList extends HudItemText {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItemText#getSize()
+	 */
+	@Override
+	protected float getSize() {
+		return 0;
+	}
+
 }

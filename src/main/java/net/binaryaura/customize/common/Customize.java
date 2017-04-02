@@ -3,7 +3,6 @@ package net.binaryaura.customize.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.common.Mod;
@@ -36,7 +35,7 @@ public class Customize {
 	/**
 	 * Version string for the mod.
 	 */
-    public static final String VERSION = "1A1-7";
+    public static final String VERSION = "1A4-15";
     
     /**
      * Client proxy class directory.
@@ -57,11 +56,6 @@ public class Customize {
      * Logger for the mod.
      */
     public static final Logger log = LogManager.getLogger("CUSTOMIZE");
-    
-    /**
-     * Instance of the HudItemManager.
-     */
-    public static final HudItemManager hudManager = HudItemManager.getInstance();
     
     /**
      * A single global instance for this mod.
@@ -110,7 +104,7 @@ public class Customize {
      * Called after FMLInitializationEvent has been dispatched on every mod.
      * This is the third and last commonly called event during mod initialization.
      * Recommended activities: interact with other mods to establish cross-mod
-     * behaviours.
+     * behaviors.
      * 
      * @param event			PostInitialization Event
      */
@@ -119,6 +113,22 @@ public class Customize {
     	proxy.postInit(event);
     	log.info("Successfully loaded " + NAME);
     }
+    
+    // This Event is only called on the server
+//    /**
+//     * Called during the starting of the server. This is the Second of Three events called
+//     * during the Starting of the server. It is used here to change Minecraft variables,
+//     * namely the ingameGUI.
+//     * 
+//     * @param event			ServerStarting Event
+//     */
+////    @EventHandler
+//    public void enableIngameGUIClient(FMLServerStartingEvent event) {
+//    	if(!(mc.ingameGUI instanceof GuiInGameCustomize)) {
+//	    	mc.ingameGUI = new GuiInGameCustomize(mc);
+//	    	log.info("Successfully enabled " + NAME + " ingameGUI");
+//    	}
+//    }
     
     /**
      * This event is define but is currently never called.
@@ -132,5 +142,4 @@ public class Customize {
     	mc.ingameGUI = new GuiIngameForge(mc);
     	log.info("Successfully unloaded " + NAME);
     }
-    
 }

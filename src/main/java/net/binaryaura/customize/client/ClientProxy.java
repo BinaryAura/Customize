@@ -1,11 +1,14 @@
 package net.binaryaura.customize.client;
 
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemAir;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemArmor;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemCrosshairs;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemExperience;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemFood;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemHealth;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemSubtitle;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemTitle;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemToolTip;
 import net.binaryaura.customize.common.CommonProxy;
 import net.binaryaura.customize.common.Customize;
@@ -20,7 +23,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * Here all the HudItems are registered. If a mod wants to add a HudItem
  * they would type the following:
  * 
- * <code>HudItemManager.getInstance().registerHudItem(new HudItemHealth(HEALTH));</code>
+ * <code>HudItemManager.getInstance().register(new HudItemHealth(HEALTH));</code>
  * 
  * If one wished to remove an already existing HudItem:
  * 
@@ -76,13 +79,15 @@ public class ClientProxy extends CommonProxy {
 	 * Registers all HudItems with the HudItemManager.
 	 */
 	private void registerHudItems() {
-		Customize.hudManager.registerHudItem(new HudItemHealth(HEALTH));
-		Customize.hudManager.registerHudItem(new HudItemExperience(EXPERIENCE));
-		Customize.hudManager.registerHudItem(new HudItemFood(FOOD));
-		Customize.hudManager.registerHudItem(new HudItemAir(AIR));
-		Customize.hudManager.registerHudItem(new HudItemArmor(ARMOR));
-		Customize.hudManager.registerHudItem(new HudItemCrosshairs(CROSSHAIRS));
-		Customize.hudManager.registerHudItem(new HudItemToolTip(TOOLTIP));
+		HudItemManager.REGISTRY.register(new HudItemHealth(HEALTH));
+		HudItemManager.REGISTRY.register(new HudItemExperience(EXPERIENCE));
+		HudItemManager.REGISTRY.register(new HudItemFood(FOOD));
+		HudItemManager.REGISTRY.register(new HudItemAir(AIR));
+		HudItemManager.REGISTRY.register(new HudItemArmor(ARMOR));
+		HudItemManager.REGISTRY.register(new HudItemCrosshairs(CROSSHAIRS));
+		HudItemManager.REGISTRY.register(new HudItemToolTip(TOOLTIP));
+		HudItemManager.REGISTRY.register(new HudItemTitle(TITLE));
+		HudItemManager.REGISTRY.register(new HudItemSubtitle(SUBTITLE));
 	}
 	
 	/**

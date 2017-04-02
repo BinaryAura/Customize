@@ -1,7 +1,10 @@
 package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.HudItemText;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.MathHelper;
 
 /**
  * Primary Title Text. TITLE fades in then, fades out
@@ -13,6 +16,11 @@ import net.binaryaura.customize.client.gui.huditem.HudItemText;
  * @see 	HudItemText
  */
 public class HudItemTitle extends HudItemText {
+	
+	/**
+	 * Default size for title
+	 */
+	private static final float DFLT_SIZE = 4.0f;
 	
 	/**
 	 * Relative x-value where the text will be rendered if no save
@@ -28,7 +36,7 @@ public class HudItemTitle extends HudItemText {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final int DFLT_Y = 0;
+	private static final int DFLT_Y = -28;
 	
 	/**
 	 * The reference point for the x and y values when no save entry
@@ -36,7 +44,19 @@ public class HudItemTitle extends HudItemText {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final Anchor DFLT_ANCH = Anchor.TOPLEFT;	
+	private static final Anchor DFLT_ANCH = Anchor.CENTER;
+	
+	/**
+	 * The text style font title
+	 */
+	private static final Style DFLT_STY = Style.SHADOWED;
+	
+	/**
+	 * The priority of the HUDItem during the rendering process.
+	 * 
+	 * @see HudItem.RenderPriority
+	 */
+	private static final RenderPriority DFLT_PRIO = RenderPriority.POST;
 
 	//	TODO: Make Title HudItem
 	
@@ -54,17 +74,36 @@ public class HudItemTitle extends HudItemText {
 	
 	@Override
 	public void renderHUDItem(int x, int y) {
+		if (ticksRemaining > 0 && getAlpha() > 8) {
+			GlStateManager.enableBlend();
+			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+			super.renderHUDItem(x, y);
+			GlStateManager.disableBlend();
+		}
 	}
 	
 	@Override
 	protected void init() {
-		
+		super.init();
+		x = DFLT_X;
+		y = DFLT_Y;
+		anchor = DFLT_ANCH;
+		style = DFLT_STY;
+		priority = DFLT_PRIO;
 	}
 	
 	@Override
-	public void updateTick() {
-		
+	public void updateTick() {		
 		super.updateTick();
+		// Typical Update for Title is done through Minecraft.inGameGui
+		
+		// Update Title vars
+		String title = HudItemManager.getTitleText();
+		if(title != null && (string != null && !string.equals(title) || string == null)) setString(title);
+		ticksRemaining = HudItemManager.getTitleTicksRemaining();
+		fadeInTime = HudItemManager.getTitleFadeInTime();
+		displayTime = HudItemManager.getTitleDisplayTime();
+		fadeOutTime = HudItemManager.getTitleFadeOutTime();
 	}
 
 	@Override
@@ -84,7 +123,7 @@ public class HudItemTitle extends HudItemText {
 
 	@Override
 	protected int getColor() {
-		return 0;
+		return WHITE;
 	}
 
 	@Override
@@ -94,11 +133,25 @@ public class HudItemTitle extends HudItemText {
 
 	@Override
 	protected int getAlpha() {
-		return 0;
+		float age = (float)ticksRemaining - partialTicks;
+		int opacity = 255;
+		if(ticksRemaining > fadeOutTime + displayTime) {
+			float f3  = (float)(fadeInTime + displayTime + fadeOutTime) - age;  // elapsed ticks
+			opacity = (int)(f3 * 255.0F / (float)fadeInTime);
+		} else if (ticksRemaining <= fadeOutTime)
+			opacity = (int)(age * 255.0F / (float)fadeOutTime);
+		opacity = MathHelper.clamp_int(opacity, 0, 255);
+		return opacity;
 	}
-
-	protected void setHeightAndWidth() {
-		
+	
+	@Override
+	protected float getSize() {
+		return DFLT_SIZE;
 	}
+	
+	protected int ticksRemaining;
+	protected int fadeOutTime;
+	protected int fadeInTime;
+	protected int displayTime;
 
 }

@@ -1,6 +1,9 @@
 package net.binaryaura.customize.client.gui.huditem.defaults;
 
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.HudItemText;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.MathHelper;
 
 /**
  * Secondary Title Text. SUBTITLE fades in then, fades out
@@ -12,6 +15,11 @@ import net.binaryaura.customize.client.gui.huditem.HudItemText;
  * @see 	HudItemText
  */
 public class HudItemSubtitle extends HudItemText {
+	
+	/**
+	 * Default size for subtitle
+	 */
+	private static final float DFLT_SIZE = 2.0f;
 
 	/**
 	 * Relative x-value where the text will be rendered if no save
@@ -27,7 +35,7 @@ public class HudItemSubtitle extends HudItemText {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final int DFLT_Y = 0;
+	private static final int DFLT_Y = 14;
 	
 	/**
 	 * The reference point for the x and y values when no save entry
@@ -35,7 +43,19 @@ public class HudItemSubtitle extends HudItemText {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final Anchor DFLT_ANCH = Anchor.TOPLEFT;	
+	private static final Anchor DFLT_ANCH = Anchor.CENTER;
+	
+	/**
+	 * The text style for subtitle
+	 */
+	private static final Style DFLT_STY = Style.SHADOWED;
+	
+	/**
+	 * The priority of this HUDItem during the rendering process.
+	 * 
+	 * @see HudItem.RenderPriority
+	 */
+	private static final RenderPriority DFLT_PRIO = RenderPriority.POST;
 	
 	//	TODO: Make Subtitle HudItem
 	
@@ -52,11 +72,35 @@ public class HudItemSubtitle extends HudItemText {
 
 	@Override
 	public void renderHUDItem(int x, int y) {
+		if (ticksRemaining > 0 && getAlpha() > 8) {
+			GlStateManager.enableBlend();
+			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+			super.renderHUDItem(x, y);
+			GlStateManager.disableBlend();
+		}
 	}
 
 	@Override
 	protected void init() {
+		x = DFLT_X;
+		y = DFLT_Y;
+		anchor = DFLT_ANCH;
+		style = DFLT_STY;
+		priority = DFLT_PRIO;
+	}
+	
+	@Override
+	public void updateTick() {
+		super.updateTick();
+		// Typical Update for Subtitle is done through Minecraft.inGameGui
 		
+		// Update Title vars
+		String subtitle = HudItemManager.getSubtitleText();
+		if(subtitle != null && (string != null && !string.equals(subtitle) || string == null)) setString(subtitle);
+		ticksRemaining = HudItemManager.getTitleTicksRemaining();
+		fadeInTime = HudItemManager.getTitleFadeInTime();
+		displayTime = HudItemManager.getTitleDisplayTime();
+		fadeOutTime = HudItemManager.getTitleFadeOutTime();
 	}
 
 	@Override
@@ -76,7 +120,7 @@ public class HudItemSubtitle extends HudItemText {
 
 	@Override
 	protected int getColor() {
-		return 0;
+		return WHITE;
 	}
 
 	@Override
@@ -86,11 +130,25 @@ public class HudItemSubtitle extends HudItemText {
 
 	@Override
 	protected int getAlpha() {
-		return 0;
+		float age = (float)ticksRemaining - partialTicks;
+		int opacity = 255;
+		if(ticksRemaining > fadeOutTime + displayTime) {
+			float f3  = (float)(fadeInTime + displayTime + fadeOutTime) - age;  // elapsed ticks
+			opacity = (int)(f3 * 255.0F / (float)fadeInTime);
+		} else if (ticksRemaining <= fadeOutTime)
+			opacity = (int)(age * 255.0F / (float)fadeOutTime);
+		opacity = MathHelper.clamp_int(opacity, 0, 255);
+		return opacity;
+	}
+	
+	@Override
+	protected float getSize() {
+		return DFLT_SIZE;
 	}
 
-	protected void setHeightAndWidth() {
-		
-	}
-
+	protected int ticksRemaining;
+	protected int fadeOutTime;
+	protected int fadeInTime;
+	protected int displayTime;
+	
 }
