@@ -236,7 +236,7 @@ public abstract class HudItem implements Color{
 	/**
 	 * Resolution of the Minecraft Window
 	 */
-	protected static ScaledResolution res;
+	protected static ScaledResolution res = new ScaledResolution(HudItemManager.getInstance().mc);
 	
 	/**
 	 * Flag whether the game is <code>inPreview</code>.
@@ -244,7 +244,7 @@ public abstract class HudItem implements Color{
 	private static boolean inPreview = false;
 	
 	/**
-	 * Set {@link #isInPreview()} to true.
+	 * Set {@link #inPreview} to true.
 	 */
 	public static void setInPreview() {
 		inPreview = true;
@@ -265,8 +265,6 @@ public abstract class HudItem implements Color{
 	 */
 	public HudItem(String name){
 		this.name = name.toLowerCase();
-		mc = Minecraft.getMinecraft();
-		guiRenderer = new Gui();
 		anchor = DFLT_ANCH;
 		orientation = DFLT_ORIEN;
 		priority = DFLT_PRIO;
@@ -274,6 +272,7 @@ public abstract class HudItem implements Color{
 		x = DFLT_X;
 		y = DFLT_Y;
 		init();
+		setHeightAndWidth();
 	}
 	
 	/**
@@ -584,6 +583,16 @@ public abstract class HudItem implements Color{
 	}
 	
 	/**
+	 * Getter for {@link #graphic}
+	 * @return 
+	 * 
+	 * @return flag for whether the HUDItem is a graphics object
+	 */
+	public boolean isGraphic() {
+		return graphic;
+	}
+	
+	/**
 	 * Binds the texture for the {@link Gui#drawTexturedModalRect(int, int, int, int, int, int)}.
 	 * 
 	 * @param res		Resolution for the screen.
@@ -643,6 +652,11 @@ public abstract class HudItem implements Color{
 	protected boolean flip;
 	
 	/**
+	 * Flag for whether the HUDItem is a graphics object and should not be rendered for adjustment
+	 */
+	protected boolean graphic = false;
+	
+	/**
 	 * Flag for whether the HUDItem should have a background on {@link GuiScreenAdjustHud}.
 	 */
 	protected boolean guiBackground = false;
@@ -675,7 +689,7 @@ public abstract class HudItem implements Color{
 	/**
 	 * Last system time checked.
 	 */
-	protected long lastSystemTime;
+	protected static long lastSystemTime;
 	
 	/**
 	 * The reference point for the x and y values.
@@ -685,17 +699,17 @@ public abstract class HudItem implements Color{
 	/**
 	 * Renderer for the HUDItem.
 	 */
-	protected Gui guiRenderer;
+	protected static Gui guiRenderer = new Gui();
 	
 	/**
 	 * Logger for the Mod.
 	 */
-	protected Logger log = Customize.log;
+	protected static Logger log = Customize.log;
 	
 	/**
 	 * Main loop for the game. This has many fields needed for HUDItems.
 	 */
-	protected Minecraft mc;
+	protected static Minecraft mc = HudItemManager.getInstance().mc;
 	
 	/**
 	 * Direction the HUDItem will fill when rendered.

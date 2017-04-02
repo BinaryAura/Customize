@@ -93,4 +93,12 @@ public class HudItemDebug extends HudItemText {
 	protected int getColor() {
 		return 0;
 	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItemText#getSize()
+	 */
+	@Override
+	protected float getSize() {
+		return 0;
+	}
 }

@@ -7,6 +7,8 @@ import net.binaryaura.customize.client.gui.huditem.defaults.HudItemCrosshairs;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemExperience;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemFood;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemHealth;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemSubtitle;
+import net.binaryaura.customize.client.gui.huditem.defaults.HudItemTitle;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemToolTip;
 import net.binaryaura.customize.common.CommonProxy;
 import net.binaryaura.customize.common.Customize;
@@ -84,6 +86,8 @@ public class ClientProxy extends CommonProxy {
 		HudItemManager.REGISTRY.register(new HudItemArmor(ARMOR));
 		HudItemManager.REGISTRY.register(new HudItemCrosshairs(CROSSHAIRS));
 		HudItemManager.REGISTRY.register(new HudItemToolTip(TOOLTIP));
+		HudItemManager.REGISTRY.register(new HudItemTitle(TITLE));
+		HudItemManager.REGISTRY.register(new HudItemSubtitle(SUBTITLE));
 	}
 	
 	/**

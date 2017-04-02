@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
+import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiNewChat;
@@ -91,7 +92,6 @@ public class GuiInGameCustomize {
 		}
 		
 		// NORMAL
-		
 		// Iterates through all Normal HudItems
 		for (HudItem hudItem : HudItemManager.REGISTRY.getNormal()) {
 			GL11.glPushMatrix();
@@ -100,7 +100,6 @@ public class GuiInGameCustomize {
 		}
 		
 		// POST
-		
 		// Iterates through all Post HudItems
 		for (HudItem hudItem : HudItemManager.REGISTRY.getPost()) {
 			GL11.glPushMatrix();

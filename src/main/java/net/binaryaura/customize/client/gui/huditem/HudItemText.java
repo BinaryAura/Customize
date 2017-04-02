@@ -1,7 +1,13 @@
 package net.binaryaura.customize.client.gui.huditem;
 
+import org.lwjgl.opengl.GL11;
+
+import com.sun.org.apache.xml.internal.security.Init;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.MathHelper;
 
 /**
  * This HUDItem is text. The text that is rendered has one of
@@ -42,10 +48,16 @@ public abstract class HudItemText extends HudItem {
 	public HudItemText(String name) {
 		super(name);
 		guiBackground = true;
-		fontRenderer = mc.fontRendererObj;
+		size = getSize();
+		setHeightAndWidth();
+	}
+	
+	protected void init() {
 		style = DFLT_STY;
 	}
 
+	private static boolean print = true;
+	
 	/**
 	 * Height and Width are set and the string is rendered.
 	 * 
@@ -54,16 +66,20 @@ public abstract class HudItemText extends HudItem {
 	 */
 	@Override
 	public void renderHUDItem(int x, int y) {
-		setHeightAndWidth();
+		if(string == null || string.equals("")) return;
+		GlStateManager.pushMatrix();
+		if(size > 0 && size != 1.0)
+			GL11.glScalef(size, size, size);
+			GL11.glTranslated((float)(-x * (size - 1) / size), (float)(-y * (size - 1) / size), 0.0f);
 		int textX = x + getDeltaX();
 		int textY = y + getDeltaY();
 		int styleAdd = (style == Style.SHADOWED ? 1 : style == Style.OUTLINED ? 2 : 0);
 		if(getBGAlpha() > 0) {
-			int bgColor = getBGColor() + (getBGAlpha() << 24);
+			bgColor = getBGColor() + (getBGAlpha() << 24);
 			Gui.drawRect(textX - (style == Style.OUTLINED ? 1 : 0), textY - (style == Style.OUTLINED ? 1 : 0), textX + fontRenderer.getStringWidth(string) + styleAdd, textY + fontRenderer.FONT_HEIGHT + styleAdd, bgColor);
 			}
 		if(getAlpha() > 0) {
-			int color = getColor() + (getAlpha() << 24);
+			color = getColor() + (getAlpha() << 24);
 			switch(style) {
 				case OUTLINED:
 					fontRenderer.drawString(string, textX + 1, textY, 0);
@@ -78,14 +94,24 @@ public abstract class HudItemText extends HudItem {
 					break;
 			}
 		}
+		GlStateManager.popMatrix();
 	}
 	
 	/**
 	 * Sets Height and Width of the bar based on the orientation.
 	 */
 	protected void setHeightAndWidth() {
-		width = fontRenderer.getStringWidth(string);
-		height = fontRenderer.FONT_HEIGHT;
+		width = (int) (fontRenderer.getStringWidth(string) * size);
+		height = (int) (fontRenderer.FONT_HEIGHT * size);
+	}
+	
+	/**
+	 * Sets the text to be displayed and adjust the Height and width
+	 */
+	protected void setString(String string) {
+		this.string = string;
+		setHeightAndWidth();
+		print = true;
 	}
 	
 	/**
@@ -131,6 +157,13 @@ public abstract class HudItemText extends HudItem {
 	protected abstract int getAlpha();
 	
 	/**
+	 * This method calculates the size of the entire text.
+	 * 
+	 * @return the size of the entire text.
+	 */
+	protected abstract float getSize();
+	
+	/**
 	 * The color and alpha of the background of the text.
 	 */
 	protected int bgColor;
@@ -139,6 +172,11 @@ public abstract class HudItemText extends HudItem {
 	 * The color and alpha of the font text.
 	 */
 	protected int color;
+	
+	/**
+	 * The size of the text.
+	 */
+	protected float size;
 	
 	/**
 	 * Text to be rendered.
@@ -153,5 +191,5 @@ public abstract class HudItemText extends HudItem {
 	/**
 	 * Renderer for the text.
 	 */
-	protected FontRenderer fontRenderer;
+	protected static FontRenderer fontRenderer = mc.fontRendererObj;
 }
