@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["BinaryAura"],
   "credits": "TurboSlow and Maxpowa for making the original form of this mod: AdvancedHUD",
-  "logoFile": "",
+  "logoFile": "logo.png",
   "screenshots": [],
   "dependencies": []
 }
