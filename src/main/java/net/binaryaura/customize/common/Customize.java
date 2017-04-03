@@ -35,7 +35,7 @@ public class Customize {
 	/**
 	 * Version string for the mod.
 	 */
-    public static final String VERSION = "1A4-15";
+    public static final String VERSION = "1A2-15";
     
     /**
      * Client proxy class directory.

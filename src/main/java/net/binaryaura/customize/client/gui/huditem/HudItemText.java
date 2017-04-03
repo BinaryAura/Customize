@@ -2,12 +2,9 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import org.lwjgl.opengl.GL11;
 
-import com.sun.org.apache.xml.internal.security.Init;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MathHelper;
 
 /**
  * This HUDItem is text. The text that is rendered has one of
