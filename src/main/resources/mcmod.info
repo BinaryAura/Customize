@@ -5,7 +5,7 @@
   "description": "Introduces HUD customization into the game. The HUD items can now be moved and oriented the player wants.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://github.com/BinaryAura/Customize",
   "updateUrl": "",
   "authorList": ["BinaryAura"],
   "credits": "TurboSlow and Maxpowa for making the original form of this mod: AdvancedHUD",
