@@ -40,7 +40,7 @@ public class HudItemCrosshairs extends HudItemIcon {
 	 * 
 	 * @see	HudItem.Anchor
 	 */
-	private static final int DFLT_X = -8;
+	private static final int DFLT_X = 0;
 	
 	/**
 	 * Relative y-value where the icon will be rendered. This value
@@ -49,7 +49,7 @@ public class HudItemCrosshairs extends HudItemIcon {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -8;
+	private static final int DFLT_Y = 0;
 	
 	/**
 	 * CROSSHAIRS texture that is used to render the image when no
@@ -86,16 +86,16 @@ public class HudItemCrosshairs extends HudItemIcon {
 	public void changeIcon(int index) {
 		switch(index) {
 			case 61:
-				x = -3;
-				y = 1;
+				x = 4;
+				y = 6;
 				break;
 			case 62:
-				x = -6;
-				y = 1;
+				x = 2;
+				y = 6;
 				break;
 			case 63:
-				x = 1;
-				y = 1;
+				x = 6;
+				y = 7;
 				break;
 			default:
 				x = DFLT_X;
@@ -155,8 +155,8 @@ public class HudItemCrosshairs extends HudItemIcon {
             if (mc.pointedEntity != null) {
                 return true;
             } else {
-                if (mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                    BlockPos blockpos = this.mc.objectMouseOver.getBlockPos();
+                if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                    BlockPos blockpos = mc.objectMouseOver.getBlockPos();
 
                     if (mc.theWorld.getTileEntity(blockpos) instanceof IInventory) {
                         return true;
