@@ -37,7 +37,7 @@ public class HudItemExperience extends HudItemBar {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -29;
+	private static final int DFLT_Y = -24;
 	
 	/**
 	 * The reference point for the x and y values when no save entry

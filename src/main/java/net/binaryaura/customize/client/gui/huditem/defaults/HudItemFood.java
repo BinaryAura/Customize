@@ -28,7 +28,7 @@ public class HudItemFood extends HudItemIconGauge {
 	 * 
 	 * @see	HudItem.Anchor
 	 */
-	private static final int DFLT_X = 45;
+	private static final int DFLT_X = 50;
 	
 	/**
 	 * Relative y-value where the bar will be rendered if no save
@@ -36,7 +36,7 @@ public class HudItemFood extends HudItemIconGauge {
 	 * 
 	 * @see	HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -39;
+	private static final int DFLT_Y = -30;
 	
 	/**
 	 * The reference point for the x and y values when no save entry

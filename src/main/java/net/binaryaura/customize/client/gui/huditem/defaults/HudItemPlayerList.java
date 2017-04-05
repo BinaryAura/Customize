@@ -67,45 +67,8 @@ public class HudItemPlayerList extends HudItemText {
 	}
 
 	@Override
-	protected int getDeltaX() {
-		return 0;
-	}
-
-	@Override
-	protected int getDeltaY() {
-		return 0;
-	}
-
-	@Override
-	protected int getBGColor() {
-		return 0;
-	}
-
-	@Override
-	protected int getColor() {
-		return 0;
-	}
-
-	@Override
-	protected int getBGAlpha() {
-		return 0;
-	}
-
-	@Override
-	protected int getAlpha() {
-		return 0;
-	}
-
-	protected void setHeightAndWidth() {
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see net.binaryaura.customize.client.gui.huditem.HudItemText#getSize()
-	 */
-	@Override
-	protected float getSize() {
-		return 0;
+	protected String getString() {
+		return null;
 	}
 
 }

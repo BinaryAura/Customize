@@ -24,6 +24,16 @@ public abstract class HudItemText extends HudItem {
 	protected static final Style DFLT_STY = Style.NORMAL;
 	
 	/**
+	 * Default demo string for the preview screen.
+	 */
+	protected final String DFLT_STR = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+	
+	/**
+	 * Default size of the string to be printed.
+	 */
+	protected final float DFLT_SIZE = 1.0f;
+	
+	/**
 	 * Types of styles that the text can don.
 	 * 
 	 * 	NORMAL: Simple Text with no special features.
@@ -52,8 +62,6 @@ public abstract class HudItemText extends HudItem {
 	protected void init() {
 		style = DFLT_STY;
 	}
-
-	private static boolean print = true;
 	
 	/**
 	 * Height and Width are set and the string is rendered.
@@ -63,6 +71,11 @@ public abstract class HudItemText extends HudItem {
 	 */
 	@Override
 	public void renderHUDItem(int x, int y) {
+		if(isInPreview()) {
+			string = getDemoString();
+		} else {
+			string = getString();
+		}
 		if(string == null || string.equals("")) return;
 		GlStateManager.pushMatrix();
 		if(size > 0 && size != 1.0)
@@ -106,9 +119,10 @@ public abstract class HudItemText extends HudItem {
 	 * Sets the text to be displayed and adjust the Height and width
 	 */
 	protected void setString(String string) {
-		this.string = string;
-		setHeightAndWidth();
-		print = true;
+		if(string != null && (this.string != null && !this.string.equals(string) || this.string == null)) {
+			this.string = string;
+			setHeightAndWidth();
+		}
 	}
 	
 	/**
@@ -116,49 +130,80 @@ public abstract class HudItemText extends HudItem {
 	 * 
 	 * @return the horizontal movement of the entire text.
 	 */
-	protected abstract int getDeltaX();
+	protected int getDeltaX() {
+		return 0;
+	}
 	
 	/**
 	 * This method calculates vertical movement of the entire text.
 	 * 
 	 * @return the vertical movement of the entire text.
 	 */
-	protected abstract int getDeltaY();
+	protected int getDeltaY() {
+		return 0;
+	}
 	
 	/**
 	 * This method calculates the background color of the entire text.
 	 * 
 	 * @return the background color of the entire text.
 	 */
-	protected abstract int getBGColor();
+	protected int getBGColor() {
+		return WHITE;
+	}
 	
 	/**
 	 * This method calculates the color of the entire text.
 	 * 
 	 * @return the color of the entire text.
 	 */
-	protected abstract int getColor();
+	protected int getColor() {
+		return BLACK;
+	}
 	
 	/**
 	 * This method calculates the background alpha of the entire text.
 	 * 
 	 * @return the background alpha of the entire text.
 	 */
-	protected abstract int getBGAlpha();
+	protected int getBGAlpha() {
+		return 0x0;
+	}
 	
 	/**
 	 * This method calculates the alpha of the entire text.
 	 * 
 	 * @return the alpha of the entire text.
 	 */
-	protected abstract int getAlpha();
+	protected int getAlpha() {
+		return 0xFF;
+	}
 	
 	/**
 	 * This method calculates the size of the entire text.
 	 * 
 	 * @return the size of the entire text.
 	 */
-	protected abstract float getSize();
+	protected float getSize() {
+		return DFLT_SIZE;
+	}
+	
+	/**
+	 * This method formulates the string to be printed.
+	 * 
+	 * @return the string to be printed.
+	 */
+	protected abstract String getString();
+	
+	/**
+	 * This method formulates the string to be printed while in the
+	 * preview screen.
+	 * 
+	 * @return the string to be printed during the preview screen.
+	 */
+	protected String getDemoString() {
+		return DFLT_STR;
+	}
 	
 	/**
 	 * The color and alpha of the background of the text.
@@ -178,7 +223,7 @@ public abstract class HudItemText extends HudItem {
 	/**
 	 * Text to be rendered.
 	 */
-	protected String string;
+	private String string;
 	
 	/**
 	 * How the text is to be rendered.

@@ -64,42 +64,14 @@ public class HudItemObjective extends HudItemText {
 		x = DFLT_X;
 		y = DFLT_Y;
 	}
-
-	@Override
-	protected int getAlpha() {
-		return 0;
-	}
 	
 	@Override
 	protected int getColor() {
-		return 0;
+		return WHITE;
 	}
 
 	@Override
-	protected int getBGAlpha() {
-		return 0;
-	}
-
-	@Override
-	protected int getBGColor() {
-		return 0;
-	}	
-
-	@Override
-	protected int getDeltaX() {
-		return 0;
-	}
-
-	@Override
-	protected int getDeltaY() {
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.binaryaura.customize.client.gui.huditem.HudItemText#getSize()
-	 */
-	@Override
-	protected float getSize() {
-		return 0;
+	protected String getString() {
+		return null;
 	}
 }

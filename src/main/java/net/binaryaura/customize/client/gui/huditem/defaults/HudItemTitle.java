@@ -74,7 +74,7 @@ public class HudItemTitle extends HudItemText {
 	
 	@Override
 	public void renderHUDItem(int x, int y) {
-		if (ticksRemaining > 0 && getAlpha() > 8) {
+		if (ticksRemaining > 0 && getAlpha() > 8 || isInPreview()) {
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 			super.renderHUDItem(x, y);
@@ -99,7 +99,7 @@ public class HudItemTitle extends HudItemText {
 		
 		// Update Title vars
 		String title = HudItemManager.getTitleText();
-		if(title != null && (string != null && !string.equals(title) || string == null)) setString(title);
+		setString(title);
 		ticksRemaining = HudItemManager.getTitleTicksRemaining();
 		fadeInTime = HudItemManager.getTitleFadeInTime();
 		displayTime = HudItemManager.getTitleDisplayTime();
@@ -147,6 +147,11 @@ public class HudItemTitle extends HudItemText {
 	@Override
 	protected float getSize() {
 		return DFLT_SIZE;
+	}
+	
+	@Override
+	protected String getString() {
+		return HudItemManager.getTitleText();
 	}
 	
 	protected int ticksRemaining;

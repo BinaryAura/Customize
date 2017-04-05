@@ -109,12 +109,11 @@ public abstract class HudItemIconGauge extends HudItem {
 		mc.mcProfiler.startSection(name);
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
-		if(amount != getAmount()) {
-			amount = getAmount();
-			setHeightAndWidth();
+		if(isInPreview() && amount != getDemoAmount())
+			setAmount(getDemoAmount());
+		else if(amount != getAmount()) {
+			setAmount(getAmount());
 		}
-		if(isInPreview())
-			amount = getDemoAmount();
 			
 		switch(orientation) {
 			case RIGHT:
@@ -221,14 +220,24 @@ public abstract class HudItemIconGauge extends HudItem {
 			case RIGHT:
 			case LEFT:
 				height = (stacks - 1)*stackSpace + layers.getHeight()*stacks;
-				width = space*(maxPerRow - 1) + layers.getWidth()*maxPerRow;
+				width = space*(maxPerRow - 1) + layers.getWidth();
 				break;
 			case DOWN:
 			case UP:
-				height = space*(maxPerRow - 1) + layers.getHeight()*maxPerRow;
+				height = space*(maxPerRow - 1) + layers.getHeight();
 				width = (stacks - 1)*stackSpace + layers.getWidth()*stacks;
 				break;
 		}
+	}
+	
+	/**
+	 * Sets the amount and recalculates height and width
+	 * 
+	 * @param amount		Maximum value for the gauge
+	 */
+	protected void setAmount(float amount) {
+		this.amount = amount;
+		setHeightAndWidth();
 	}
 
 	/**
@@ -308,7 +317,9 @@ public abstract class HudItemIconGauge extends HudItem {
 	 * 
 	 * @return parallel movement direction and distance. 
 	 */
-	protected abstract int getIconDeltaPara(int icon);	
+	protected int getIconDeltaPara(int icon) {
+		return 0;
+	}
 	
 	/**																						   /\
 	 * Calculates perpendicular movement of each icon of the gauge.		 				 <3    <3    <3
@@ -317,22 +328,28 @@ public abstract class HudItemIconGauge extends HudItem {
 	 * 
 	 * @return perpendicular movement direction and distance.
 	 */
-	protected abstract int getIconDeltaPerp(int icon);	
+	protected int getIconDeltaPerp(int icon) {
+		return 0;
+	}
 	
 	/**
 	 * Gets the maximum value for during game-play.
 	 * 
 	 * @return the maximum value for the gauge (20 = 2 states per icon x 10 icons).
 	 */
-	protected abstract float getAmount();	
+	protected float getAmount() {
+		return 20.0f;
+	}
 	
 	/**
 	 * Gets the maximum value to be used when displaying the gauge
 	 * in {@link GuiScreenAdjustHud}.
 	 * 
-	 * @return the maximum value of AIR as a preview.
+	 * @return the maximum value of this Icon Gauge as a preview.
 	 */
-	protected abstract float getDemoAmount();	
+	protected float getDemoAmount() {
+		return 10.0f;
+	}
 	
 	/**
 	 * Gets the textures to be used when displaying the specific

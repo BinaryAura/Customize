@@ -20,6 +20,12 @@ import net.minecraft.util.MathHelper;
  * @see 	HudItem
  */
 public abstract class HudItemBar extends HudItem {
+	
+	/**
+	 * Default percentage of the bar to display on the
+	 * preview screen.
+	 */
+	protected static final float DFLT_DEMO_AMT = 0.5f;
 
 	/**
 	 * Constructs an instance of a Bar with the specified
@@ -157,7 +163,24 @@ public abstract class HudItemBar extends HudItem {
 	 * 
 	 * @return the fraction of layer that should be displayed (between 0 and 1, inclusive).
 	 */
-	protected abstract float getAmount(int layer);
+	protected float getAmount(int layer) {
+		return 1.0f;
+	}
+	
+	/**
+	 * Gets the fraction of the specified layer that should be
+	 * displayed on the preview screen.
+	 * 
+	 * @param layer		The index of the layer in question.
+	 * 
+	 * @return the fraction of layer that should be displayed (between 0 and 1, inclusive).
+	 */
+	protected float getDemoAmount(int layer) {
+		if(layers.getAmount() > 1 && layer == 0)
+			return 1.0f;
+		else
+			return DFLT_DEMO_AMT;
+	}
 	
 	/**
 	 * Gets the textures to be used when displaying the bar

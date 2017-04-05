@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import javafx.scene.layout.BorderRepeat;
 import net.binaryaura.customize.client.gui.GuiInGameCustomize;
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.HudItemText;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -71,16 +72,14 @@ public class HudItemToolTip extends HudItemText {
 	
 	@Override
 	public void renderHUDItem(int x, int y) {
-		if(mc.gameSettings.heldItemTooltips && !mc.playerController.isSpectator()) {
-			if(remainingHighlightTicks > 0 && highlightingItemStack != null) {
-				string = this.highlightingItemStack.getDisplayName();		
-			    if (this.highlightingItemStack.hasDisplayName()) {
-			        string = EnumChatFormatting.ITALIC + string;
-			    }
+		log.info(isInPreview());
+		if(mc.gameSettings.heldItemTooltips && !mc.playerController.isSpectator() || isInPreview()) {
+			if(remainingHighlightTicks > 0 && highlightingItemStack != null || isInPreview()) {
 			    
 				GlStateManager.enableBlend();
 				GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 				
+				log.info(isInPreview());
 			    super.renderHUDItem(x, y);
 			    
 				GlStateManager.disableBlend();
@@ -127,6 +126,15 @@ public class HudItemToolTip extends HudItemText {
 	    if (alpha > 255) alpha = 255;
 	    
 		return alpha;
+	}
+	
+	@Override
+	protected String getString() {
+		String string = this.highlightingItemStack.getDisplayName();		
+	    if (this.highlightingItemStack.hasDisplayName()) {
+	        string = EnumChatFormatting.ITALIC + string;
+	    }
+	    return string;
 	}
 	
 	@Override

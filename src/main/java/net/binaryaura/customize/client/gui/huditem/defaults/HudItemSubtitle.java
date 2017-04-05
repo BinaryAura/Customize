@@ -72,7 +72,7 @@ public class HudItemSubtitle extends HudItemText {
 
 	@Override
 	public void renderHUDItem(int x, int y) {
-		if (ticksRemaining > 0 && getAlpha() > 8) {
+		if (ticksRemaining > 0 && getAlpha() > 8 || isInPreview()) {
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 			super.renderHUDItem(x, y);
@@ -96,7 +96,7 @@ public class HudItemSubtitle extends HudItemText {
 		
 		// Update Title vars
 		String subtitle = HudItemManager.getSubtitleText();
-		if(subtitle != null && (string != null && !string.equals(subtitle) || string == null)) setString(subtitle);
+		setString(subtitle);
 		ticksRemaining = HudItemManager.getTitleTicksRemaining();
 		fadeInTime = HudItemManager.getTitleFadeInTime();
 		displayTime = HudItemManager.getTitleDisplayTime();
@@ -144,6 +144,11 @@ public class HudItemSubtitle extends HudItemText {
 	@Override
 	protected float getSize() {
 		return DFLT_SIZE;
+	}
+	
+	@Override
+	protected String getString() {
+		return HudItemManager.getSubtitleText();
 	}
 
 	protected int ticksRemaining;
