@@ -111,9 +111,8 @@ public abstract class HudItemIconGauge extends HudItem {
 		bind(layers.getLocation());
 		if(isInPreview() && amount != getDemoAmount())
 			setAmount(getDemoAmount());
-		else if(amount != getAmount()) {
+		else if(amount != getAmount())
 			setAmount(getAmount());
-		}
 			
 		switch(orientation) {
 			case RIGHT:

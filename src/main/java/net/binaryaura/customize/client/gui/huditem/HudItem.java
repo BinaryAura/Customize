@@ -239,18 +239,6 @@ public abstract class HudItem implements Color{
 	protected static ScaledResolution res = new ScaledResolution(HudItemManager.getInstance().mc);
 	
 	/**
-	 * Flag whether the game is <code>inPreview</code>.
-	 */
-	private static boolean inPreview = false;
-	
-	/**
-	 * Set {@link #inPreview} to true.
-	 */
-	public static void setInPreview() {
-		inPreview = true;
-	}
-	
-	/**
 	 * Update counter for synchronized actions.
 	 */
 	protected static int updateCounter = 0;
@@ -405,7 +393,6 @@ public abstract class HudItem implements Color{
 	public void updateTick() {
 		++updateCounter;
 		rand.setSeed((long)(updateCounter * 312871));
-		if(inPreview) inPreview = false;
 	}
 	
 	/**
@@ -607,7 +594,7 @@ public abstract class HudItem implements Color{
 	 * @return flag for whether the game <code>isInPreview</code>.
 	 */
 	protected boolean isInPreview() {
-		return inPreview;
+		return mc.currentScreen instanceof GuiScreenAdjustHud;
 	}
 	
 	/**

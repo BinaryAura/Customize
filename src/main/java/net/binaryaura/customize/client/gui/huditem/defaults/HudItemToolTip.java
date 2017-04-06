@@ -2,9 +2,7 @@ package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import org.lwjgl.opengl.GL11;
 
-import javafx.scene.layout.BorderRepeat;
-import net.binaryaura.customize.client.gui.GuiInGameCustomize;
-import net.binaryaura.customize.client.gui.huditem.HudItemManager;
+import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemText;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -72,14 +70,12 @@ public class HudItemToolTip extends HudItemText {
 	
 	@Override
 	public void renderHUDItem(int x, int y) {
-		log.info(isInPreview());
 		if(mc.gameSettings.heldItemTooltips && !mc.playerController.isSpectator() || isInPreview()) {
 			if(remainingHighlightTicks > 0 && highlightingItemStack != null || isInPreview()) {
 			    
 				GlStateManager.enableBlend();
 				GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 				
-				log.info(isInPreview());
 			    super.renderHUDItem(x, y);
 			    
 				GlStateManager.disableBlend();
@@ -139,9 +135,9 @@ public class HudItemToolTip extends HudItemText {
 	
 	@Override
 	public void updateTick() {
-		if (this.mc.thePlayer != null)
+		if (mc.thePlayer != null)
         {
-            ItemStack itemstack = this.mc.thePlayer.inventory.getCurrentItem();
+            ItemStack itemstack = mc.thePlayer.inventory.getCurrentItem();
 
             if (itemstack == null)
             {
@@ -173,13 +169,5 @@ public class HudItemToolTip extends HudItemText {
 	 * ItemStack of the active item in the HOTBAR.
 	 */
 	private ItemStack highlightingItemStack;
-
-	/* (non-Javadoc)
-	 * @see net.binaryaura.customize.client.gui.huditem.HudItemText#getSize()
-	 */
-	@Override
-	protected float getSize() {
-		return 0;
-	}
 
 }

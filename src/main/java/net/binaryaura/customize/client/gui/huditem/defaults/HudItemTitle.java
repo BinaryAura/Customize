@@ -98,8 +98,6 @@ public class HudItemTitle extends HudItemText {
 		// Typical Update for Title is done through Minecraft.inGameGui
 		
 		// Update Title vars
-		String title = HudItemManager.getTitleText();
-		setString(title);
 		ticksRemaining = HudItemManager.getTitleTicksRemaining();
 		fadeInTime = HudItemManager.getTitleFadeInTime();
 		displayTime = HudItemManager.getTitleDisplayTime();

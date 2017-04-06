@@ -32,7 +32,6 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	 */
 	public GuiScreenAdjustHud() {
 		GuiInGameCustomize.renderHUD = false;
-		HudItem.setInPreview();
 	}
 
 	@Override

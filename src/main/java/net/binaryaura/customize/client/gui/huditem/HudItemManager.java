@@ -3,6 +3,7 @@ package net.binaryaura.customize.client.gui.huditem;
 import java.lang.reflect.Field;
 
 import net.binaryaura.customize.client.gui.GuiInGameCustomize;
+import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
@@ -160,6 +161,7 @@ public class HudItemManager {
 			ingameGui.renderGameOverlay(event);
 		}
 	}
+	
 	/**
 	 * Event that governs the HudItems for this renderTick
 	 */

@@ -69,6 +69,8 @@ public class GuiInGameCustomize {
 		mc.entityRenderer.setupOverlayRendering();
 		GlStateManager.enableBlend();
 		
+		if(isInPreview()) return;
+		
 		// PRE
 		
 		if (Minecraft.isFancyGraphicsEnabled()) {
@@ -303,15 +305,19 @@ public class GuiInGameCustomize {
     protected static final ResourceLocation pumpkinBlurTexPath = new ResourceLocation("textures/misc/pumpkinblur.png");
 	
 	@Deprecated
-	private float prevVignetteBrightness = 1.0F;
+	protected float prevVignetteBrightness = 1.0F;
 	
-	private Minecraft mc;
+	protected Minecraft mc;
 	
 	@Deprecated
-	private GuiNewChat persistantChatGUI;
+	protected GuiNewChat persistantChatGUI;
 	
 	/**
 	 * RenderEvent that called the renderGameOverlay method
 	 */
-	private RenderGameOverlayEvent eventParent;
+	protected RenderGameOverlayEvent eventParent;
+	
+	protected boolean isInPreview() {
+		return mc.currentScreen instanceof GuiScreenAdjustHud;
+	}
 }

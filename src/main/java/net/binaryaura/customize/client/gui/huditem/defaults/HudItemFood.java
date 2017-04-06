@@ -74,14 +74,14 @@ public class HudItemFood extends HudItemIconGauge {
 	 */
 	@Override
 	public void renderHUDItem(int x, int y) {
-		player = (EntityPlayer)this.mc.getRenderViewEntity();
+		player = (EntityPlayer)mc.getRenderViewEntity();
 		stats = player.getFoodStats();
 		
 		/**
 		 * FOOD shouldn't be rendered if <code>mc.playerController.shouldDrawHUD</code>
 		 * is false, <code>player</code> doesn't exist.
 		 */
-		if(this.mc.playerController.shouldDrawHUD() && player != null || isInPreview())
+		if(mc.playerController.shouldDrawHUD() && player != null || isInPreview())
 			super.renderHUDItem(x, y);
 	}
 
@@ -102,18 +102,6 @@ public class HudItemFood extends HudItemIconGauge {
 		layers.addLayer(new SpriteSet("hungerPrev", null, new Sprite(Gui.icons, 115, 27, 9, 9), new Sprite(Gui.icons, 106, 27, 9, 9)));		
 	}
 
-	/**
-	 * Calculates parallel movement of each icon of the gauge.							 <3 <- <3 -> <3
-	 * 
-	 * @param icon		The index of the icon.  <3 0 <3 1 <3 2 <3 3 <3 4 <3 5 etc
-	 * 
-	 * @return parallel movement direction and distance. 
-	 */
-	@Override
-	protected int getIconDeltaPara(int icon) {
-		return 0;
-	}
-
 	/**																						   /\
 	 * Calculates perpendicular movement of each icon of the gauge.		 				 <3    <3    <3
 	 * 																						   \/
@@ -129,12 +117,6 @@ public class HudItemFood extends HudItemIconGauge {
 		return perp;
 	}
 
-	/**
-	 * Gets the maximum value for during game-play. AIR max value never
-	 * changes.
-	 * 
-	 * @return the maximum value of AIR (20 = 2 states per icon x 10 icons).
-	 */
 	@Override
 	protected float getAmount() {
 		return getDemoAmount();

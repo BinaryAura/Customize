@@ -39,6 +39,11 @@ public class HudItemAir extends HudItemIconGauge {
 	private static final int DFLT_Y = -40;
 	
 	/**
+	 * The maximum amount of stages in the gauge.
+	 */
+	private static final float DFLT_AMT = 20.0f;
+	
+	/**
 	 * The reference point for the x and y values when no save entry
 	 * is found. 
 	 * 
@@ -98,23 +103,13 @@ public class HudItemAir extends HudItemIconGauge {
 	}
 
 	@Override
-	protected int getIconDeltaPara(int icon) {
-		return 0;
-	}
-
-	@Override
-	protected int getIconDeltaPerp(int icon) {
-		return 0;
-	}
-
-	@Override
 	protected float getAmount() {
-		return getDemoAmount();
+		return DFLT_AMT;
 	}
 
 	@Override
 	protected float getDemoAmount() {
-		return DFLT_DEMO_AMT;
+		return getAmount();
 	}
 
 	@Override
