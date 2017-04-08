@@ -97,17 +97,6 @@ public class HudItemJump extends HudItemBar {
 	protected float getAmount(int layer) {
 		return 0;
 	}
-	
-	/**
-	 * Gets the textures to be used when displaying the bar
-	 * in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the textures to be used for preview.
-	 */
-	@Override
-	protected SpriteSet getDemoSpriteSet() {
-		return null;
-	}
 
 	/**
 	 * Get the textures to be used during game-play. These will
@@ -118,6 +107,22 @@ public class HudItemJump extends HudItemBar {
 	@Override
 	protected SpriteSet getLayers() {
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItem#getDeltaX()
+	 */
+	@Override
+	protected int getDeltaX() {
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItem#getDeltaY()
+	 */
+	@Override
+	protected int getDeltaY() {
+		return 0;
 	}
 
 }

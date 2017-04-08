@@ -1,10 +1,12 @@
 package net.binaryaura.customize.client.gui.huditem;
 
+import net.binaryaura.customize.client.ClientProxy;
 import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemHealth;
+import net.binaryaura.customize.common.Customize;
 import net.minecraft.util.MathHelper;
 
 /**
@@ -44,7 +46,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	 * 
 	 * @see	GuiScreenAdjustHud
 	 */
-	protected static final int DFLT_DEMO_AMT = 20;
+	protected static final int DFLT_AMT = 20;
 	
 	/**
 	 * Default Maximum amount of icons to be rendered
@@ -84,6 +86,10 @@ public abstract class HudItemIconGauge extends HudItem {
 	 */
 	public HudItemIconGauge(String name) {
 		super(name);
+	}
+	
+	@Override
+	protected void init() {
 		canFlip = true;
 		canRotate = true;
 		maxPerRow = DFLT_MAX_PER_ROW;
@@ -109,68 +115,47 @@ public abstract class HudItemIconGauge extends HudItem {
 		mc.mcProfiler.startSection(name);
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
-		if(isInPreview() && amount != getDemoAmount())
-			setAmount(getDemoAmount());
-		else if(amount != getAmount())
-			setAmount(getAmount());
-			
+		
 		switch(orientation) {
 			case RIGHT:
-				for(int i = MathHelper.ceiling_float_int(amount / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					iconLayers = getIconSpriteSet(i);
-					for(int j = 0; j < iconLayers.getAmount(); j++) {
-						int stack = MathHelper.ceiling_float_int((float)(i+1) / maxPerRow) - 1;
-						int iconX = x + space*(i % maxPerRow) + getIconDeltaPara(i);
-						int iconY = y - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						Sprite sprite = iconLayers.getSprite(j);
-						if (sprite == null) continue;
-						guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
-					}
-				}
 				break;
 			case DOWN:
 				space = layers.getHeight();
-				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					iconLayers = getIconSpriteSet(i);
-					for(int j = 0; j < iconLayers.getAmount(); j++) {
-						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
-						int iconX = x + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						int iconY = y + space*(i % maxPerRow) + getIconDeltaPara(i);
-						Sprite sprite = iconLayers.getSprite(j);
-						if (sprite == null) continue;
-						guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
-					}
-				}
 				break;
 			case LEFT:
 				x += width - layers.getWidth();
-				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					iconLayers = getIconSpriteSet(i);
-					for(int j = 0; j < iconLayers.getAmount(); j++) {
-						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
-						int iconX = x - space*(i % maxPerRow) + getIconDeltaPara(i);
-						int iconY = y + (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						Sprite sprite = iconLayers.getSprite(j);
-						if (sprite == null) continue;
-						guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
-					}
-				}
 				break;
 			case UP:
 				y += height - layers.getHeight();
 				space = layers.getHeight();
-				for(int i = MathHelper.ceiling_float_int(getAmount() / (layers.getAmount() - 1) - 1); i >= 0; --i) {
-					iconLayers = getIconSpriteSet(i);
-					for(int j = 0; j < iconLayers.getAmount(); j++) {
-						int stack = MathHelper.ceiling_float_int((float)(i + 1) / maxPerRow) - 1;
-						int iconX = x - (flip ? -1 : 1)*stack*stackSpace + getIconDeltaPerp(i);
-						int iconY = y - space*(i % maxPerRow) + getIconDeltaPara(i);
-						Sprite sprite = iconLayers.getSprite(j);
-						if (sprite == null) continue;
-						guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
-					}
-				}
 				break;
+		}
+		for(int i = MathHelper.ceiling_float_int(amount / (layers.getAmount() - 1) - 1); i >= 0; --i) {
+			iconLayers = getIconSpriteSet(i);
+			int stack = MathHelper.ceiling_float_int((float)(i+1) / maxPerRow) - 1;
+			int iconX = 0, iconY = 0;
+			switch(orientation) {
+				case RIGHT:
+					iconX = x + space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaX();
+					iconY = y + (flip ? stack : stacks - stack)*stackSpace + getIconDeltaPerp(i) + getDeltaY();
+					break;
+				case DOWN:
+					iconX = x + (flip ? 1 : -1)*(stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaX();
+					iconY = y + space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaY();
+					break;
+				case LEFT:
+					iconX = x - space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaX();
+					iconY = y + (flip ? 1 : -1)*(stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaY();
+					break;
+				case UP:
+					iconX = x - (flip ? 1 : -1)*(stacks - stack)*stackSpace + getIconDeltaPerp(i) + getDeltaX();
+					iconY = y - space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaY();
+			}
+			for(int j = 0; j < iconLayers.getAmount(); j++) {
+				Sprite sprite = iconLayers.getSprite(j);
+				if (sprite == null) continue;
+				guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
+			}
 		}
 		mc.mcProfiler.endSection();
 	}
@@ -182,7 +167,6 @@ public abstract class HudItemIconGauge extends HudItem {
 	 */
 	public void setMaxPerRow(int max) {
 		maxPerRow = max;
-		setHeightAndWidth();
 	}
 	
 	/**
@@ -207,6 +191,12 @@ public abstract class HudItemIconGauge extends HudItem {
 		return super.getButtonY();
 	}
 	
+	@Override
+	public void preRender() {
+		setAmount(getAmount());
+		super.preRender();
+	}
+	
 	/**
 	 * Sets Height and Width of the gauge based on the orientation.
 	 * Also, sets Icon Gauge specific settings.
@@ -218,13 +208,13 @@ public abstract class HudItemIconGauge extends HudItem {
 		switch(orientation) {
 			case RIGHT:
 			case LEFT:
-				height = (stacks - 1)*stackSpace + layers.getHeight()*stacks;
+				height = (stacks - 1)*stackSpace + layers.getHeight();
 				width = space*(maxPerRow - 1) + layers.getWidth();
 				break;
 			case DOWN:
 			case UP:
 				height = space*(maxPerRow - 1) + layers.getHeight();
-				width = (stacks - 1)*stackSpace + layers.getWidth()*stacks;
+				width = (stacks - 1)*stackSpace + layers.getWidth();
 				break;
 		}
 	}
@@ -235,8 +225,8 @@ public abstract class HudItemIconGauge extends HudItem {
 	 * @param amount		Maximum value for the gauge
 	 */
 	protected void setAmount(float amount) {
+		if(this.amount == amount) return;
 		this.amount = amount;
-		setHeightAndWidth();
 	}
 
 	/**
@@ -331,34 +321,24 @@ public abstract class HudItemIconGauge extends HudItem {
 		return 0;
 	}
 	
+	@Override
+	protected int getDeltaX() {
+		return 0;
+	}
+	
+	@Override
+	protected int getDeltaY() {
+		return 0;
+	}
+	
 	/**
 	 * Gets the maximum value for during game-play.
 	 * 
 	 * @return the maximum value for the gauge (20 = 2 states per icon x 10 icons).
 	 */
 	protected float getAmount() {
-		return 20.0f;
+		return DFLT_AMT;
 	}
-	
-	/**
-	 * Gets the maximum value to be used when displaying the gauge
-	 * in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the maximum value of this Icon Gauge as a preview.
-	 */
-	protected float getDemoAmount() {
-		return 10.0f;
-	}
-	
-	/**
-	 * Gets the textures to be used when displaying the specific
-	 * <code>icon</code> of the gauge in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @see SpriteSet
-	 * 
-	 * @return the textures to be used for preview.
-	 */
-	protected abstract SpriteSet getDemoSpriteSet();
 	
 	/**
 	 * Gets the textures to be used when displaying the specific

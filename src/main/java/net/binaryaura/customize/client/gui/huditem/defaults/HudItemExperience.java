@@ -118,17 +118,6 @@ public class HudItemExperience extends HudItemBar {
 			return player.experience;
 		}
 	}
-
-	/**
-	 * Gets the textures to be used when displaying the bar
-	 * in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the textures to be used for preview.
-	 */
-	@Override
-	protected SpriteSet getDemoSpriteSet() {
-		return new SpriteSet(layers.getLayer("background").getSprite(0), layers.getLayer("experience").getSprite(0));
-	}
 	
 	/**
 	 * Get the textures to be used during game-play. These will
@@ -138,11 +127,27 @@ public class HudItemExperience extends HudItemBar {
 	 */
 	@Override
 	protected SpriteSet getLayers() {
-		return getDemoSpriteSet();
+		return new SpriteSet(layers.getLayer("background").getSprite(0), layers.getLayer("experience").getSprite(0));
 	}
 	
 	/**
 	 * The player whose experience this bar tracks.
 	 */
 	private EntityPlayer player;
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItem#getDeltaX()
+	 */
+	@Override
+	protected int getDeltaX() {
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItem#getDeltaY()
+	 */
+	@Override
+	protected int getDeltaY() {
+		return 0;
+	}
 }

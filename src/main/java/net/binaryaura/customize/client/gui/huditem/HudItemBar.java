@@ -164,31 +164,11 @@ public abstract class HudItemBar extends HudItem {
 	 * @return the fraction of layer that should be displayed (between 0 and 1, inclusive).
 	 */
 	protected float getAmount(int layer) {
-		return 1.0f;
-	}
-	
-	/**
-	 * Gets the fraction of the specified layer that should be
-	 * displayed on the preview screen.
-	 * 
-	 * @param layer		The index of the layer in question.
-	 * 
-	 * @return the fraction of layer that should be displayed (between 0 and 1, inclusive).
-	 */
-	protected float getDemoAmount(int layer) {
 		if(layers.getAmount() > 1 && layer == 0)
 			return 1.0f;
 		else
 			return DFLT_DEMO_AMT;
 	}
-	
-	/**
-	 * Gets the textures to be used when displaying the bar
-	 * in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the textures to be used for preview.
-	 */
-	protected abstract SpriteSet getDemoSpriteSet();
 	
 	/**
 	 * Get the textures to be used during game-play. These will

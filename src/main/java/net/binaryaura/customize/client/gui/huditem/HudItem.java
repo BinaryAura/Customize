@@ -5,6 +5,7 @@ import java.util.Random;
 import org.apache.logging.log4j.Logger;
 
 import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
+import net.binaryaura.customize.client.gui.SpriteSet;
 import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
@@ -260,7 +261,6 @@ public abstract class HudItem implements Color{
 		x = DFLT_X;
 		y = DFLT_Y;
 		init();
-		setHeightAndWidth();
 	}
 	
 	/**
@@ -282,7 +282,15 @@ public abstract class HudItem implements Color{
 	 * From the information retrieved the subclass is rendered icon by icon.
 	 */
 	public void renderHUDItem() {
+		preRender();
 		renderHUDItem(getX(), getY());
+	}
+	
+	/**
+	 * Handles all values that must be reset before rendering
+	 */
+	public void preRender() {
+		setHeightAndWidth();
 	}
 	
 	/**
@@ -304,7 +312,6 @@ public abstract class HudItem implements Color{
 	public void rotateLeft() {
 		if(!canRotate) return;
 		orientation = orientation.left();
-		setHeightAndWidth();
 	}
 	
 	/**
@@ -315,7 +322,6 @@ public abstract class HudItem implements Color{
 	public void rotateRight() {
 		if(!canRotate) return;
 		orientation = orientation.right();
-		setHeightAndWidth();
 	}	
 	
 	/**
@@ -617,6 +623,22 @@ public abstract class HudItem implements Color{
 	 * Also, sets Icon Gauge specific settings.
 	 */
 	protected abstract void setHeightAndWidth();
+	
+	/**
+	 * Gets the delta X for animation and temporary adjust purposes for
+	 * the entire HUDItem.
+	 * 
+	 * @return	The change in x relative to current coords for this tick
+	 */
+	protected abstract int getDeltaX();
+	
+	/**
+	 * Gets the delta Y for animation and temporary adjustment purpose for
+	 * the entire HUDItem.
+	 * 
+	 * @return	The change in y relative to the current coords for this tick
+	 */
+	protected abstract int getDeltaY();
 	
 	/**
 	 * Flag for whether the HUDItem can move.

@@ -1,5 +1,6 @@
 package net.binaryaura.customize.client.gui.huditem.defaults;
 
+import ibxm.Player;
 import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.binaryaura.customize.client.gui.huditem.HudItem;
@@ -89,34 +90,11 @@ public class HudItemMountHealth extends HudItemIconGauge {
 	 */
 	@Override
 	protected void init() {
+		super.init();
 		anchor = DFLT_ANCH;
 		orientation = DFLT_ORIEN;
 		x = DFLT_X;
 		y = DFLT_Y;
-	}
-
-	/**
-	 * Calculates parallel movement of each icon of the gauge.							 <3 <- <3 -> <3
-	 * 
-	 * @param icon		The index of the icon.  <3 0 <3 1 <3 2 <3 3 <3 4 <3 5 etc
-	 * 
-	 * @return parallel movement direction and distance. 
-	 */
-	@Override
-	protected int getIconDeltaPara(int icon) {
-		return 0;
-	}
-
-	/**																						   /\
-	 * Calculates perpendicular movement of each icon of the gauge.		 				 <3    <3    <3
-	 * 																						   \/
-	 * @param icon		The index of the icon.
-	 * 
-	 * @return perpendicular movement direction and distance.
-	 */
-	@Override
-	protected int getIconDeltaPerp(int icon) {
-		return 0;
 	}
 
 	/**
@@ -128,28 +106,6 @@ public class HudItemMountHealth extends HudItemIconGauge {
 	@Override
 	protected float getAmount() {
 		return 0;
-	}
-
-	/**
-	 * Gets the maximum value to be used when displaying the gauge
-	 * in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the maximum value of AIR as a preview.
-	 */
-	@Override
-	protected float getDemoAmount() {
-		return DEMO_AMT;
-	}
-
-	/**
-	 * Gets the textures to be used when displaying the specific
-	 * <code>icon</code> of the gauge in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the textures to be used for preview.
-	 */
-	@Override
-	protected SpriteSet getDemoSpriteSet() {
-		return null;
 	}
 	
 	/**

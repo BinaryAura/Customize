@@ -169,4 +169,20 @@ public class HudItemCrosshairs extends HudItemIcon {
             return true;
         }
 	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItem#getDeltaX()
+	 */
+	@Override
+	protected int getDeltaX() {
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItem#getDeltaY()
+	 */
+	@Override
+	protected int getDeltaY() {
+		return 0;
+	}
 }

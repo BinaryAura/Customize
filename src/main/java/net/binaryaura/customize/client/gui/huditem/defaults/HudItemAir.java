@@ -36,12 +36,7 @@ public class HudItemAir extends HudItemIconGauge {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -40;
-	
-	/**
-	 * The maximum amount of stages in the gauge.
-	 */
-	private static final float DFLT_AMT = 20.0f;
+	private static final int DFLT_Y = -49;
 	
 	/**
 	 * The reference point for the x and y values when no save entry
@@ -82,7 +77,6 @@ public class HudItemAir extends HudItemIconGauge {
 	 */
 	@Override
 	public void renderHUDItem(int x, int y) {
-		player = (EntityPlayer)mc.getRenderViewEntity();
 		
 		/**
 		 * AIR shouldn't be rendered if <code>mc.playerController.shouldDrawHUD()</code>
@@ -94,27 +88,19 @@ public class HudItemAir extends HudItemIconGauge {
 	}
 	
 	@Override
+	public void updateTick() {
+		super.updateTick();
+		player = (EntityPlayer)mc.getRenderViewEntity();
+	}
+	
+	@Override
 	protected void init() {
+		super.init();
 		anchor = DFLT_ANCH;
 		orientation = DFLT_ORIEN;
 		x = DFLT_X;
 		y = DFLT_Y;
 		layers = new LayeredSprite(new SpriteSet("air", null, new Sprite(Gui.icons, 25, 18, 9, 9), new Sprite(Gui.icons, 16, 18, 9, 9)));
-	}
-
-	@Override
-	protected float getAmount() {
-		return DFLT_AMT;
-	}
-
-	@Override
-	protected float getDemoAmount() {
-		return getAmount();
-	}
-
-	@Override
-	protected SpriteSet getDemoSpriteSet() {
-		return new SpriteSet(layers.getLayer("air").getSprite(2));
 	}
 
 	@Override
@@ -132,7 +118,8 @@ public class HudItemAir extends HudItemIconGauge {
 				index = 1;
 			iconLayers.addSprite(layers.getLayer("air").getSprite(index));
 		} else
-			iconLayers.addSprites(getDemoSpriteSet());
+			if(icon < getAmount()/2)
+				iconLayers.addSprites(layers.getLayer("air").getSprite(2));
 		return iconLayers;
 	}
 

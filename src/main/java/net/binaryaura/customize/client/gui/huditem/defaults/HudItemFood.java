@@ -36,7 +36,7 @@ public class HudItemFood extends HudItemIconGauge {
 	 * 
 	 * @see	HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -30;
+	private static final int DFLT_Y = -39;
 	
 	/**
 	 * The reference point for the x and y values when no save entry
@@ -74,7 +74,6 @@ public class HudItemFood extends HudItemIconGauge {
 	 */
 	@Override
 	public void renderHUDItem(int x, int y) {
-		player = (EntityPlayer)mc.getRenderViewEntity();
 		stats = player.getFoodStats();
 		
 		/**
@@ -91,6 +90,7 @@ public class HudItemFood extends HudItemIconGauge {
 	 */
 	@Override
 	protected void init() {
+		super.init();
 		anchor = DFLT_ANCH;
 		orientation = DFLT_ORIEN;
 		x = DFLT_X;
@@ -100,6 +100,12 @@ public class HudItemFood extends HudItemIconGauge {
 		layers.addLayer(new SpriteSet("defaultPrev", null, new Sprite(Gui.icons, 79, 27, 9, 9), new Sprite(Gui.icons, 52, 27, 9, 9)));
 		layers.addLayer(new SpriteSet("hunger", new Sprite(Gui.icons, 133, 27, 9, 9), new Sprite(Gui.icons, 97, 27, 9, 9), new Sprite(Gui.icons, 88, 27, 9, 9)));
 		layers.addLayer(new SpriteSet("hungerPrev", null, new Sprite(Gui.icons, 115, 27, 9, 9), new Sprite(Gui.icons, 106, 27, 9, 9)));		
+	}
+	
+	@Override
+	public void updateTick() {
+		super.updateTick();
+		player = (EntityPlayer)mc.getRenderViewEntity();
 	}
 
 	/**																						   /\
@@ -115,33 +121,6 @@ public class HudItemFood extends HudItemIconGauge {
 		if(stats.getSaturationLevel() <= 0.0F && updateCounter % (stats.getFoodLevel() * 3 + 1) == 0)
 			perp = bidirectionalShake();
 		return perp;
-	}
-
-	@Override
-	protected float getAmount() {
-		return getDemoAmount();
-	}
-	
-	/**
-	 * Gets the maximum value to be used when displaying the gauge
-	 * in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the maximum value of AIR as a preview.
-	 */
-	@Override
-	protected float getDemoAmount() {
-		return DFLT_DEMO_AMT;
-	}
-
-	/**
-	 * Gets the textures to be used when displaying the specific
-	 * <code>icon</code> of the gauge in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the textures to be used for preview.
-	 */
-	@Override
-	protected SpriteSet getDemoSpriteSet() {
-		return new SpriteSet(layers.getLayer("background").getSprite(0), layers.getLayer("default").getSprite(2));
 	}
 
 	/**
@@ -186,9 +165,11 @@ public class HudItemFood extends HudItemIconGauge {
 					iconLayers.addSprite(layers.getLayer("defaultPrev").getSprite(indexPrev));
 				iconLayers.addSprite(layers.getLayer("default").getSprite(index));
 			}
-		} else
-			iconLayers.addSprites(getDemoSpriteSet());
-		
+		} else {
+			iconLayers.addSprites(layers.getLayer("background").getSprite(0));
+			if(icon < getAmount()/2)
+				iconLayers.addSprite(layers.getLayer("default").getSprite(2));
+		}
 		return iconLayers;
 	}
 

@@ -29,7 +29,7 @@ public class HudItemHealth extends HudItemIconGauge {
 	 * 
 	 * @see	GuiScreenAdjustHud
 	 */
-	private static final int DFLT_DEMO_AMT = 24;
+	private static final int DFLT_DEMO_AMT = 48;
 	
 	/**
 	 * Relative x-value where the gauge will be rendered if no save
@@ -45,7 +45,7 @@ public class HudItemHealth extends HudItemIconGauge {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -30;
+	private static final int DFLT_Y = -39;
 	
 	/**
 	 * The reference point for the x and y values when no save entry
@@ -76,9 +76,14 @@ public class HudItemHealth extends HudItemIconGauge {
 	 */
 	@Override
 	public void renderHUDItem(int x, int y) {
-		player = (EntityPlayer)this.mc.getRenderViewEntity();
-		if(this.mc.playerController.shouldDrawHUD() && player != null || isInPreview())
+		if(mc.playerController.shouldDrawHUD() && player != null || isInPreview())
 			super.renderHUDItem(x, y);
+	}
+	
+	@Override
+	public void updateTick() {
+		super.updateTick();
+		player = (EntityPlayer)mc.getRenderViewEntity();
 	}
 
 	/**
@@ -87,7 +92,9 @@ public class HudItemHealth extends HudItemIconGauge {
 	 */
 	@Override
 	protected void init() {
+		super.init();
 		anchor = DFLT_ANCH;
+//		flip = true;
 		x = DFLT_X;
 		y = DFLT_Y;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 16, 0, 9, 9), new Sprite(Gui.icons, 25, 0, 9, 9)));
@@ -105,19 +112,6 @@ public class HudItemHealth extends HudItemIconGauge {
 		layers.addLayer(new SpriteSet("poisonHCHL", null, new Sprite(Gui.icons, 115, 45, 9, 9), new Sprite(Gui.icons, 106, 4, 9, 95)));
 		layers.addLayer(new SpriteSet("witherHC", null, new Sprite(Gui.icons, 133, 45, 9, 9), new Sprite(Gui.icons, 124, 45, 9, 9)));
 		layers.addLayer(new SpriteSet("witherHCHL", null, new Sprite(Gui.icons, 151, 45, 9, 9), new Sprite(Gui.icons, 142, 45, 9, 9)));
-	}
-
-	/**
-	 * Calculates parallel movement of each icon of the gauge.							 <3 <- <3 -> <3
-	 * 
-	 * @param icon		The index of the icon.  <3 0 <3 1 <3 2 <3 3 <3 4 <3 5 etc
-	 * 
-	 * @return parallel movement direction and distance. 
-	 */
-	@Override
-	protected int getIconDeltaPara(int icon) {
-		// Parallel Movement rules
-		return 0;
 	}
 
 	/**																						   /\
@@ -147,30 +141,10 @@ public class HudItemHealth extends HudItemIconGauge {
 	@Override
 	protected float getAmount() {
 		// Total amount of icons
-		return player.getMaxHealth() + player.getAbsorptionAmount();
-	}
-	
-	/**
-	 * Gets the maximum value to be used when displaying the gauge
-	 * in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the maximum value of AIR as a preview.
-	 */
-	@Override
-	protected float getDemoAmount() {
-		return DFLT_DEMO_AMT;
-	}
-	
-	/**
-	 * Gets the textures to be used when displaying the specific
-	 * <code>icon</code> of the gauge in {@link GuiScreenAdjustHud}.
-	 * 
-	 * @return the textures to be used for preview.
-	 */
-	@Override
-	protected SpriteSet getDemoSpriteSet() {
-		// Demo set of layers.
-		return new SpriteSet(layers.getLayer("background").getSprite(0), layers.getLayer("default" + (mc.theWorld.getWorldInfo().isHardcoreModeEnabled() ? "HC" : "")).getSprite(2));
+		if(isInPreview())
+			return DFLT_DEMO_AMT;
+		else
+			return player.getMaxHealth() + player.getAbsorptionAmount();
 	}
 
 	/**
@@ -236,7 +210,10 @@ public class HudItemHealth extends HudItemIconGauge {
 				iconLayers.addSprite(layers.getLayer("default" + hc + hl).getSprite(index));
 			}
 		} else {
-			iconLayers.addSprites(getDemoSpriteSet());
+			iconLayers.addSprite(layers.getLayer("background").getSprite(0));
+			if(icon < getAmount()/2) {
+				iconLayers.addSprite(layers.getLayer("default" + (mc.theWorld.getWorldInfo().isHardcoreModeEnabled() ? "HC" : "")).getSprite(2));
+			}
 		}
 		
 		return iconLayers;

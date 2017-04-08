@@ -50,6 +50,9 @@ public class GuiButtonHudItem extends GuiButton {
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if(visible) {
+			hudItem.preRender();
+			xPosition = hudItem.getX();
+			yPosition = hudItem.getY();
 			
 			hovered = mouseX >= xPosition + deltaX && mouseY >= yPosition + deltaY && mouseX < xPosition + deltaX + width && mouseY < yPosition + deltaY + height;
 			FontRenderer fontrenderer = mc.fontRendererObj;

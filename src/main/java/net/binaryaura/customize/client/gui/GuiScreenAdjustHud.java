@@ -39,7 +39,9 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		buttonList.clear();
         for (HudItem hudItem : HudItemManager.REGISTRY.getAll()) {
         		
-                if(hudItem != null && !hudItem.isGraphic())	buttonList.add(new GuiButtonHudItem(hudItem));
+                if(hudItem != null && !hudItem.isGraphic()) {
+                	buttonList.add(new GuiButtonHudItem(hudItem));
+                }
 		}
 	}
 
