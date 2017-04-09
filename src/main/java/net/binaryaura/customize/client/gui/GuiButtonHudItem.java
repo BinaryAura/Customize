@@ -3,8 +3,8 @@ package net.binaryaura.customize.client.gui;
 import org.lwjgl.opengl.GL11;
 
 import net.binaryaura.customize.client.gui.huditem.HudItem;
-import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
+import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.Minecraft;
@@ -41,35 +41,38 @@ public class GuiButtonHudItem extends GuiButton {
 	 */
 	public GuiButtonHudItem(int buttonId, int x, int y, int width, int height, String name) {
 		super(buttonId, x, y, width, height, name);
+		mc = Minecraft.getMinecraft();
 		hudItem = HudItemManager.REGISTRY.get(name);
+		updateValues();
+		originalPriority = HudItemManager.REGISTRY.indexOf(hudItem);
+		originalAnchor = hudItem.getAnchor();
+		originalOrientation = hudItem.getOrientation();
+		originalX = x;
+		originalY = y;
 	}
-
 	
 	//	Button needs to be adjusted to extend in the direction of the button 
 	
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if(visible) {
-			hudItem.preRender();
-			xPosition = hudItem.getX();
-			yPosition = hudItem.getY();
-			
-			hovered = mouseX >= xPosition + deltaX && mouseY >= yPosition + deltaY && mouseX < xPosition + deltaX + width && mouseY < yPosition + deltaY + height;
+			int x = xPosition + deltaX + moveX;
+			int y = yPosition + deltaY + moveY;
+			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			FontRenderer fontrenderer = mc.fontRendererObj;
-			
-			//	TODO: Fix Name Rendering so only one name shows
 			if(hudItem != null) {
 				GL11.glPushMatrix();
-				if(isMouseOver() || hudItem.guiBackground())
-					drawRect(xPosition + deltaX, yPosition + deltaY, xPosition + deltaX + width, yPosition + deltaY + height, Color.WHITE + (0x22 << 24));
-				hudItem.renderHUDItem(xPosition + deltaX, yPosition + deltaY);
+				if(hovered || hudItem.guiBackground())
+					drawRect(x, y, x + width, y + height, Color.WHITE + (0x22 << 24));
+				hudItem.renderHUDItem(x, y);
 				GL11.glPopMatrix();
 			} else {
-				Customize.log.warn("HudItem " + displayString + " doesn't exist.");
+				Customize.log.warn(hudItem + " doesn't exist.");
 				return;
 			}
 			
-			if(hovered && deltaX == 0 && deltaY == 0) {
+			//	TODO: Fix Name Rendering so only one name shows			
+			if(hovered) {
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0, 0, 200F);
 				this.drawCenteredString(fontrenderer, displayString.toUpperCase(), mouseX, mouseY - fontrenderer.FONT_HEIGHT, Color.WHITE);
@@ -77,7 +80,14 @@ public class GuiButtonHudItem extends GuiButton {
 			}
 		}
 	}
-
+	
+	@Override
+	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+		int x = xPosition + deltaX;
+		int y = yPosition + deltaY;
+		return enabled && visible && mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+	}
+	
 	/**
 	 * Resets the HudItem's Anchor to <code>anchor</code>.
 	 * 
@@ -85,7 +95,8 @@ public class GuiButtonHudItem extends GuiButton {
 	 */
 	public void setAnchor(Anchor anchor) {
 		hudItem.setAnchor(anchor);
-		savePosition();
+		updateValues();
+		editPosition(0, 0);
 	}
 	
 	/**
@@ -94,10 +105,8 @@ public class GuiButtonHudItem extends GuiButton {
 	public void rotate() {
 		if(hudItem.canRotate()) {
 			hudItem.rotateLeft();
-			width = hudItem.getWidth();
-			height = hudItem.getHeight();
-			editPosition((height - width) / 2, (width - height) / 2);
-			savePosition();
+			updateValues();
+			editPosition(0,0);
 		}
 	}	
 	
@@ -129,6 +138,13 @@ public class GuiButtonHudItem extends GuiButton {
 		hudItem.setPos(xPosition, yPosition);
 	}
 	
+	@Override
+	public void mouseReleased(int mouseX, int mouseY) {
+		deltaX += moveX;
+		deltaY += moveY;
+		moveX = moveY = 0;
+	}
+	
 	/**
 	 * Edits the position of the HUDItem in the preview screen. This is done
 	 * by recording the distance from the starting location.
@@ -139,24 +155,78 @@ public class GuiButtonHudItem extends GuiButton {
 	public void editPosition(int deltaX, int deltaY) {
 		int screenHeight = HudItemManager.getInstance().getRes().getScaledHeight();
 		int screenWidth = HudItemManager.getInstance().getRes().getScaledWidth();
-		deltaX = MathHelper.clamp_int(deltaX, -xPosition, screenWidth - width - xPosition);
-		deltaY = MathHelper.clamp_int(deltaY, -yPosition, screenHeight - height - yPosition);
-		this.deltaX = deltaX;
-		this.deltaY = deltaY;
+		deltaX = MathHelper.clamp_int(deltaX, -xPosition - this.deltaX, screenWidth - width - xPosition - this.deltaX);
+		deltaY = MathHelper.clamp_int(deltaY, -yPosition - this.deltaY, screenHeight - height - yPosition - this.deltaY);
+		this.moveX = deltaX;
+		this.moveY = deltaY;
+	}
+	
+	public void revert() {
+		hudItem.setOrientation(originalOrientation);
+		hudItem.setAnchor(originalAnchor);
+		hudItem.moveTo(originalPriority);
+	}
+	
+	private void updateValues() {
+		hudItem.preRender();
+		xPosition = hudItem.getX();
+		yPosition = hudItem.getY();
+		width = hudItem.getWidth();
+		height = hudItem.getHeight();
 	}
 	
 	/**
 	 * Horizontal change of position of the HUDItem.
 	 */
-	private int deltaX;
+	protected int moveX;
 	
 	/**
 	 * Vertical change of position of the HUDItem.
 	 */
-	private int deltaY;
+	protected int moveY;
+	
+	/**
+	 * Horizontal change of position saved as of the last release of the mouse
+	 */
+	protected int deltaX;
+	
+	/**
+	 * Vertical change of position saved as of the last release of the mouse
+	 */
+	protected int deltaY;
 	
 	/**
 	 * HUDItem that this button represents.
 	 */
 	private HudItem hudItem;
+	
+	/**
+	 * Original x value for reversion
+	 */
+	private int originalX;
+	
+	/**
+	 * Original y value for reversion
+	 */
+	private int originalY;
+	
+	/**
+	 * Original orientation for reversion
+	 */
+	private HudItem.Orientation originalOrientation;
+	
+	/**
+	 * Original anchor for reversion
+	 */
+	private HudItem.Anchor originalAnchor;
+	
+	/**
+	 * Original priority for reversion
+	 */
+	private int originalPriority;
+	
+	/**
+	 * Minecraft
+	 */
+	private Minecraft mc;
 }

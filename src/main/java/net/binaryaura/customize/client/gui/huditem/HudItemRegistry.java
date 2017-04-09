@@ -75,7 +75,7 @@ public class HudItemRegistry {
 			if(name.equals(hudItem.getName()))
 				return hudItem;
 		}
-		Customize.log.warn("HUDItem "+ name + " isn't in the registry. Skipping");
+		Customize.log.error("HUDItem "+ name + " isn't in the registry. Skipping");
 		return null;
 	}
 	
@@ -90,7 +90,7 @@ public class HudItemRegistry {
 			if(hudItem.getId() == id)
 				return hudItem;
 		}
-		Customize.log.warn("ID " + id + " doesn't relate to a HudItem. Skipping");
+		Customize.log.error("ID " + id + " doesn't relate to a HudItem. Skipping");
 		return null;
 	}
 	
@@ -98,13 +98,13 @@ public class HudItemRegistry {
 	 * Move the HudItem with the assigned <code>id</code> down one. This means that the
 	 * hudItem will be printed sooner, and thus under subsequent hudItems.
 	 * 
-	 * @param name		The name of the HUDItem to be moved.
+	 * @param id			The name of the HUDItem to be moved.
 	 */	
 	public void moveDown(int id) {
 		for(HudItem hudItem : all) {
 			if(id == hudItem.getId());
 		}
-		Customize.log.warn("ID " + id + " doesn't relate to a hudItem. Skipping");
+		Customize.log.error("ID " + id + " doesn't relate to a hudItem. Skipping");
 	}
 	
 	/**
@@ -119,7 +119,7 @@ public class HudItemRegistry {
 				moveDown(hudItem);
 			}
 		}
-		Customize.log.warn("HUDItem " + name + " isn't in the registry. Skipping");
+		Customize.log.error("HUDItem " + name + " isn't in the registry. Skipping");
 	}
 	
 	/**
@@ -136,23 +136,83 @@ public class HudItemRegistry {
 				if(idx-- > 0) {
 					reg.remove(hudItem);
 					reg.add(idx, hudItem);
-					Customize.log.info("Moved " + hudItem + " up");
+					Customize.log.debug("Moved " + hudItem + " up");
 				} else {
-					Customize.log.warn(hudItem + " is already on the bottom for it's priority. Skipping");
+					Customize.log.debug(hudItem + " is already on the bottom for it's priority. Skipping");
 				}
 			} else {
-				Customize.log.warn(hudItem + " isn't in the registry. Skipping");  // if locally called this doesn't happen
+				Customize.log.error(hudItem + " isn't in the registry. Skipping");  // if locally called this doesn't happen
 			}
 		} else {
-			Customize.log.warn("Null HudItem. Skipping");  // if locally called this doesn't happen
+			Customize.log.error("Null HudItem. Skipping");  // if locally called this doesn't happen
 		}
+	}
+	
+	/**
+	 * Move the HudItem with the assigned <code>name</code> to <code>index</code>.
+	 * 
+	 * @param name		The name of the HUDItem to be moved.
+	 * @param index		The index to move the hudItem to.
+	 */	
+	public void moveTo(int id, int index) {
+		for(HudItem hudItem : all) {
+			if(id == hudItem.getId()) {
+				moveTo(hudItem, index);
+			}
+		}
+		Customize.log.error("ID " + id + " doesn't relate to a hudItem. Skipping");
+	}
+	
+	/**
+	 * Move the HudItem with the assigned <code>id</code> to <code>index</code>.
+	 * 
+	 * @param name		The name of the HUDItem to be moved.
+	 * @param index		The index to move the hudItem to.
+	 */	
+	public void moveTo(String name, int index) {
+		for(HudItem hudItem : all) {
+			if(name.equals(hudItem.getName())) {
+				moveTo(hudItem, index);
+			}
+		}
+		Customize.log.error("HUDItem " + name + " isn't in the registry. Skipping");
+	}
+	
+	/**
+	 * Move <code>hudItem</code> to <code>index</code>.
+	 * 
+	 * @param hudItem	The HUDItem to be moved
+	 * @param index		The index to move the hudItem to.	
+	 */
+	public void moveTo(HudItem hudItem, int index) {
+		if(hudItem != null) {
+			if(all.contains(hudItem)) {
+				ArrayList<HudItem> reg = getRegistry(hudItem);
+				int idx = reg.indexOf(hudItem);
+				if(idx != index) {
+					reg.remove(hudItem);
+					if(index < reg.size())
+						reg.add(index, hudItem);
+					else if(index == reg.size())
+						reg.add(hudItem);
+					else {
+						Customize.log.error("No such index: " + index + ". Skipping");
+						return;
+					}
+					Customize.log.debug("Moved " + hudItem + " up");
+				} else
+					Customize.log.debug(hudItem + " is already at index " + index + " for it's priority. Skipping");
+			} else
+				Customize.log.error(hudItem + " isn't in the registry. Skipping");
+		} else
+			Customize.log.error("Null HudItem. Skipping");
 	}
 	
 	/**
 	 * Move the HudItem with the assigned <code>id</code> up one. This means that the
 	 * hudItem will be printed later, and thus on top of preceding hudItems.
 	 * 
-	 * @param name		The name of the HUDItem to be moved.
+	 * @param id			The name of the HUDItem to be moved.
 	 */	
 	public void moveUp(int id) {
 		for(HudItem hudItem : all) {
@@ -160,7 +220,7 @@ public class HudItemRegistry {
 				moveUp(hudItem);
 			}
 		}
-		Customize.log.warn("ID " + id + " doesn't relate to a hudItem. Skipping");
+		Customize.log.error("ID " + id + " doesn't relate to a hudItem. Skipping");
 	}
 	
 	/**
@@ -175,7 +235,7 @@ public class HudItemRegistry {
 				moveUp(hudItem);
 			}
 		}
-		Customize.log.warn("HUDItem " + name + " isn't in the registry. Skipping");
+		Customize.log.error("HUDItem " + name + " isn't in the registry. Skipping");
 	}
 	
 	/**
@@ -192,16 +252,70 @@ public class HudItemRegistry {
 				if(++idx < reg.size()) {
 					reg.remove(hudItem);
 					reg.add(idx, hudItem);
-					Customize.log.info("Moved " + hudItem + " up");
+					Customize.log.debug("Moved " + hudItem + " up");
 				} else {
-					Customize.log.warn(hudItem + " is already on top for it's priority. Skipping");
+					Customize.log.error(hudItem + " is already on top for it's priority. Skipping");
 				}
 			} else {
-				Customize.log.warn(hudItem + " isn't in the registry. Skipping");  // if locally called this doesn't happen
+				Customize.log.error(hudItem + " isn't in the registry. Skipping");  // if locally called this doesn't happen
 			}
 		} else {
-			Customize.log.warn("Null HudItem. Skipping");  // if locally called this doesn't happen
+			Customize.log.error("Null HudItem. Skipping");  // if locally called this doesn't happen
 		}
+	}
+	
+	/**
+	 * Gets the index of the HUDItem with the given <code>id</code>
+	 * 
+	 * @param hudItem	The HUDItem index to be retrieved
+	 * 
+	 * @return			The index of the hudItem in it's priority
+	 */
+	public int indexOf(int id) {
+		for(HudItem hudItem : all) {
+			if(id == hudItem.getId()) {
+				return indexOf(hudItem);
+			}
+		}
+		Customize.log.error("ID " + id + " doesn't relate to a hudItem");
+		return -1;
+	}
+	
+	/**
+	 * Move the HudItem with the assigned <code>name</code> up one. This means that the
+	 * hudItem will be printed later, and thus on top of preceding hudItems.
+	 * 
+	 * @param name		The name of the HUDItem to be moved.
+	 */
+	public int indexOf(String name) {
+		for(HudItem hudItem : all) {
+			if(name.equals(hudItem.getName())) {
+				return indexOf(hudItem);
+			}
+		}
+		Customize.log.error("HUDItem " + name + " isn't in the registry");
+		return -1;
+	}
+	
+	/**
+	 * Gets the index of the given <code>hudItem</code>
+	 * 
+	 * @param hudItem	The HUDItem index to be retrieved
+	 * 
+	 * @return			The index of the hudItem in it's priority
+	 */
+	public int indexOf(HudItem hudItem) {
+		if(hudItem != null) {
+			if(all.contains(hudItem)) {
+				ArrayList<HudItem> reg = getRegistry(hudItem);
+				return reg.indexOf(hudItem);
+			} else {
+				Customize.log.error(hudItem + " isn't in the registry");
+			}
+		} else {
+			Customize.log.error("Null HudItem");
+		}
+		return -1;
 	}
 	
 	/**
@@ -215,7 +329,7 @@ public class HudItemRegistry {
 			hudItem.setId(nextId++);
 			Customize.log.info("Registered " + hudItem);
 		} else {
-			Customize.log.warn("Null HudItem. Skipping");
+			Customize.log.error("Null HudItem. Skipping");
 		}
 	}
 	
@@ -237,10 +351,10 @@ public class HudItemRegistry {
 					return;
 				}
 			}
-			Customize.log.warn("Reference ID " + ref + " doesn't relate to a hudItem. Adding HudItem " + hudItem + " to top");
+			Customize.log.debug("Reference ID " + ref + " doesn't relate to a hudItem. Adding HudItem " + hudItem + " to top");
 			register(hudItem);
 		} else {
-			Customize.log.warn("Null HudItem. Skipping");
+			Customize.log.error("Null HudItem. Skipping");
 		}
 	}
 	
@@ -263,10 +377,10 @@ public class HudItemRegistry {
 					return;
 				}
 			}
-			Customize.log.warn("HudItem reference " + ref + " isn't in the registry. Adding " + hudItem + " to top");
+			Customize.log.debug("HudItem reference " + ref + " isn't in the registry. Adding " + hudItem + " to top");
 			register(hudItem);
 		} else {
-			Customize.log.warn("Null HudItem. Skipping");
+			Customize.log.error("Null HudItem. Skipping");
 		}
 	}
 	
@@ -284,15 +398,15 @@ public class HudItemRegistry {
 				Customize.log.info("Registered " + hudItem + " above " + hudItem);
 			} else {
 				if(ref == null) {
-					Customize.log.warn("Null HudItem Reference. Adding " + hudItem + " to top");
+					Customize.log.debug("Null HudItem Reference. Adding " + hudItem + " to top");
 					register(hudItem);
 				} else {
-					Customize.log.warn("Reference " + ref + " isn't in the registry. Adding " + hudItem + " to top");
+					Customize.log.debug("Reference " + ref + " isn't in the registry. Adding " + hudItem + " to top");
 					register(hudItem);
 				}
 			}
 		} else {
-			Customize.log.warn("Null HudItem. Skipping");
+			Customize.log.error("Null HudItem. Skipping");
 		}
 	}
 	
@@ -309,7 +423,7 @@ public class HudItemRegistry {
 				return;
 			}
 		}
-		Customize.log.warn("ID " + id + " doesn't relate to a HudItem. Skipping");
+		Customize.log.error("ID " + id + " doesn't relate to a HudItem. Skipping");
 	}
 	
 	/**
@@ -325,7 +439,7 @@ public class HudItemRegistry {
 				return;
 			}
 		}
-		Customize.log.warn("HUDItem " + name + " isn't in the registery. Skipping");
+		Customize.log.error("HUDItem " + name + " isn't in the registery. Skipping");
 	}
 	
 	/**
@@ -342,7 +456,7 @@ public class HudItemRegistry {
 				Customize.log.warn(hudItem + " isn't in the registry. Skipping");
 			}
 		} else {
-			Customize.log.warn("Null HudItem. Skipping");
+			Customize.log.error("Null HudItem. Skipping");
 		}
 	}
 	
@@ -370,7 +484,7 @@ public class HudItemRegistry {
 		else if(hudItem.getPriority().ordinal() > ref.getPriority().ordinal())
 			reg.add(0, hudItem);
 		else {
-			Customize.log.warn("Cannot register " + hudItem + " above " + ref + ", their priorities conflict. Skipping");
+			Customize.log.error("Cannot register " + hudItem + " above " + ref + ", their priorities conflict. Skipping");
 			return;
 		}
 		all.add(hudItem);

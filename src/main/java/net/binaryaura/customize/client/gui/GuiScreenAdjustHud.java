@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 
+import jline.internal.Log;
 import net.binaryaura.customize.client.util.Color;
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
@@ -89,7 +90,6 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		    if (button != null) {
 		    	selectButton((GuiButtonHudItem) button);
 		    	selected.rotate();
-		    	initGui();
 		    	deselectButton();
 		    }
 		    if(menu != null) {
@@ -140,14 +140,23 @@ public class GuiScreenAdjustHud extends GuiScreen {
 			case Keyboard.KEY_ESCAPE:
 				Customize.log.info("EXIT");
 				//	SAVE
-				GuiInGameCustomize.renderHUD = true;
-				
-				this.mc.displayGuiScreen((GuiScreen)null);
-	            if (this.mc.currentScreen == null) 
-	                this.mc.setIngameFocus();
+				for(GuiButton button : buttonList) {
+					if(button instanceof GuiButtonHudItem) {
+						GuiButtonHudItem hudButton = (GuiButtonHudItem) button;
+						hudButton.savePosition();
+					}
+				}
+				onClosed();
 				break;
 			case Keyboard.KEY_BACK:
 				Customize.log.info("CANCEL CHANGES");
+				for (GuiButton button : buttonList) {
+		            if(button instanceof GuiButtonHudItem) {
+		            	GuiButtonHudItem hudButton = (GuiButtonHudItem) button;
+		            	hudButton.revert();
+		            }
+		        }
+				onClosed();
 				break;
 			case Keyboard.KEY_F1:
 				Customize.log.info("HELP");
@@ -180,14 +189,6 @@ public class GuiScreenAdjustHud extends GuiScreen {
 				if(selected != null) selected.setAnchor(Anchor.BOTTOMRIGHT);
 				break;
 			case Keyboard.KEY_HOME:
-				GuiButtonHudItem button;
-				for (int k = 0; k < this.buttonList.size(); ++k) {
-		            if(buttonList.get(k) instanceof GuiButtonHudItem) {
-		            	button = (GuiButtonHudItem) buttonList.get(k);
-		            	button.recover();
-		            }
-		        }
-				initGui();
 				break;
 		}
 	}
@@ -201,7 +202,7 @@ public class GuiScreenAdjustHud extends GuiScreen {
 			menu.mouseClicked(mouseX, mouseY, mouseButton);
 		}
 		for (int l = 0; l < this.buttonList.size(); ++l) {
-			GuiButton guibutton = (GuiButton)this.buttonList.get(l);
+			GuiButton guibutton = (GuiButton) buttonList.get(l);
 			
 			if(guibutton.mousePressed(mc, mouseX, mouseY)) {
 				ActionPerformedEvent.Pre event = new ActionPerformedEvent.Pre(this, guibutton, buttonList);
@@ -235,10 +236,9 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
 		if(selected != null && mouseHeld) {
+			selected.mouseReleased(mouseX, mouseY);
 			mouseHeld = false;
-			selected.savePosition();
 			deselectButton();
-			initGui();
 		}
 		super.mouseReleased(mouseX, mouseY, state);
 	}
@@ -275,6 +275,17 @@ public class GuiScreenAdjustHud extends GuiScreen {
 	protected void onMenuClosed() {
 		menu.onGuiClosed();
 		menu = null;
+	}
+	
+	/**
+	 * Closes the screen in Minecraft
+	 */
+	private void onClosed() {
+		GuiInGameCustomize.renderHUD = true;
+		
+		mc.displayGuiScreen((GuiScreen)null);
+		if (mc.currentScreen == null)
+			mc.setIngameFocus();		
 	}
 	
 	/**

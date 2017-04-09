@@ -315,6 +315,16 @@ public abstract class HudItem implements Color{
 	}
 	
 	/**
+	 * Sets the HUDItem to the given orientation
+	 * 
+	 * @param	orientation		The orientation to set the HUDItem to.
+	 */
+	public void setOrientation(Orientation orientation) {
+		if(!canRotate) return;
+		this.orientation = orientation;
+	}
+	
+	/**
 	 * Rotate the HUDItem clockwise.
 	 * 
 	 * @see Orientation
@@ -337,6 +347,38 @@ public abstract class HudItem implements Color{
 	}
 	
 	/**
+	 * Getter for the HUDItem's Anchor
+	 * 
+	 * @see Anchor
+	 * 
+	 * @return	The anchor for this HUDItem
+	 */
+	public Anchor getAnchor() {
+		return anchor;
+	}
+	
+	/**
+	 * Moves the HUDItem up one in its priority.
+	 */
+	public void moveback() {
+		HudItemManager.REGISTRY.moveUp(this);
+	}
+	
+	/**
+	 * Moves the HUDItem down one in its priority.
+	 */
+	public void moveforward() {
+		HudItemManager.REGISTRY.moveUp(this);
+	}
+	
+	/**
+	 * Move the HUDItem to the given slot in its priority.
+	 */
+	public void moveTo(int index) {
+		HudItemManager.REGISTRY.moveTo(this, index);
+	}
+	
+	/**
 	 * Setter for the ID.
 	 * 
 	 * @param id	Identification for {@link GuiScreenAdjustHud}.
@@ -353,7 +395,6 @@ public abstract class HudItem implements Color{
 	 */
 	public void setPos(int x, int y) {
 		if(!canMove) return;
-		
 		switch(anchor) {
 			case TOPLEFT:
 				break;

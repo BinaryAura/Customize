@@ -1,5 +1,6 @@
 package net.binaryaura.customize.client.gui.huditem;
 
+import net.binaryaura.customize.client.ClientProxy;
 import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
@@ -113,23 +114,23 @@ public abstract class HudItemIconGauge extends HudItem {
 		mc.mcProfiler.startSection(name);
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
+		
+//		if (name.equalsIgnoreCase(ClientProxy.HEALTH)) log.info(anchor + " : " + x + " : " + y + " : " + width + " : " + height + " : " + orientation);
 			
-		log.info("Res: " + res.getScaledWidth() + " : " + res.getScaledHeight());
-		log.info(name + ": X: " + this.x + " : " + anchor.getX() + " : " + width + " -> " + x);
-		log.info(name + ": Y: " + this.y + " : " + anchor.getY() + " : " + width + " -> " + y);
+//		log.info("Res: " + res.getScaledWidth() + " : " + res.getScaledHeight());
+//		log.info(name + ": X: " + this.x + " : " + anchor.getX() + " : " + width + " -> " + x);
+//		log.info(name + ": Y: " + this.y + " : " + anchor.getY() + " : " + width + " -> " + y);
 		
 		switch(orientation) {
 			case RIGHT:
 				break;
 			case DOWN:
-				space = layers.getHeight();
 				break;
 			case LEFT:
 				x += width - layers.getWidth();
 				break;
 			case UP:
 				y += height - layers.getHeight();
-				space = layers.getHeight();
 				break;
 		}
 		for(int i = MathHelper.ceiling_float_int(amount / (layers.getAmount() - 1) - 1); i >= 0; --i) {
@@ -150,7 +151,7 @@ public abstract class HudItemIconGauge extends HudItem {
 					iconY = y + (flip ? stack : stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaY();
 					break;
 				case UP:
-					iconX = x - (flip ? stack : stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaX();
+					iconX = x + (flip ? stack : stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaX();
 					iconY = y - space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaY();
 			}
 			
