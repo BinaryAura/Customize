@@ -282,7 +282,15 @@ public abstract class HudItem implements Color{
 	 * From the information retrieved the subclass is rendered icon by icon.
 	 */
 	public void renderHUDItem() {
+		preRender();
 		renderHUDItem(getX(), getY());
+	}
+	
+	/**
+	 * Handles all values that must be reset before rendering
+	 */
+	public void preRender() {
+		setHeightAndWidth();
 	}
 	
 	/**
@@ -304,7 +312,6 @@ public abstract class HudItem implements Color{
 	public void rotateLeft() {
 		if(!canRotate) return;
 		orientation = orientation.left();
-		setHeightAndWidth();;
 	}
 	
 	/**
@@ -315,7 +322,6 @@ public abstract class HudItem implements Color{
 	public void rotateRight() {
 		if(!canRotate) return;
 		orientation = orientation.right();
-		setHeightAndWidth();
 	}	
 	
 	/**
