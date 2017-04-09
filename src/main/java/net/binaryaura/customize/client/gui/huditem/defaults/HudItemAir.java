@@ -36,7 +36,7 @@ public class HudItemAir extends HudItemIconGauge {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -49;
+	private static final int DFLT_Y = -40;
 	
 	/**
 	 * The reference point for the x and y values when no save entry

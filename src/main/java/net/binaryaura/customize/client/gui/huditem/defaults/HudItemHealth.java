@@ -45,7 +45,7 @@ public class HudItemHealth extends HudItemIconGauge {
 	 * 
 	 * @see HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -39;
+	private static final int DFLT_Y = -30;
 	
 	/**
 	 * The reference point for the x and y values when no save entry
@@ -94,7 +94,6 @@ public class HudItemHealth extends HudItemIconGauge {
 	protected void init() {
 		super.init();
 		anchor = DFLT_ANCH;
-//		flip = true;
 		x = DFLT_X;
 		y = DFLT_Y;
 		layers = new LayeredSprite(new SpriteSet("background", new Sprite(Gui.icons, 16, 0, 9, 9), new Sprite(Gui.icons, 25, 0, 9, 9)));

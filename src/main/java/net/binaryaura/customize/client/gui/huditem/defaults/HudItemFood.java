@@ -1,6 +1,5 @@
 package net.binaryaura.customize.client.gui.huditem.defaults;
 
-import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
@@ -36,7 +35,7 @@ public class HudItemFood extends HudItemIconGauge {
 	 * 
 	 * @see	HudItem.Anchor
 	 */
-	private static final int DFLT_Y = -39;
+	private static final int DFLT_Y = -30;
 	
 	/**
 	 * The reference point for the x and y values when no save entry

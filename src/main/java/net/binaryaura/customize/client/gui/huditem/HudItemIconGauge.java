@@ -1,12 +1,10 @@
 package net.binaryaura.customize.client.gui.huditem;
 
-import net.binaryaura.customize.client.ClientProxy;
 import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.binaryaura.customize.client.gui.huditem.defaults.HudItemHealth;
-import net.binaryaura.customize.common.Customize;
 import net.minecraft.util.MathHelper;
 
 /**
@@ -115,6 +113,10 @@ public abstract class HudItemIconGauge extends HudItem {
 		mc.mcProfiler.startSection(name);
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
+			
+		log.info("Res: " + res.getScaledWidth() + " : " + res.getScaledHeight());
+		log.info(name + ": X: " + this.x + " : " + anchor.getX() + " : " + width + " -> " + x);
+		log.info(name + ": Y: " + this.y + " : " + anchor.getY() + " : " + width + " -> " + y);
 		
 		switch(orientation) {
 			case RIGHT:
@@ -137,20 +139,21 @@ public abstract class HudItemIconGauge extends HudItem {
 			switch(orientation) {
 				case RIGHT:
 					iconX = x + space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaX();
-					iconY = y + (flip ? stack : stacks - stack)*stackSpace + getIconDeltaPerp(i) + getDeltaY();
+					iconY = y + (flip ? stack : stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaY();
 					break;
 				case DOWN:
-					iconX = x + (flip ? 1 : -1)*(stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaX();
+					iconX = x + (flip ? stack : stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaX();
 					iconY = y + space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaY();
 					break;
 				case LEFT:
 					iconX = x - space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaX();
-					iconY = y + (flip ? 1 : -1)*(stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaY();
+					iconY = y + (flip ? stack : stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaY();
 					break;
 				case UP:
-					iconX = x - (flip ? 1 : -1)*(stacks - stack)*stackSpace + getIconDeltaPerp(i) + getDeltaX();
+					iconX = x - (flip ? stack : stacks - stack - 1)*stackSpace + getIconDeltaPerp(i) + getDeltaX();
 					iconY = y - space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaY();
 			}
+			
 			for(int j = 0; j < iconLayers.getAmount(); j++) {
 				Sprite sprite = iconLayers.getSprite(j);
 				if (sprite == null) continue;
@@ -167,28 +170,6 @@ public abstract class HudItemIconGauge extends HudItem {
 	 */
 	public void setMaxPerRow(int max) {
 		maxPerRow = max;
-	}
-	
-	/**
-	 * Calculates the x-value of this gauge's button counterpart.  
-	 * 
-	 * @return x-value of this gauge's button counterpart in {@link GuiScreenAdjustHud}.
-	 */
-	@Deprecated
-	@Override
-	public int getButtonX() {
-		return super.getButtonX();
-	}
-
-	/**
-	 * Calculates the y-value of this gauge's button counterpart.  
-	 * 
-	 * @return y-value of this gauge's button counterpart in {@link GuiScreenAdjustHud}.
-	 */
-	@Deprecated
-	@Override
-	public int getButtonY() {
-		return super.getButtonY();
 	}
 	
 	@Override
