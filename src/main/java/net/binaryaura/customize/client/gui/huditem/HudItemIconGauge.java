@@ -170,12 +170,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	 */
 	public void setMaxPerRow(int max) {
 		maxPerRow = max;
-	}
-	
-	@Override
-	public void preRender() {
-		setAmount(getAmount());
-		super.preRender();
+		setHeightAndWidth();
 	}
 	
 	/**
@@ -208,6 +203,7 @@ public abstract class HudItemIconGauge extends HudItem {
 	protected void setAmount(float amount) {
 		if(this.amount == amount) return;
 		this.amount = amount;
+		setHeightAndWidth();
 	}
 
 	/**
