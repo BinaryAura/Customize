@@ -6,12 +6,14 @@ import org.lwjgl.input.Keyboard;
 
 import jline.internal.Log;
 import net.binaryaura.customize.client.util.Color;
+import net.binaryaura.customize.client.util.KeyRegister;
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemManager;
 import net.binaryaura.customize.client.gui.huditem.HudItem.Anchor;
 import net.binaryaura.customize.common.Customize;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -26,7 +28,7 @@ import net.minecraftforge.common.MinecraftForge;
  * @see 	GuiHudItemMenu
  *
  */
-public class GuiScreenAdjustHud extends GuiScreen {
+public class GuiScreenAdjustHud extends GuiScreen {	
 	
 	/**
 	 * Constructs the Preview Screen
@@ -117,79 +119,59 @@ public class GuiScreenAdjustHud extends GuiScreen {
 		}
 		//	TODO: Create config class
 		
-		switch(keyCode) {
-			case Keyboard.KEY_LEFT:
-				Customize.log.info("PREVIOUS CONFIGURATION");
-				//	SAVE
-				break;
-			case Keyboard.KEY_RIGHT:
-				Customize.log.info("NEXT CONFIGURATION");
-				//	SAVE
-				break;
-			case Keyboard.KEY_DOWN:
-				Customize.log.info("PREVIOUS PAGE");
-				//	SAVE
-				break;
-			case Keyboard.KEY_UP:
-				Customize.log.info("NEXT PAGE");
-				// 	SAVE
-				break;
-			case Keyboard.KEY_DELETE:
-				Customize.log.info("DELETE CONFIGURATION");
-				break;
-			case Keyboard.KEY_ESCAPE:
-				Customize.log.info("EXIT");
-				//	SAVE
-				for(GuiButton button : buttonList) {
-					if(button instanceof GuiButtonHudItem) {
-						GuiButtonHudItem hudButton = (GuiButtonHudItem) button;
-						hudButton.savePosition();
-					}
+		if (keyCode == KeyRegister.hudPrevConfig.getKeyCode()) {
+			Customize.log.info("PREVIOUS CONFIGURATION");
+			//	SAVE
+		} else if (keyCode == KeyRegister.hudNextConfig.getKeyCode()) {
+			Customize.log.info("NEXT CONFIGURATION");
+			//	SAVE
+		} else if (keyCode == KeyRegister.hudPrevPage.getKeyCode()) {
+			Customize.log.info("PREVIOUS PAGE");
+			// SAVE
+		} else if (keyCode == KeyRegister.hudNextPage.getKeyCode()) {
+			Customize.log.info("NEXT PAGE");
+			// 	SAVE
+		} else if (keyCode == KeyRegister.hudDelConfig.getKeyCode()) {
+			Customize.log.info("DELETE CONFIGURATION");
+		} else if(keyCode == KeyRegister.hudSaveExit.getKeyCode()) {
+			Customize.log.info("EXIT");
+			//	SAVE
+			for(GuiButton button : buttonList) {
+				if(button instanceof GuiButtonHudItem) {
+					GuiButtonHudItem hudButton = (GuiButtonHudItem) button;
+					hudButton.savePosition();
 				}
-				onClosed();
-				break;
-			case Keyboard.KEY_BACK:
-				Customize.log.info("CANCEL CHANGES");
-				for (GuiButton button : buttonList) {
-		            if(button instanceof GuiButtonHudItem) {
-		            	GuiButtonHudItem hudButton = (GuiButtonHudItem) button;
-		            	hudButton.revert();
-		            }
-		        }
-				onClosed();
-				break;
-			case Keyboard.KEY_F1:
-				Customize.log.info("HELP");
-				break;
-			case Keyboard.KEY_NUMPAD7:
-				if(selected != null) selected.setAnchor(Anchor.TOPLEFT);
-				break;
-			case Keyboard.KEY_NUMPAD8:
-				if(selected != null) selected.setAnchor(Anchor.TOP);
-				break;
-			case Keyboard.KEY_NUMPAD9:
-				if(selected != null) selected.setAnchor(Anchor.TOPRIGHT);
-				break;
-			case Keyboard.KEY_NUMPAD4:
-				if(selected != null) selected.setAnchor(Anchor.LEFT);
-				break;
-			case Keyboard.KEY_NUMPAD5:
-				if(selected != null) selected.setAnchor(Anchor.CENTER);
-				break;
-			case Keyboard.KEY_NUMPAD6:
-				if(selected != null) selected.setAnchor(Anchor.RIGHT);
-				break;
-			case Keyboard.KEY_NUMPAD1:
-				if(selected != null) selected.setAnchor(Anchor.BOTTOMLEFT);
-				break;
-			case Keyboard.KEY_NUMPAD2:
-				if(selected != null) selected.setAnchor(Anchor.BOTTOM);
-				break;
-			case Keyboard.KEY_NUMPAD3:
-				if(selected != null) selected.setAnchor(Anchor.BOTTOMRIGHT);
-				break;
-			case Keyboard.KEY_HOME:
-				break;
+			}
+			onClosed();
+		} else if(keyCode == KeyRegister.hudExit.getKeyCode()) {
+			Customize.log.info("CANCEL CHANGES");
+			for (GuiButton button : buttonList) {
+	            if(button instanceof GuiButtonHudItem) {
+	            	GuiButtonHudItem hudButton = (GuiButtonHudItem) button;
+	            	hudButton.revert();
+	            }
+	        }
+			onClosed();
+		} else if(keyCode == KeyRegister.hudHelp.getKeyCode()) {
+			Customize.log.info("HELP");
+		} else if(keyCode == KeyRegister.hudAnchorTopLeft.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.TOPLEFT);
+		} else if(keyCode == KeyRegister.hudAnchorTop.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.TOP);
+		} else if(keyCode == KeyRegister.hudAnchorBottomRight.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.TOPRIGHT);
+		} else if(keyCode == KeyRegister.hudAnchorLeft.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.LEFT);
+		} else if(keyCode == KeyRegister.hudAnchorCenter.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.CENTER);
+		} else if(keyCode == KeyRegister.hudAnchorRight.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.RIGHT);
+		} else if(keyCode == KeyRegister.hudAnchorBottomLeft.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.BOTTOMLEFT);
+		} else if(keyCode == KeyRegister.hudAnchorBottom.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.BOTTOM);
+		} else if(keyCode == KeyRegister.hudAnchorBottomRight.getKeyCode()) {
+			if(selected != null) selected.setAnchor(Anchor.BOTTOMRIGHT);
 		}
 	}
 	//	TODO: Fix Dragging Dual Click Bug

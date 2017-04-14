@@ -2,3 +2,9 @@
 
 <Menu>
 menu.test=Menu Up
+
+<Controls>
+key.categories.customize.general=Customize
+key.categories.customize.anchor=Customize Anchors
+key.categories.customize.config=Customize Configurations
+key.categories.customize.page=Customize Pages

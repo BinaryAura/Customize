@@ -1,6 +1,7 @@
 package net.binaryaura.customize.client.gui.huditem.defaults;
 
 import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
+import net.binaryaura.customize.client.gui.SpriteSet;
 import net.binaryaura.customize.client.gui.huditem.HudItem;
 import net.binaryaura.customize.client.gui.huditem.HudItemIconSet;
 
@@ -107,5 +108,21 @@ public class HudItemHotbar extends HudItemIconSet {
 	@Override
 	protected int getDeltaY() {
 		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItemIconSet#getAmount()
+	 */
+	@Override
+	protected int getAmount() {
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.binaryaura.customize.client.gui.huditem.HudItemIconSet#getIconSpriteSet(int)
+	 */
+	@Override
+	protected SpriteSet getIconSpriteSet(int icon) {
+		return null;
 	}
 }

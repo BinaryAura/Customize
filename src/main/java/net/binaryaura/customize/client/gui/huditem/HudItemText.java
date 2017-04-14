@@ -2,6 +2,8 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import org.lwjgl.opengl.GL11;
 
+import net.binaryaura.customize.client.gui.Sprite;
+import net.binaryaura.customize.client.gui.SpriteSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -83,28 +85,32 @@ public abstract class HudItemText extends HudItem {
 			GL11.glTranslated((float)(-x * (size - 1) / size), (float)(-y * (size - 1) / size), 0.0f);
 		int textX = x + getDeltaX();
 		int textY = y + getDeltaY();
-		int styleAdd = (style == Style.SHADOWED ? 1 : style == Style.OUTLINED ? 2 : 0);
-		if(getBGAlpha() > 0) {
-			bgColor = getBGColor() + (getBGAlpha() << 24);
-			Gui.drawRect(textX - (style == Style.OUTLINED ? 1 : 0), textY - (style == Style.OUTLINED ? 1 : 0), textX + fontRenderer.getStringWidth(string) + styleAdd, textY + fontRenderer.FONT_HEIGHT + styleAdd, bgColor);
-			}
-		if(getAlpha() > 0) {
-			color = getColor() + (getAlpha() << 24);
-			switch(style) {
-				case OUTLINED:
-					fontRenderer.drawString(string, textX + 1, textY, 0);
-					fontRenderer.drawString(string, textX - 1, textY, 0);
-					fontRenderer.drawString(string, textX, textY + 1, 0);
-					fontRenderer.drawString(string, textX, textY - 1, 0);
-				case NORMAL:
-					fontRenderer.drawString(string, textX, textY, color);
-					break;
-				case SHADOWED:
-					fontRenderer.drawStringWithShadow(string, textX, textY, color);
-					break;
-			}
-		}
+		bgColor = getBGColor() + (getBGAlpha() << 24);
+		color = getColor() + (getAlpha() << 24);
+
+		renderIcon(textX, textY, (Sprite) null);
 		GlStateManager.popMatrix();
+	}
+	
+	
+	@Override
+	protected void renderIcon(int x, int y, SpriteSet sprites) {
+		int styleAdd = (style == Style.SHADOWED ? 1 : style == Style.OUTLINED ? 2 : 0);
+		Gui.drawRect(x - (style == Style.OUTLINED ? 1 : 0), y - (style == Style.OUTLINED ? 1 : 0), x + fontRenderer.getStringWidth(string) + styleAdd, y + fontRenderer.FONT_HEIGHT + styleAdd, bgColor);
+	
+		switch(style) {
+			case OUTLINED:
+				fontRenderer.drawString(string, x + 1, y, 0);
+				fontRenderer.drawString(string, x - 1, y, 0);
+				fontRenderer.drawString(string, x, y + 1, 0);
+				fontRenderer.drawString(string, x, y - 1, 0);
+			case NORMAL:
+				fontRenderer.drawString(string, x, y, color);
+				break;
+			case SHADOWED:
+				fontRenderer.drawStringWithShadow(string, x, y, color);
+				break;
+		}		
 	}
 	
 	/**

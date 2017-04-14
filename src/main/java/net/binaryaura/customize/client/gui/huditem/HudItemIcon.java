@@ -35,8 +35,18 @@ public abstract class HudItemIcon extends HudItem{
 		mc.mcProfiler.startSection(name);
 		
 		bind(icon.getLocation());
-		guiRenderer.drawTexturedModalRect(x, y, icon.getX(), icon.getY(), width, height);
+		renderIcon(x, y, new SpriteSet(background, icon));
 		mc.mcProfiler.endSection();
+	}
+	
+	@Override
+	protected void renderIcon(int x, int y, SpriteSet sprites) {
+		Sprite sprite = sprites.getSprite(0);
+		Sprite bg = sprite = sprites.getSprite(1);
+		if(bg != null)
+			guiRenderer.drawTexturedModalRect(x, y, bg.getX(), bg.getY(), width, height);
+		if(sprite != null)
+			guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), width, height);
 	}
 	
 	/**
@@ -52,6 +62,11 @@ public abstract class HudItemIcon extends HudItem{
 	 * Texture for image.
 	 */
 	protected Sprite icon;
+	
+	/**
+	 * Texture for background
+	 */
+	protected Sprite background;
 	
 	/**
 	 * Collection of textures for the image.

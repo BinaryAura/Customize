@@ -41,14 +41,11 @@ public class GuiButtonHudItem extends GuiButton {
 	 */
 	public GuiButtonHudItem(int buttonId, int x, int y, int width, int height, String name) {
 		super(buttonId, x, y, width, height, name);
-		mc = Minecraft.getMinecraft();
 		hudItem = HudItemManager.REGISTRY.get(name);
 		updateValues();
 		originalPriority = HudItemManager.REGISTRY.indexOf(hudItem);
 		originalAnchor = hudItem.getAnchor();
 		originalOrientation = hudItem.getOrientation();
-		originalX = x;
-		originalY = y;
 	}
 	
 	//	Button needs to be adjusted to extend in the direction of the button 
@@ -201,16 +198,6 @@ public class GuiButtonHudItem extends GuiButton {
 	private HudItem hudItem;
 	
 	/**
-	 * Original x value for reversion
-	 */
-	private int originalX;
-	
-	/**
-	 * Original y value for reversion
-	 */
-	private int originalY;
-	
-	/**
 	 * Original orientation for reversion
 	 */
 	private HudItem.Orientation originalOrientation;
@@ -224,9 +211,4 @@ public class GuiButtonHudItem extends GuiButton {
 	 * Original priority for reversion
 	 */
 	private int originalPriority;
-	
-	/**
-	 * Minecraft
-	 */
-	private Minecraft mc;
 }

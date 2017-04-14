@@ -1,6 +1,5 @@
 package net.binaryaura.customize.client.gui.huditem;
 
-import net.binaryaura.customize.client.ClientProxy;
 import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
 import net.binaryaura.customize.client.gui.Sprite;
@@ -87,22 +86,25 @@ public abstract class HudItemIconGauge extends HudItem {
 		super(name);
 	}
 	
-	@Override
-	protected void init() {
-		canFlip = true;
-		canRotate = true;
-		maxPerRow = DFLT_MAX_PER_ROW;
-		maxStackSpace = DFLT_MAX_STK_SPC;
-		minStackSpace = DFLT_MIN_STK_SPC;
-		space = DFLT_SPC;
-	}
-
 	/**
-	 * Amount is reset each time {@link #getAmount()} changes. If the game
+	 * Changes the flip state for the HUDItem.
+	 */
+	public void flip() {
+		flip = !flip;
+	}
+	
+	@Override
+	public void preRender() {
+		setAmount(getAmount());
+		super.preRender();
+	}
+	
+	/**
+	 * <p>Amount is reset each time {@link #getAmount()} changes. If the game
 	 * {@link #isInPreview()} then, <code>demoAmount</code> is used instead.
 	 * Height and Width is reset as well.
 	 * 
-	 * How the gauge is rendered depends on the orientation of the gauge.
+	 * <p>How the gauge is rendered depends on the orientation of the gauge.
 	 * The texture and specific attributes are obtained from the subclass.
 	 * From the information retrieved the subclass is rendered icon by icon.
 	 * 
@@ -115,22 +117,14 @@ public abstract class HudItemIconGauge extends HudItem {
 		SpriteSet iconLayers;
 		bind(layers.getLocation());
 		
-//		if (name.equalsIgnoreCase(ClientProxy.HEALTH)) log.info(anchor + " : " + x + " : " + y + " : " + width + " : " + height + " : " + orientation);
-			
-//		log.info("Res: " + res.getScaledWidth() + " : " + res.getScaledHeight());
-//		log.info(name + ": X: " + this.x + " : " + anchor.getX() + " : " + width + " -> " + x);
-//		log.info(name + ": Y: " + this.y + " : " + anchor.getY() + " : " + width + " -> " + y);
-		
 		switch(orientation) {
-			case RIGHT:
-				break;
-			case DOWN:
-				break;
 			case LEFT:
 				x += width - layers.getWidth();
 				break;
 			case UP:
 				y += height - layers.getHeight();
+				break;
+			default:
 				break;
 		}
 		for(int i = MathHelper.ceiling_float_int(amount / (layers.getAmount() - 1) - 1); i >= 0; --i) {
@@ -155,15 +149,20 @@ public abstract class HudItemIconGauge extends HudItem {
 					iconY = y - space*(i % maxPerRow) + getIconDeltaPara(i) + getDeltaY();
 			}
 			
-			for(int j = 0; j < iconLayers.getAmount(); j++) {
-				Sprite sprite = iconLayers.getSprite(j);
-				if (sprite == null) continue;
-				guiRenderer.drawTexturedModalRect(iconX, iconY, sprite.getX(), sprite.getY(), layers.getWidth(), layers.getHeight());
-			}
+			renderIcon(iconX, iconY, iconLayers);
 		}
 		mc.mcProfiler.endSection();
 	}
- 
+	
+	@Override
+	protected void renderIcon(int x, int y, SpriteSet sprites) {
+		for(int i = 0; i < sprites.getAmount(); i++) {
+			Sprite sprite = sprites.getSprite(i);
+			if (sprite == null) continue;
+			guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), sprite.getX(), sprite.getY());
+		}
+	}
+
 	/**
 	 * Setter for {@link #maxPerRow}.
 	 * 
@@ -171,12 +170,107 @@ public abstract class HudItemIconGauge extends HudItem {
 	 */
 	public void setMaxPerRow(int max) {
 		maxPerRow = max;
+		// preRender();
+	}
+ 
+	/**
+	 * Creates a bidirectional shake among the icons when used in
+	 * {@link #getIconDeltaPara(int)} or {@link #getIconDeltaPerp(int)}.
+	 * 
+	 * @return delta movement per tick to produce a bidirectional shake.
+	 */
+	protected int bidirectionalShake() {
+		return rand.nextInt(3) - 1;
+	}
+	
+	/**
+	 * Gets the maximum value for during game-play.
+	 * 
+	 * @return the maximum value for the gauge (20 = 2 states per icon x 10 icons).
+	 */
+	protected float getAmount() {
+		return DFLT_AMT;
 	}
 	
 	@Override
-	public void preRender() {
-		setAmount(getAmount());
-		super.preRender();
+	protected int getDeltaX() {
+		return 0;
+	}
+	
+	@Override
+	protected int getDeltaY() {
+		return 0;
+	}
+
+	/**
+	 * Calculates parallel movement of each icon of the gauge.							 <3 <- <3 -> <3
+	 * 
+	 * @param icon		The index of the icon.  <3 0 <3 1 <3 2 <3 3 <3 4 <3 5 etc
+	 * 
+	 * @return parallel movement direction and distance. 
+	 */
+	protected int getIconDeltaPara(int icon) {
+		return 0;
+	}
+	
+	/**																						   /\
+	 * Calculates perpendicular movement of each icon of the gauge.		 				 <3    <3    <3
+	 * 																						   \/
+	 * @param icon		The index of the icon.
+	 * 
+	 * @return perpendicular movement direction and distance.
+	 */
+	protected int getIconDeltaPerp(int icon) {
+		return 0;
+	}
+	
+	/**
+	 * Gets the textures to be used when displaying the specific
+	 * <code>icon</code> of the gauge during game-play.
+	 * 
+	 * @param icon		The index of the icon.		
+	 * 
+	 * @return the textures to be used in <code>icon</code>.
+	 */
+	protected abstract SpriteSet getIconSpriteSet(int icon);
+	
+	@Override
+	protected void init() {
+		canRotate = true;
+		maxPerRow = DFLT_MAX_PER_ROW;
+		maxStackSpace = DFLT_MAX_STK_SPC;
+		minStackSpace = DFLT_MIN_STK_SPC;
+		space = DFLT_SPC;
+	}
+	
+	// TODO: Fix IconGauge Animation Methods
+	
+	/**
+	 * Creates an animation of a moving wave through the bar. It uses a
+	 * single sine wave with only the positive section when used in
+	 * {{@link #getIconDeltaPara(int)} or {@link #getIconDeltaPerp(int)}.
+	 * 
+	 * @param icon		Index of the <code>icon</code>
+	 * 
+	 * @return delta movement per tick to produce a single moving wave.
+	 */
+	protected int movingHalfSinWave(int icon) {
+		int leadIcon = updateCounter % MathHelper.ceiling_float_int(getAmount() + 5);
+		if(leadIcon < icon && icon < leadIcon + 5) {
+			return MathHelper.ceiling_double_int(5*Math.cos((icon - leadIcon)*5 / Math.PI));
+		}
+		return 0;
+	}
+	
+	/**
+	 * Sets the amount and recalculates height and width
+	 * 
+	 * @param amount		Maximum value for the gauge
+	 */
+	protected void setAmount(float amount) {
+		if(this.amount == amount) return;
+		this.amount = amount;
+		// preRender();
 	}
 	
 	/**
@@ -202,43 +296,6 @@ public abstract class HudItemIconGauge extends HudItem {
 	}
 	
 	/**
-	 * Sets the amount and recalculates height and width
-	 * 
-	 * @param amount		Maximum value for the gauge
-	 */
-	protected void setAmount(float amount) {
-		if(this.amount == amount) return;
-		this.amount = amount;
-	}
-
-	/**
-	 * Creates a bidirectional shake among the icons when used in
-	 * {@link #getIconDeltaPara(int)} or {@link #getIconDeltaPerp(int)}.
-	 * 
-	 * @return delta movement per tick to produce a bidirectional shake.
-	 */
-	protected int bidirectionalShake() {
-		return rand.nextInt(3) - 1;
-	}
-	
-	/**
-	 * Creates an animation of a moving wave through the bar. It uses a
-	 * single sine wave with only the positive section when used in
-	 * {{@link #getIconDeltaPara(int)} or {@link #getIconDeltaPerp(int)}.
-	 * 
-	 * @param icon		Index of the <code>icon</code>
-	 * 
-	 * @return delta movement per tick to produce a single moving wave.
-	 */
-	protected int movingHalfSinWave(int icon) {
-		int leadIcon = updateCounter % MathHelper.ceiling_float_int(getAmount() + 5);
-		if(leadIcon < icon && icon < leadIcon + 5) {
-			return MathHelper.ceiling_double_int(5*Math.cos((icon - leadIcon)*5 / Math.PI));
-		}
-		return 0;
-	}
-	
-	/**
 	 * Creates a shaking animation among the icons when used in
 	 * {@link #getIconDeltaPara(int)} or {@link #getIconDeltaPerp(int)}.
 	 * 
@@ -261,8 +318,6 @@ public abstract class HudItemIconGauge extends HudItem {
 		return MathHelper.ceiling_double_int(5*Math.sin(leadIcon*5 / Math.PI));
 	}
 	
-	// TODO: Fix IconGauge Animation Methods
-	
 	/**
 	 * Creates a wave through the icons when used in {@link #getIconDeltaPara(int)}
 	 * or {@link #getIconDeltaPerp(int)}.
@@ -280,57 +335,6 @@ public abstract class HudItemIconGauge extends HudItem {
 		}
 		return 0;
 	}
-	
-	/**
-	 * Calculates parallel movement of each icon of the gauge.							 <3 <- <3 -> <3
-	 * 
-	 * @param icon		The index of the icon.  <3 0 <3 1 <3 2 <3 3 <3 4 <3 5 etc
-	 * 
-	 * @return parallel movement direction and distance. 
-	 */
-	protected int getIconDeltaPara(int icon) {
-		return 0;
-	}
-	
-	/**																						   /\
-	 * Calculates perpendicular movement of each icon of the gauge.		 				 <3    <3    <3
-	 * 																						   \/
-	 * @param icon		The index of the icon.
-	 * 
-	 * @return perpendicular movement direction and distance.
-	 */
-	protected int getIconDeltaPerp(int icon) {
-		return 0;
-	}
-	
-	@Override
-	protected int getDeltaX() {
-		return 0;
-	}
-	
-	@Override
-	protected int getDeltaY() {
-		return 0;
-	}
-	
-	/**
-	 * Gets the maximum value for during game-play.
-	 * 
-	 * @return the maximum value for the gauge (20 = 2 states per icon x 10 icons).
-	 */
-	protected float getAmount() {
-		return DFLT_AMT;
-	}
-	
-	/**
-	 * Gets the textures to be used when displaying the specific
-	 * <code>icon</code> of the gauge during game-play.
-	 * 
-	 * @param icon		The index of the icon.		
-	 * 
-	 * @return the textures to be used in <code>icon</code>.
-	 */
-	protected abstract SpriteSet getIconSpriteSet(int icon);
 	
 	/**
 	 * Flag for when an animation finishes.
@@ -361,25 +365,26 @@ public abstract class HudItemIconGauge extends HudItem {
 	protected int space;
 	
 	/**
+	 * Flip state for the HUDItem.
+	 */
+	protected boolean flip;
+	
+	/**
+	 * Getter for <code>flip</code>
+	 */
+	public boolean isFlipped() {
+		return flip;
+	}
+	
+	/**
 	 * Textures for the icon gauge. Multiple layers could be made
 	 * to represent different situations for textures. For example,
 	 * for {@link HudItemHealth}:
 	 * 
-	 * background
-	 * default
-	 * defaultHL
-	 * absorb
-	 * poison
-	 * poisonHL
-	 * wither
-	 * witherHL
-	 * defaultHC
-	 * defaultHCHL
-	 * absorbHC
-	 * poisonHC
-	 * poisonHCHL
-	 * witherHC
-	 * witherHCHL
+	 * <p>background
+	 * <br>default
+	 * <br>defaultHL
+	 * <br>etc
 	 */
 	protected LayeredSprite layers;
 

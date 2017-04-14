@@ -2,8 +2,8 @@ package net.binaryaura.customize.client.gui.huditem;
 
 import org.lwjgl.opengl.GL11;
 
-import net.binaryaura.customize.client.gui.GuiScreenAdjustHud;
 import net.binaryaura.customize.client.gui.LayeredSprite;
+import net.binaryaura.customize.client.gui.Sprite;
 import net.binaryaura.customize.client.gui.SpriteSet;
 import net.minecraft.util.MathHelper;
 
@@ -66,6 +66,16 @@ public abstract class HudItemBar extends HudItem {
 			guiRenderer.drawTexturedModalRect(x, y, sprites.getSprite(i).getX(), sprites.getSprite(i).getY(), fill, layers.getHeight());
 		}
 		mc.mcProfiler.endSection();
+	}
+	
+	@Override
+	protected void renderIcon(int x, int y, SpriteSet sprites) {
+		for(int i = 0; i < sprites.getAmount() + 1; i++) {
+			Sprite sprite = sprites.getSprite(i);
+			if (sprite == null) continue;
+			int fill = MathHelper.ceiling_float_int(getAmount(i)*sprites.getWidth());
+			guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), fill, sprite.getHeight());
+		}
 	}
 	
 	/**
