@@ -159,7 +159,7 @@ public abstract class HudItemIconGauge extends HudItem {
 		for(int i = 0; i < sprites.getAmount(); i++) {
 			Sprite sprite = sprites.getSprite(i);
 			if (sprite == null) continue;
-			guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), sprite.getX(), sprite.getY());
+			guiRenderer.drawTexturedModalRect(x, y, sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		}
 	}
 
